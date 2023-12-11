@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-mode="detached" data-topbar-color="dark" data-menu-color="light" data-sidenav-user="true"
+        xmlns:th="http://www.thymeleaf.org">
+    <th:block th:fragment="addContentFragment">
+        <div class="content">
+
+            <!-- Start Content-->
+            <div class="container-fluid">
+
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box">
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a href="/subjects">Noteu</a></li>
+                                    <li class="breadcrumb-item"><a href="#">Apps</a></li>
+                                    <li class="breadcrumb-item"><a th:href="'/subjects/'+${subjectId}+'/notices'">Notice</a></li>
+                                    <li class="breadcrumb-item active">Create Notice</li>
+                                </ol>
+                            </div>
+                            <h4 class="page-title">Create Notice</h4>
+                        </div>
+                    </div>
+                </div>
+                <!-- end page title -->
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <form th:action="@{'/subjects/' + ${subjectId} + '/notices'}" method="post">
+                                    <div class="row">
+                                        <div class="col-10">
+                                            <div class="mb-3">
+                                                <label for="title" class="form-label">Title</label>
+                                                <input type="text" id="noticeTitle" name="noticeTitle" class="form-control" placeholder="Enter Notice Title">
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="content" class="form-label">Content</label>
+                                                <textarea class="form-control" id="noticeContent" name="noticeContent" rows="5"></textarea>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <input type="submit" class="btn btn-primary" id="btn_submit" value="Create">
+                                            </div>
+
+                                        </div> <!-- end col-->
+                                    </div>
+                                    <!-- end row -->
+                                </form>
+
+                            </div> <!-- end card-body -->
+                        </div> <!-- end card-->
+                    </div> <!-- end col-->
+                </div>
+                <!-- end row-->
+                
+            </div> <!-- container -->
+
+        </div> <!-- content -->
+        <!-- content -->
+    </th:block>
+</html>

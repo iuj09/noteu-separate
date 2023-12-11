@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-mode="detached" data-topbar-color="dark" data-menu-color="light" data-sidenav-user="true"
+      xmlns:th="http://www.thymeleaf.org">
+    <th:block th:fragment="referenceAddForm">
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box">
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Noteu</a></li>
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Apps</a></li>
+                            <li class="breadcrumb-item"><a th:href="@{/subjects/{subjectId}/references(subjectId = ${subjectId})}">ReferenceRoom</a></li>
+                            <li class="breadcrumb-item active">Create Reference Room</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title">Create Reference Room</h4>
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+
+                        <div class="row">
+                            <input type="hidden" id="subjectId" th:value="${subjectId}">
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Title</label>
+                                <input type="text" id="title" class="form-control" placeholder="Enter title">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="content" class="form-label">Content</label>
+                                <textarea class="form-control" id="content" rows="5" placeholder="Enter some brief about reference.."></textarea>
+                            </div>
+
+                            <div class="mb-3 mt-3 mt-xl-0">
+                                <label for="title" class="mb-0">Files</label>
+                                <p class="text-muted font-14">Recommended thumbnail size 800x400 (px).</p>
+
+                                <div class="input-group mb-3" id="uploadFile">
+                                    <label class="input-group-text" for="files">Upload</label>
+                                    <input class="form-control" id="files" type="file" multiple style="display:none" />
+                                </div>
+
+                                <div>
+                                    <span>첨부파일</span>
+                                    <div id="fileThumbnail"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end row -->
+                        <div>
+                            <button type="button" class="btn btn-primary" id="submitBtn">Create</button>
+                        </div>
+                    </div> <!-- end card-body -->
+                </div> <!-- end card-->
+            </div> <!-- end col-->
+        </div> <!-- end row-->
+    </th:block>
+</html>

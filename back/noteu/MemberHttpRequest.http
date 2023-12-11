@@ -1,0 +1,12 @@
+### 로그인 시도
+POST http://localhost:8081/members/sign-in
+Content-Type: application/json
+
+{
+  "username": "aaaa",
+  "password": "aaaa"
+}
+
+### 프로필 조회
+GET http://localhost:8081/members/
+Authorization: Bearer_eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9XSwidXNlcklkIjoxLCJ1c2VybmFtZSI6ImFhYWEiLCJpYXQiOjE3MDAxODg0NDYsImV4cCI6MTcwMDE5OTI0Nn0._5OiDuMqgG_8YCqdeXEVEK0S4JUY7GUvT6XPszgihNc

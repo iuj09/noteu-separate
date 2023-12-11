@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-mode="detached" data-topbar-color="dark" data-menu-color="light" data-sidenav-user="true"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<th:block th:fragment="questions">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Noteu</a></li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Apps</a></li>
+                        <li class="breadcrumb-item active">Question Post</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Question Post List</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <h4 class="header-title">질문게시판</h4>
+                            <p class="text-muted font-14">
+                                공부 중 궁금한 점이 생기면 질문글을 작성 해 주세요.
+                            </p>
+                        </div>
+                        <div class="col-6 app-search dropdown d-none d-lg-block">
+                            <form id="search"
+                                  th:action="@{/subjects/{subjectId}/questions/search(subjectId = ${subjectId})}"
+                                  method="POST">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <select id="searchType" name="searchType" class="form-select">
+                                            <option value=0>검색 유형</option>
+                                            <option value="title">제목</option>
+                                            <option value="member">작성자</option>
+                                        </select>
+                                    </div>
+                                    <div class="search-input-wrapper">
+                                        <input type="search" class="form-control dropdown-toggle" id="searchWord"
+                                               name="searchWord" placeholder="Search...">
+                                    </div>
+                                    <button class="input-group-text btn btn-primary" type="submit">
+                                        <i class="mdi mdi-magnify search-icon"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <button type="button" id="addForm" class="btn btn-success rounded-pill"
+                            th:onclick="|location.href='@{/subjects/{subjectId}/questions/add-form(subjectId = ${subjectId})}'|">
+                        + Create Question
+                    </button>
+
+                    <div class="tab-content">
+                        <div class="tab-pane show active" id="buttons-table-preview">
+                            <table id="datatable-buttons" class="table table-hover dt-responsive nowrap w-100">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Title</th>
+                                    <th>Writer</th>
+                                    <th>Date</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr th:each="q:${questionPost}">
+                                    <input type="hidden" class="questionPostId" th:value="${q.questionPostId}">
+                                    <input type="hidden" class="subjectId" th:value="${q.subject.id}">
+                                    <input type="hidden" class="memberId" th:value="${q.memberId}">
+                                    <td th:text="${q.questionPostId}"></td>
+                                    <td>
+                                        <a class="detail" th:text="${q.questionPostTitle}"></a>
+                                    </td>
+                                    <td>
+                    <span class="account-user-avatar userProfile">
+                        <img th:src="${q.profile}" alt="user-image" width="32" height="32" class="rounded-circle">
+                        <a th:text="${q.memberName}"></a>
+                    </span>
+                                    </td>
+                                    <td class="createdAt" th:text="${q.createdAt}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div th:if="${!questionPost.isEmpty()}">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item" th:classappend="${!questionPost.hasPrevious} ? 'disabled'">
+                                        <a class="page-link"
+                                           th:href="@{|?page=${questionPost.number-1}|}">
+                                            <span>Previous</span>
+                                        </a>
+                                    </li>
+                                    <li th:each="page: ${#numbers.sequence(0, questionPost.totalPages-1)}"
+                                        th:if="${page >= questionPost.number-5 and page <= questionPost.number+5}"
+                                        th:classappend="${page == questionPost.number} ? 'active'"
+                                        class="page-item">
+                                        <a th:text="${page + 1}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                                    </li>
+                                    <li class="page-item" th:classappend="${!questionPost.hasNext} ? 'disabled'">
+                                        <a class="page-link" th:href="@{|?page=${questionPost.number+1}|}">
+                                            <span>Next</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div> <!-- end preview-->
+                    </div> <!-- end tab-content-->
+
+                </div> <!-- end card body-->
+            </div> <!-- end card -->
+        </div><!-- end col-->
+    </div> <!-- end row-->
+</th:block>
+</html>

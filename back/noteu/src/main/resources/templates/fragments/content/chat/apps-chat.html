@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-mode="detached" data-topbar-color="dark" data-menu-color="light" data-sidenav-user="true"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="chatContentFragment">
+    <!--/*@thymesVar id="subjectId" type="Long"*/-->
+    <!--/*@thymesVar id="memberId" type="Long"*/-->
+    <input type="hidden" id="subjectId" th:value="${subjectId}">
+    <input type="hidden" id="memberId" th:value="${memberId}">
+    <input type="hidden" id="memberName" th:value="${memberName}">
+    <input type="hidden" id="loginProfile" th:value="${profile}">
+
+    <div class="content">
+        <!-- Start Content-->
+        <div class="container-fluid">
+
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box">
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Noteu</a></li>
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Apps</a></li>
+                                <li class="breadcrumb-item active">Chat</li>
+                            </ol>
+                        </div>
+                        <h4 class="page-title">Chat</h4>
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+
+            <div class="row">
+                <!-- start chat users-->
+                <div class="col-xxl-3 col-xl-6 order-xl-1">
+                    <div class="card">
+                        <div class="card-body p-0">
+                            <ul class="nav nav-tabs nav-bordered">
+                                <li class="nav-item" role="presentation">
+                                    <a id="chats" href="#alwaysopen-accordions-preview" class="nav-link active"
+                                       data-bs-toggle="tab" role="tab" aria-controls="nav-preview" aria-selected="true">
+                                        Chats
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a id="friends" href="#alwaysopen-accordions-code" class="nav-link" data-bs-toggle="tab"
+                                       role="tab" aria-controls="nav-code" aria-selected="false">
+                                        Friends
+                                    </a>
+                                </li>
+                            </ul> <!-- end nav-->
+                            <div class="tab-content">
+                                <div class="tab-pane show active card-body pb-0" id="newpost">
+
+                                    <!-- start search box -->
+                                    <div class="app-search">
+                                        <form>
+                                            <div class="mb-2 w-100 position-relative">
+                                                <input type="search" class="form-control"
+                                                       placeholder="People, groups & messages..."/>
+                                                <span class="mdi mdi-magnify search-icon"></span>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!-- end search box -->
+                                </div>
+
+                                <!-- users -->
+                                <div id="users">
+                                    <div id="row-div" class="row">
+                                        <div id="col-div" class="col">
+                                            <div class="card-body py-0 mb-3" data-simplebar style="max-height: 565px">
+                                                <a href="javascript:void(0);" class="text-body">
+                                                    <div class ="d-flex align-items-start mt-1 p-2"
+                                                         onclick="toggleMessageStyle(this)">
+                                                        <img src="assets/images/users/avatar-2.jpg"
+                                                             class="me-2 rounded-circle" height="48"
+                                                             alt="Brandon Smith"/>
+                                                        <div class="w-100 overflow-hidden">
+                                                            <h5 class="mt-0 mb-0 font-14">
+                                                                <span class="float-end text-muted font-12">4:30am</span>
+                                                                Brandon Smith
+                                                            </h5>
+                                                            <p class="mt-1 mb-0 text-muted font-14">
+                                                                    <span class="w-25 float-end text-end">
+                                                                        <span class="badge badge-danger-lighten">3</span>
+                                                                    </span>
+                                                                <span class="w-75">How are you today?</span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </a>
+
+                                                <a href="javascript:void(0);" class="text-body">
+                                                    <div class="d-flex align-items-start mt-1 p-2"
+                                                         onclick="toggleMessageStyle(this)">
+                                                        <!--                                                    <img src="assets/images/users/avatar-5.jpg"-->
+                                                        <!--                                                         class="me-2 rounded-circle" height="48"-->
+                                                        <!--                                                         alt="Shreyu N"/>-->
+                                                        <div class="w-100 overflow-hidden">
+                                                            <h5 class="mt-0 mb-0 font-14">
+                                                                <span class="float-end text-muted font-12">5:30am</span>
+                                                                Shreyu N
+                                                            </h5>
+                                                            <p class="mt-1 mb-0 text-muted font-14">
+                                                            <span class="w-25 float-end text-end"><span
+                                                                    class="badge badge-danger-lighten">3</span></span>
+                                                                <span class="w-75">Hey! a reminder for tomorrow's meeting...</span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </a>
+
+                                                <a href="javascript:void(0);" class="text-body">
+                                                    <div class="d-flex align-items-start mt-1 p-2"
+                                                         onclick="toggleMessageStyle(this)">
+                                                        <!--                                                    <img src="assets/images/users/avatar-7.jpg"-->
+                                                        <!--                                                         class="me-2 rounded-circle" height="48" alt="Maria C"/>-->
+                                                        <div class="w-100 overflow-hidden">
+                                                            <h5 class="mt-0 mb-0 font-14">
+                                                                <span class="float-end text-muted font-12">Thu</span>
+                                                                Maria C
+                                                            </h5>
+                                                            <p class="mt-1 mb-0 text-muted font-14">
+                                                                    <span class="w-25 float-end text-end">
+                                                                        <span class="badge badge-danger-lighten">2</span>
+                                                                    </span>
+                                                                <span class="w-75">Are we going to have this week's planning meeting today?</span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div> <!-- end slimscroll-->
+                                        </div> <!-- End col -->
+                                    </div>
+                                </div><!-- end users -->
+                            </div> <!-- end tab content-->
+                        </div> <!-- end card-body-->
+                    </div> <!-- end card-->
+                </div>
+                <!-- end chat users-->
+
+                <!-- chat area -->
+                <div class="col-xxl-6 col-xl-12 order-xl-2">
+                    <div class="card">
+                        <div class="card-body px-0 pb-0">
+                            <ul class="conversation-list px-3" data-simplebar="init" style="max-height: 554px">
+                                <div class="simplebar-wrapper" style="margin: 0px -24px;">
+                                    <div class="simplebar-height-auto-observer-wrapper">
+                                        <div class="simplebar-height-auto-observer"></div>
+                                    </div>
+                                    <div class="simplebar-mask">
+                                        <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+                                            <div id="scroll" class="simplebar-content-wrapper" tabindex="0" role="region"
+                                                 aria-label="scrollable content"
+                                                 style="height: auto; overflow: hidden scroll;">
+                                                <div id="chat-message" class="simplebar-content"
+                                                     style="padding: 0px 24px;">
+                                                    <li class="clearfix">
+                                                        <div class="chat-avatar">
+                                                            <i>10:00</i>
+                                                        </div>
+                                                        <div class="conversation-text">
+                                                            <div class="ctext-wrap">
+                                                                <i>Shreyu N</i>
+                                                                <p>
+                                                                    Hello!
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="clearfix odd">
+                                                        <div class="chat-avatar">
+<!--                                                            <img src="assets/images/users/avatar-5.jpg" class="rounded" alt="Shreyu N">-->
+                                                            <i>10:01</i>
+                                                        </div>
+                                                        <div class="conversation-text">
+                                                            <div class="ctext-wrap">
+                                                                <i>Dominic</i>
+                                                                <p>
+                                                                    Hi, How are you? What about our next meeting?
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="clearfix">
+                                                        <div class="chat-avatar">
+                                                            <i>10:00</i>
+                                                        </div>
+                                                        <div class="conversation-text">
+                                                            <div class="ctext-wrap">
+                                                                <i>Shreyu N</i>
+                                                                <p>
+                                                                    Hello!
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="clearfix odd">
+                                                        <div class="chat-avatar">
+                                                            <i>10:01</i>
+                                                        </div>
+                                                        <div class="conversation-text">
+                                                            <div class="ctext-wrap">
+                                                                <i>Dominic</i>
+                                                                <p>
+                                                                    Hi, How are you? What about our next meeting?
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="clearfix">
+                                                        <div class="chat-avatar">
+                                                            <i>10:00</i>
+                                                        </div>
+                                                        <div class="conversation-text">
+                                                            <div class="ctext-wrap">
+                                                                <i>Shreyu N</i>
+                                                                <p>
+                                                                    Hello!
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="clearfix odd">
+                                                        <div class="chat-avatar">
+                                                            <i>10:01</i>
+                                                        </div>
+                                                        <div class="conversation-text">
+                                                            <div class="ctext-wrap">
+                                                                <i>Dominic</i>
+                                                                <p>
+                                                                    Hi, How are you? What about our next meeting?
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="simplebar-placeholder" style="width: auto; height: 885px;"></div>
+                                </div>
+                                <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
+                                    <div class="simplebar-scrollbar" style="width: 0px; display: none;transform: translate3d(0px, 0px, 0px);"></div>
+                                </div>
+                                <div class="simplebar-track simplebar-vertical" style="visibility: hidden;">
+                                    <div id="sisisi" class="simplebar-scrollbar" style="height: 335px; transform: translate3d(0px, 218px, 0px); display: block;"></div>
+                                </div>
+                            </ul>
+                        </div> <!-- end card-body -->
+                        <div class="card-body p-0">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mt-2 bg-light p-3">
+<!--                                        <form class="needs-validation" novalidate="" name="chat-form" id="chat-form">-->
+                                            <div class="row">
+                                                <div class="col mb-2 mb-sm-0">
+                                                    <input id="message-input" type="text" class="form-control border-0"
+                                                           placeholder="Enter your text" required="">
+                                                    <div class="invalid-feedback">
+                                                        Please enter your messsage
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-auto">
+                                                    <div class="btn-group">
+                                                        <!--                                                        <a href="#" class="btn btn-light"><i-->
+                                                        <!--                                                                class="uil uil-paperclip"></i></a>-->
+                                                        <!--                                                        <a href="#" class="btn btn-light"> <i-->
+                                                        <!--                                                                class='uil uil-smile'></i> </a>-->
+                                                        <div class="d-grid">
+                                                            <button id="send-btn" class="btn btn-success chat-send"><i
+                                                                    class="uil uil-message"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div> <!-- end col -->
+                                            </div> <!-- end row-->
+<!--                                        </form>-->
+                                    </div>
+                                </div> <!-- end col-->
+                            </div>
+                            <!-- end row -->
+                        </div>
+                    </div> <!-- end card -->
+                </div>
+                <!-- end chat area-->
+
+                <!-- start user detail -->
+                <div class="col-xxl-3 col-xl-6 order-xl-1 order-xxl-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="dropdown float-end">
+                                <a href="#" class="dropdown-toggle arrow-none card-drop"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="mdi mdi-dots-horizontal"></i>
+                                </a>
+<!--                                <div class="dropdown-menu dropdown-menu-end">-->
+<!--                                    &lt;!&ndash; item&ndash;&gt;-->
+<!--                                    <a href="javascript:void(0);" class="dropdown-item">View full</a>-->
+<!--                                    &lt;!&ndash; item&ndash;&gt;-->
+<!--                                    <a href="javascript:void(0);" class="dropdown-item">Edit Contact Info</a>-->
+<!--                                    &lt;!&ndash; item&ndash;&gt;-->
+<!--                                    <a href="javascript:void(0);" class="dropdown-item">Remove</a>-->
+<!--                                </div>-->
+                            </div>
+
+                            <!-- userDetail 시작부분 -->
+                            <div id="user-detail-head">
+<!--                                <div class="mt-3 text-center">-->
+<!--                                    <img src="assets/images/users/avatar-5.jpg" alt="shreyu"-->
+<!--                                         class="img-thumbnail avatar-lg rounded-circle"/>-->
+<!--                                    <h4>Shreyu N</h4>-->
+<!--                                    <button class="btn btn-primary btn-sm mt-1">-->
+<!--                                        <i class='uil uil-envelope-add me-1'></i>Send Email-->
+<!--                                    </button>-->
+<!--                                    <p class="text-muted mt-2 font-14">Last Interacted: <strong>Few hours-->
+<!--                                        back</strong></p>-->
+<!--                                </div>-->
+                            </div>
+
+                            <div id="user-detail-body">
+                                <div class="mt-3">
+                                    <hr class=""/>
+
+                                    <p class="mt-4 mb-1"><strong><i class='uil uil-at'></i> Email:</strong></p>
+<!--                                    <p>support@coderthemes.com</p>-->
+
+                                    <p class="mt-3 mb-1"><strong><i class='uil uil-phone'></i> Phone
+                                        Number:</strong></p>
+<!--                                    <p>+1 456 9595 9594</p>-->
+
+<!--                                    <p class="mt-3 mb-1"><strong><i class='uil uil-location'></i> Location:</strong>-->
+<!--                                    </p>-->
+<!--                                    <p>California, USA</p>-->
+
+<!--                                    <p class="mt-3 mb-1"><strong><i class='uil uil-globe'></i> Languages:</strong>-->
+<!--                                    </p>-->
+<!--                                    <p>English, German, Spanish</p>-->
+
+<!--                                    <p class="mt-3 mb-2"><strong><i class='uil uil-users-alt'></i> Groups:</strong>-->
+<!--                                    </p>-->
+<!--                                    <p class="mb-0">-->
+<!--                                        <span class="badge badge-success-lighten p-1 font-14">Work</span>-->
+<!--                                        <span class="badge badge-primary-lighten p-1 font-14">Friends</span>-->
+<!--                                    </p>-->
+                                </div>
+                            </div>
+                        </div> <!-- end card-body -->
+                    </div> <!-- end card-->
+                </div> <!-- end col -->
+                <!-- end user detail -->
+            </div> <!-- end row-->
+
+        </div> <!-- container -->
+
+    </div> <!-- content -->
+</th:block>
+</html>

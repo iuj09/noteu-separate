@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-mode="detached" data-topbar-color="dark" data-menu-color="light" data-sidenav-user="true"
+      xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <th:block th:replace="fragments/common/header :: headerFragment"></th:block>
+    <script src="/webjars/axios/0.17.1/dist/axios.min.js"></script>
+    <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/2.3.3-1/stomp.min.js"></script>
+    <script type="module" src="/js/chat/chat.js"></script>
+    <script type="module" src="/js/sse/sse.js"></script>
+</head>
+<body>
+<div class="wrapper">
+    <th:block th:replace="fragments/common/topbar :: topbarFragment"></th:block>
+    <th:block th:replace="fragments/common/sidebar2 :: sidebar2Fragment"></th:block>
+    <div class="content-page">
+        <th:block th:replace="fragments/content/chat/apps-chat :: chatContentFragment"></th:block>
+        <th:block th:replace="fragments/common/footer :: footerFragment"></th:block>
+    </div>
+
+    <th:block th:replace="fragments/common/script :: scriptFragment"></th:block>
+</div>
+</body>
+</html>

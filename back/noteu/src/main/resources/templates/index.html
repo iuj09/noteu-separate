@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-mode="detached" data-topbar-color="dark" data-menu-color="light" data-sidenav-user="true"
+      xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <th:block th:replace="fragments/common/header :: headerFragment"></th:block>
+    <!-- .js file -->
+</head>
+<body>
+<div class="wrapper">
+    <th:block th:replace="fragments/common/index_topbar :: indexTopbarFragment"></th:block>
+    <div class="content-page mx-auto">
+        <!-- start page title -->
+        <div class="content mt-3">
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box text-center">
+                        <img src="/assets/images/book.png" alt="book" height="50" width="60">
+                    </div>
+                </div>
+                <div class="mt-2 text-center">
+                    <img src="/assets/images/noteuLogoBlack.png" alt="logo" width="200">
+                </div>
+            </div>
+            <!-- end page title -->
+            <div class="row mt-2">
+                <div class="col-12">
+                    <div class="timeline" dir="ltr">
+                        <div class="timeline-show my-3 text-center">
+                            <h5 class="m-0 time-show-name">START</h5>
+                        </div>
+                        <div class="timeline-lg-item timeline-item-left">
+                            <div class="timeline-desk">
+                                <div class="timeline-box">
+                                    <span class="arrow-alt"></span>
+                                    <span class="timeline-icon"><i class="mdi mdi-adjust"></i></span>
+                                    <h5 class="mt-0 mb-1 font-16">📚 Note + 🏫 Education = Noteu </h5>
+                                    <p class="text-muted"><small>1 Nov, 2023</small></p>
+                                    <p>학습 관리와 교육이 이루어지는 공간</p>
+                                    <a id="like1Button" class="btn btn-sm btn-light">👍 <span id="like1Count">172</span></a>
+                                    <a id="heart1Button" class="btn btn-sm btn-light">❤️ <span id="heart1Count">890</span></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-lg-item timeline-item-right">
+                            <div class="timeline-desk">
+                                <div class="timeline-box">
+                                    <span class="arrow"></span>
+                                    <span class="timeline-icon"><i class="mdi mdi-adjust"></i></span>
+                                    <h4 class="mt-0 mb-1 font-16">🧐 이용 방법</h4>
+                                    <p class="text-muted"><small></small></p>
+                                    <p><strong>학생</strong>으로 회원 가입 후 + Join Subject 클릭 !<br>과목 코드 입력 란에 아래 예시 코드 입력</p>
+                                    <button id="copy_btn" class="btn btn-outline-secondary btn-sm" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="copy" data-bs-placement="right" onclick="copyToClipboard('e7d91fe2-7');">과목 코드 : <strong>e7d91fe2-7</strong></button>
+                                    <br><br>
+                                    <a id="firecracker1Button" class="btn btn-sm btn-light">✅ <span id="firecracker1Count">121</span></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-show my-3 text-center">
+                            <h5 class="m-0 time-show-name">기능</h5>
+                        </div>
+
+                        <div class="timeline-lg-item timeline-item-left">
+                            <div class="timeline-desk">
+                                <div class="timeline-box">
+                                    <span class="arrow-alt"></span>
+                                    <span class="timeline-icon"><i class="mdi mdi-adjust"></i></span>
+                                    <h4 class="mt-0 mb-1 font-16">회원</h4>
+                                    <p class="text-muted"><small>김수연</small></p>
+                                    <p> ➖ 스프링 시큐리티 세션 로그인<br>
+                                        ➖ OAuth2 소셜 로그인 (카카오, 네이버, 구글)<br>
+                                        ➖ 회원가입, 내 정보 수정, 회원탈퇴<br>
+                                        ➖ 입력 값에 대한 유효성 검증<br>
+                                        ➖ 비밀번호 변경<br>
+                                        ➖ 프로필 사진 등록 및 변경<br>
+                                        ➖ 마이페이지<br>
+                                        &nbsp;❇ 가입한 과목 목록<br>
+                                        &nbsp;❇ 최근 작성한 질문 글
+                                    </p>
+                                    <a id="heart2Button" class="btn btn-sm btn-light">❤️ <span id="heart2Count">898</span></a>
+                                    <a id="trophy1Button" class="btn btn-sm btn-light">🏆 <span id="trophy1Count">122</span></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-lg-item timeline-item-right">
+                            <div class="timeline-desk">
+                                <div class="timeline-box">
+                                    <span class="arrow"></span>
+                                    <span class="timeline-icon"><i class="mdi mdi-adjust"></i></span>
+                                    <h4 class="mt-0 mb-1 font-16">과목 / 과제 / 공지사항</h4>
+                                    <p class="text-muted"><small>김채원</small></p>
+                                    <p> ➖ <strong>과목</strong> <br/>
+                                        &nbsp;❇ 과목 생성 시 유니크한 랜덤코드 생성 <br/>
+                                        &nbsp;❇ 랜덤코드 클릭 시 코드 복사 <br/>
+                                        ➖ <strong>과제</strong> <br/>
+                                        &nbsp;❇ 과제 제출 기한 설정 <br/>
+                                        &nbsp;❇ 학생은 본인이 제출한 과제만 확인 가능 <br/>
+                                        &nbsp;❇ 선생님은 모든 학생의 제출 과제 확인 가능 <br/>
+                                        ➖ <strong>공지사항</strong> <br/>
+                                        &nbsp;❇ 공지사항 CRUD <br/>
+                                    </p>
+
+                                    <a class="btn btn-sm btn-light">👍 1.4k</a>
+                                    <a class="btn btn-sm btn-light">🎉 2k</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-lg-item timeline-item-left">
+                            <div class="timeline-desk">
+                                <div class="timeline-box">
+                                    <span class="arrow-alt"></span>
+                                    <span class="timeline-icon"><i class="mdi mdi-adjust"></i></span>
+                                    <h4 class="mt-0 mb-1 font-16">채팅</h4>
+                                    <p class="text-muted"><small>배용현</small></p>
+                                    <p>동일한 과목을 수강하고 있는 친구들과의 채팅!<br>
+                                        (친구 tab을 통해 같은 반 사람들 확인)</p>
+                                    <p><strong>소켓 통신</strong>으로 구현, 모든 과정 비동기화</p>
+                                    <p></p>
+                                    <p>최대한 유저 친화적인 인터페이스를 구현하려 노력했습니다.</p>
+
+
+                                    <a class="btn btn-sm btn-light">❤️ 8.9K</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-lg-item timeline-item-right">
+                            <div class="timeline-desk">
+                                <div class="timeline-box">
+                                    <span class="arrow"></span>
+                                    <span class="timeline-icon"><i class="mdi mdi-adjust"></i></span>
+                                    <h4 class="mt-0 mb-1 font-16">자료실 / 질문게시판</h4>
+                                    <p class="text-muted"><small>이우진</small></p>
+                                    <p>➖ <strong>자료실</strong> <br/>
+                                        &nbsp;❇ 다중 파일 업로드 가능 <br/>
+                                        &nbsp;❇ 업로드 파일 미리 보기 <br/>
+                                        ➖ <strong>질문게시판</strong> <br/>
+                                        &nbsp;❇ 마크다운 양식으로 질문 내용 작성 가능 <br/>
+                                        &nbsp;❇ 댓글 작성 및 삭제 <br/>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-show my-3 text-center">
+                            <h5 class="m-0 time-show-name">배포</h5>
+                        </div>
+
+                        <div class="timeline-lg-item timeline-item-left">
+                            <div class="timeline-desk">
+                                <div class="timeline-box">
+                                    <span class="arrow-alt"></span>
+                                    <span class="timeline-icon"><i class="mdi mdi-adjust"></i></span>
+                                    <h4 class="mt-0 mb-1 font-16">🌈 추후 추가될 기능 ✨</h4>
+                                    <p class="text-muted"><small>1 Dec, 2023</small></p>
+                                    <p>
+                                        1️⃣ 캘린더<br>
+                                        2️⃣ 알림창 템플릿 적용<br>
+                                        3️⃣ 제출한 과제 피드백<br>
+                                        4️⃣ 지정한 공지사항 최상단 고정<br>
+                                        5️⃣ 채팅 메시지 NoSQL로 변경<br>
+                                        6️⃣ 읽지 않은 채팅 수 카운팅<br>
+                                        7️⃣ 질문 게시판 대댓글
+                                    </p>
+                                    <a id="firecracker2Button" class="btn btn-sm btn-light">🎉 <span id="firecracker2Count">1004</span></a>
+                                    <a id="thumbsUp1Button" class="btn btn-sm btn-light">👍 <span id="thumbsUp1Count">8282</span></a>
+                                    <a id="heart3Button" class="btn btn-sm btn-light">❤️ <span id="heart3Count">486</span></a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-show my-3 text-center">
+                            <h5 class="m-0 time-show-name">~ ing</h5>
+                        </div>
+                    </div>
+                    <!-- end timeline -->
+                    <div class="text-center mt-2">
+                        <div class="row justify-content-center">
+                            <div class="d-grid">
+                                <button id="join" class="btn btn-lg btn-soft-success mr-2 mb-4">Start !</button>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- end col -->
+            </div>
+            <!-- end row -->
+            <th:block th:replace="fragments/common/footer :: footerFragment"></th:block>
+        </div>
+    </div>
+</div>
+</body>
+<th:block th:replace="fragments/common/script :: scriptFragment"></th:block>
+
+<!-- index.js -->
+<script src="/js/index/index.js"></script>
+</html>

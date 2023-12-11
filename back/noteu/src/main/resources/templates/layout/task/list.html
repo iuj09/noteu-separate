@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-mode="detached" data-topbar-color="dark" data-menu-color="light" data-sidenav-user="true" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <th:block th:replace="fragments/common/header :: headerFragment"></th:block>
+        <!-- .js file -->
+    </head>
+    <body>
+    <div class="wrapper">
+        <th:block th:replace="fragments/common/topbar :: topbarFragment"></th:block>
+        <th:block th:replace="fragments/common/sidebar2 :: sidebar2Fragment"></th:block>
+        <div class="content-page">
+            <th:block th:replace="fragments/content/task/list_content :: listContentFragment"></th:block>
+            <th:block th:replace="fragments/common/footer :: footerFragment"></th:block>
+        </div>
+
+        <th:block th:replace="fragments/common/script :: scriptFragment"></th:block>
+
+        <script type="text/javascript" src="/js/notice/list.js"></script>
+    </div>
+    </body>
+</html>

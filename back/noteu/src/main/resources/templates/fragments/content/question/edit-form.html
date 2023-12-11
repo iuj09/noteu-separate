@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-mode="detached" data-topbar-color="dark" data-menu-color="light" data-sidenav-user="true"
+      xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="questionEditForm">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Noteu</a></li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Apps</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/subjects/{subjectId}/questions(subjectId = ${subjectId})}">Question Post</a></li>
+                        <li class="breadcrumb-item active">Edit Question Post</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Edit Question Post</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <input type="hidden" id="subjectId" th:value="${subjectId}">
+                    <input type="hidden" id="questionPostId" th:value="${questionPost.questionPostId}">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" id="title" class="form-control" placeholder="Enter title" th:value="${questionPost.questionPostTitle}">
+                    </div>
+
+                    <div class="tab-content mb-3">
+                        <div class="tab-pane show active" id="simplemde-preview">
+                            <textarea id="content" th:text="${questionPost.questionPostContent}"></textarea>
+                        </div> <!-- end preview-->
+                    </div> <!-- end tab-content-->
+                    <div>
+                        <button type="button" class="btn btn-primary" id="submitBtn">Edit</button>
+                        <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                    </div>
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+        </div> <!-- end col-->
+    </div>
+    <!-- end row -->
+</th:block>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-mode="detached" data-topbar-color="dark" data-menu-color="light" data-sidenav-user="true"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<th:block th:fragment="accountFragment">
+    <!-- Start Content-->
+    <div class="container-fluid">
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box">
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Noteu</a></li>
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Apps</a></li>
+                            <li class="breadcrumb-item active">Profile</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title">Profile</h4>
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-xl-4 col-lg-5">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <a th:href="@{|/members/profile/${member.id}|}">
+                            <img th:src="${member.profile}" class="rounded-circle avatar-lg img-thumbnail" alt="profile-image">
+                        </a>
+
+                        <h4 class="mb-0 mt-2" th:text="${member.memberName}"></h4>
+                        <p class="text-muted font-14" sec:authorize="hasRole('ROLE_ADMIN')">admin</p>
+                        <p class="text-muted font-14" sec:authorize="hasRole('ROLE_TEACHER')">teacher</p>
+                        <p class="text-muted font-14" sec:authorize="hasRole('ROLE_STUDENT')">student</p>
+
+                        <!--<button type="button" class="btn btn-success btn-sm mb-2">Follow</button>-->
+                        <button type="button" class="btn btn-success btn-sm mb-2" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="bottom" data-bs-content="Not Available Yet">Message</button>
+
+                        <div class="text-start mt-3">
+                            <h4 class="font-13 text-uppercase">About Me :</h4>
+                            <p th:if="${member.introduction == null}">소개 글이 없습니다.</p>
+                            <p class="text-muted font-13 mb-3" th:text="${member.introduction}"></p>
+                            <p class="text-muted mb-2 font-13"><strong>Name :</strong> <span class="ms-2"
+                                                                                             th:text="${member.memberName}"></span>
+                            </p>
+
+                            <p class="text-muted mb-2 font-13"><strong>Email :</strong> <span class="ms-2"
+                                                                                              th:text="${member.email}">user@email.domain</span>
+                            </p>
+
+                            <p class="text-muted mb-2 font-13"><strong>Mobile :</strong><span class="ms-2"
+                                                                                              th:text="${member.tel}">010-1234-1234</span>
+                            </p>
+                        </div>
+
+                        <ul class="social-list list-inline mt-3 mb-0">
+                            <li class="list-inline-item">
+                                <a href="javascript: void(0);" class="social-list-item border-primary text-primary" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="bottom" data-bs-content="Coming Soon"><i
+                                        class="mdi mdi-facebook"></i></a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="javascript: void(0);" class="social-list-item border-danger text-danger" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="bottom" data-bs-content="Coming Soon"><i
+                                        class="mdi mdi-google"></i></a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="javascript: void(0);" class="social-list-item border-info text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="bottom" data-bs-content="Coming Soon"><i
+                                        class="mdi mdi-twitter"></i></a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="javascript: void(0);" class="social-list-item border-secondary text-secondary" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="bottom" data-bs-content="Coming Soon"><i
+                                        class="mdi mdi-github"></i></a>
+                            </li>
+                        </ul>
+                    </div> <!-- end card-body -->
+                </div> <!-- end card -->
+                <!-- 추후 대화방 추가 -->
+            </div>
+
+            <th:block th:if="${member.id != null and #authentication.principal.username == member.username}">
+            <div class="col-xl-8 col-lg-7">
+                <div class="card">
+                    <div class="card-body">
+                        <ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
+                            <li class="nav-item">
+                                <a href="#subject" data-bs-toggle="tab" aria-expanded="false"
+                                   class="nav-link rounded-0 active">
+                                    Subject
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#post" data-bs-toggle="tab" aria-expanded="true"
+                                   class="nav-link rounded-0">
+                                    Recent Post
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#settings" data-bs-toggle="tab" aria-expanded="false"
+                                   class="nav-link rounded-0">
+                                    Settings
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active show" id="subject">
+
+                                <h5 class="text-uppercase"><i class="mdi mdi-cards-variant me-1"></i>
+                                    My Subject</h5>
+
+                                <div class="timeline-alt pt-2 pb-0">
+                                    <h5 class="mt-1 mb-2 text-center" th:if="${#lists.isEmpty(subjectInfoList)}">
+                                        가입한 과목이 없습니다.
+                                    </h5>
+                                    <div th:each="subjectInfo : ${subjectInfoList}" class="card ribbon-box">
+                                        <div class="card-body">
+                                            <div class="ribbon ribbon-warning float-end d-flex align-content-center">
+                                                <i class="mdi mdi-bulletin-board me-1"></i>
+                                                <span th:text="${subjectInfo.teacherName}"></span>
+                                            </div>
+                                            <h5 class="text-dark float-start fs-4 mt-0" th:text="${subjectInfo.subjectName}"></h5>
+                                            <div class="ribbon-content">
+                                                <span class="badge bg-light text-dark ms-auto" th:text="'Joined At : ' + ${#temporals.format(subjectInfo.joinedAt, 'yyyy-MM-dd')}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end timeline -->
+
+                                <!-- 추후 과제 목록 추가 -->
+
+                            </div> <!-- end tab-pane -->
+                            <!-- end about me section content -->
+
+                            <div class="tab-pane" id="post">
+                                <h5 class="text-uppercase mb-3"><i class="mdi mdi-cards-variant me-1"></i>
+                                    My Question</h5>
+                                <h5 class="mt-1 mb-2 text-center" th:if="${#lists.isEmpty(resentQuestionList)}">
+                                    작성한 질문 게시글이 없습니다.
+                                </h5>
+                                <!-- Story Box-->
+                                <div class="border border-light rounded p-2 mb-3" th:each="recentQuestion : ${resentQuestionList}">
+                                    <div class="d-flex">
+                                        <div class="d-flex gap-1">
+                                            <h4><span class="badge badge-info-lighten" th:text="${recentQuestion.subjectName}">Secondary</span></h4>
+                                            <h4 class="m-1 mt-2 mb-0" th:text="${recentQuestion.questionPostTitle}">Jeremy Tomlinson</h4>
+                                        </div>
+                                        <div class="ms-auto">
+                                            <span class="badge bg-light text-dark mt-2 mb-1 mr-1"><small th:text="${#temporals.format(recentQuestion.createdAt, 'yyyy-MM-dd HH:mm')}"></small></span>
+                                        </div>
+                                    </div>
+                                    <hr class="mt-0">
+                                    <p class="m-1" th:utext="${recentQuestion.questionPostContent}"></p>
+                                    <hr class="border border-1">
+                                    <div class="mt-2 mb-0">
+                                        <a th:href="@{|/subjects/${recentQuestion.subjectId}/questions/${recentQuestion.questionId}|}" class="btn btn-sm btn-link text-muted"><i
+                                                class="mdi mdi-comment-text-multiple"></i>&ensp;Comment&ensp;<span class="badge badge-danger-lighten" th:text="${recentQuestion.commentCount}" th:if="${recentQuestion.commentCount != 0}"></span>
+                                        </a>
+                                        <a th:href="@{|/subjects/${recentQuestion.subjectId}/questions/${recentQuestion.questionId}|}" class="btn btn-sm btn-link text-muted"><i
+                                                class="mdi mdi-arrow-right-bottom"></i> Read More</a>
+<!--                                        <a href="javascript: void(0);" class="btn btn-sm btn-link text-muted"><i-->
+<!--                                                class="mdi mdi-share-variant"></i> Share</a>-->
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end timeline content-->
+
+                            <div class="tab-pane" id="settings">
+                                <form th:action="@{|/members/account/${member.id}|}" method="post" id="f">
+                                    <h5 class="mb-3 text-uppercase bg-light p-2"><i
+                                            class="mdi mdi-account-circle me-1"></i>Information</h5>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="mb-3">
+                                                <label for="introduction" class="form-label">About Me</label>
+                                                <textarea id="introduction" name="introduction" class="form-control"
+                                                          rows="4" placeholder="소개 글을 입력해보세요!"
+                                                          th:text="${member.introduction}"></textarea>
+                                            </div>
+                                        </div> <!-- end col -->
+                                    </div> <!-- end row -->
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Name</label>
+                                        <input class="form-control" type="text" id="name" name="memberName" th:value="${member.memberName}" placeholder="Enter your name" onfocusout="nameCheck()">
+                                        <p class="invalid-feedback ms-1 mb-0" id="name_msg"></p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email address</label>
+                                        <input class="form-control" type="email" id="email" name="email" th:value="${member.email}"  placeholder="Enter your email" onfocusout="emailCheck()">
+                                        <p class="invalid-feedback ms-1 mb-0" id="email_invalid_msg"></p>
+                                        <p class="valid-feedback ms-1 mb-0" id="email_valid_msg"></p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="tel" class="form-label">Mobile</label>
+                                        <input class="form-control" type="text" id="tel" name="tel" th:value="${member.tel}" data-toggle="input-mask" data-mask-format="(000) 000-0000" placeholder="Enter your mobile" onfocusout="telCheck()">
+                                        <p class="invalid-feedback ms-1 mb-0" id="tel_invalid_msg"></p>
+                                        <p class="valid-feedback ms-1 mb-0" id="tel_valid_msg"></p>
+                                    </div>
+
+                                    <h5 class="mb-3 text-uppercase bg-light p-2"><i class="mdi mdi-earth me-1"></i>
+                                        Social</h5>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="social-fb" class="form-label">Facebook</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i
+                                                            class="mdi mdi-facebook"></i></span>
+                                                    <input type="text" class="form-control" id="social-fb"
+                                                           placeholder="Url" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="social-tw" class="form-label">Twitter</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i
+                                                            class="mdi mdi-twitter"></i></span>
+                                                    <input type="text" class="form-control" id="social-tw"
+                                                           placeholder="Username" disabled>
+                                                </div>
+                                            </div>
+                                        </div> <!-- end col -->
+                                    </div> <!-- end row -->
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="social-insta" class="form-label">Instagram</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i
+                                                            class="mdi mdi-instagram"></i></span>
+                                                    <input type="text" class="form-control" id="social-insta"
+                                                           placeholder="Url" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="social-lin" class="form-label">Linkedin</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i
+                                                            class="mdi mdi-linkedin"></i></span>
+                                                    <input type="text" class="form-control" id="social-lin"
+                                                           placeholder="Url" disabled>
+                                                </div>
+                                            </div>
+                                        </div> <!-- end col -->
+                                    </div> <!-- end row -->
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="social-sky" class="form-label">Skype</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i class="mdi mdi-skype"></i></span>
+                                                    <input type="text" class="form-control" id="social-sky"
+                                                           placeholder="@username" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="1">
+                                                <label for="social-gh" class="form-label">Github</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i class="mdi mdi-github"></i></span>
+                                                    <input type="text" class="form-control" id="social-gh"
+                                                           placeholder="Username" disabled>
+                                                </div>
+                                            </div>
+                                        </div> <!-- end col -->
+                                    </div> <!-- end row -->
+                                    <div class="button-container d-flex justify-content-between">
+                                        <div>
+                                            <input type="hidden" id="delete_member" th:value="${member.id}">
+                                            <button type="button" class="btn btn-danger mt-2" onclick="del()"><i class="mdi mdi-account-remove"></i> Unregister</button>
+                                        </div>
+                                        <div>
+                                            <button type="submit" class="btn btn-success mt-2"><i class="mdi mdi-content-save" onclick="edit()"></i> Save</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- end settings content-->
+                        </div> <!-- end tab-content -->
+                    </div> <!-- end card body -->
+                </div> <!-- end card -->
+            </div> <!-- end col -->
+            </th:block>
+        </div>
+        <!-- end row-->
+    </div>
+</th:block>
+</html>

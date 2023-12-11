@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Reference Article Edit-Form</title>
+    <th:block th:replace="fragments/common/header :: headerFragment"></th:block>
+    <link href="/css/reference/file-thumbnail.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <th:block th:replace="fragments/common/topbar :: topbarFragment"></th:block>
+      <th:block th:replace="fragments/common/sidebar2 :: sidebar2Fragment"></th:block>
+      <div class="content-page">
+        <div class="content">
+          <th:block th:replace="fragments/content/reference/edit-form :: referenceEditForm"></th:block>
+        </div>
+        <th:block th:replace="fragments/common/footer :: footerFragment"></th:block>
+      </div>
+    </div>
+  </body>
+  <th:block th:replace="fragments/common/script :: scriptFragment"></th:block>
+
+  <!-- edit-submit.js -->
+  <script src="/js/reference/edit-submit.js"></script>
+</html>

@@ -1,0 +1,33 @@
+### 로그인 사용자가(1번) 2번 유저와 채팅 시작 (방생성)
+POST http://localhost:8081/subjects/1/chats/rooms
+Content-Type: application/json
+Authorization: Bearer_eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9XSwidXNlcklkIjoxLCJ1c2VybmFtZSI6ImFhYWEiLCJpYXQiOjE3MDAyMDI3NTksImV4cCI6MTcwMDIxMzU1OX0.dv3F25Ma3eGgcl3BMA1-zXryOqvUbgXKrGJq42eUbGI
+
+{
+  "friendId": 2,
+  "loginMemberId": 1
+}
+
+### 로그인 사용자가(1번) 3번 유저와 채팅 시작 (방생성)
+POST http://localhost:8081/subjects/1/chats/rooms
+Content-Type: application/json
+Authorization: Bearer_eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9XSwidXNlcklkIjoxLCJ1c2VybmFtZSI6ImFhYWEiLCJpYXQiOjE3MDAyMDI3NTksImV4cCI6MTcwMDIxMzU1OX0.dv3F25Ma3eGgcl3BMA1-zXryOqvUbgXKrGJq42eUbGI
+
+{
+  "friendId": 3,
+  "loginMemberId": 1
+}
+
+### 로그인 사용자가(1번) 4번 유저와 채팅 시작 (방생성)
+POST http://localhost:8081/subjects/1/chats/rooms
+Content-Type: application/json
+Authorization: Bearer_eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9XSwidXNlcklkIjoxLCJ1c2VybmFtZSI6ImFhYWEiLCJpYXQiOjE3MDAyMDI3NTksImV4cCI6MTcwMDIxMzU1OX0.dv3F25Ma3eGgcl3BMA1-zXryOqvUbgXKrGJq42eUbGI
+
+{
+  "friendId": 4,
+  "loginMemberId": 1
+}
+
+### 로그인 사용자 기준 1과목에서 참여중인 채팅방 보기
+GET http://localhost:8081/subjects/1/chats/rooms?loginMemberId=1
+Authorization: Bearer_eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9XSwidXNlcklkIjoxLCJ1c2VybmFtZSI6ImFhYWEiLCJpYXQiOjE3MDAyMDI3NTksImV4cCI6MTcwMDIxMzU1OX0.dv3F25Ma3eGgcl3BMA1-zXryOqvUbgXKrGJq42eUbGI

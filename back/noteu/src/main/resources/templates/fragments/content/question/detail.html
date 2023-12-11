@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-mode="detached" data-topbar-color="dark" data-menu-color="light" data-sidenav-user="true"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<th:block th:fragment="questionDetail">
+  <!-- Start Content-->
+  <div class="container-fluid">
+
+    <!-- start page title -->
+    <div class="row">
+      <div class="col-12">
+        <div class="page-title-box">
+          <div class="page-title-right">
+            <ol class="breadcrumb m-0">
+              <li class="breadcrumb-item"><a href="javascript: void(0);">Noteu</a></li>
+              <li class="breadcrumb-item"><a href="javascript: void(0);">Apps</a></li>
+              <li class="breadcrumb-item"><a th:href="@{/subjects/{subjectId}/questions(subjectId = ${subjectId})}">Question Post</a></li>
+              <li class="breadcrumb-item active">Question Post Detail</li>
+            </ol>
+          </div>
+          <h4 class="page-title">Question Post Details</h4>
+        </div>
+      </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+      <div class="col-12">
+        <!-- project card -->
+        <div class="card d-block">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h3 th:text="${questionPost.questionPostTitle}"></h3>
+              <div class="d-flex align-items-center">
+                <input type="hidden" id="modifiedAt" th:value="${questionPost.modifiedAt}">
+                <div class="text-muted me-3 createdAt" id="createdAt" th:text="${questionPost.createdAt}"></div>
+                <div class="dropdown" th:if="${questionPost.memberId != null and #authentication.getPrincipal().getId() == questionPost.memberId}">
+                  <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="ri-more-fill"></i>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-end">
+                    <!-- item-->
+                    <a th:href="@{/subjects/{subjectId}/questions/edit-form/{questionPostId}(subjectId = ${subjectId}, questionPostId = ${questionPost.questionPostId})}" class="dropdown-item"><i class="mdi mdi-pencil me-1"></i>Edit</a>
+                    <!-- item-->
+                    <a id="deleteBtn" class="dropdown-item"><i class="mdi mdi-delete me-1"></i>Delete</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- project title-->
+            <div class="d-flex">
+              <input type="hidden" class="memberId" th:value="${questionPost.memberId}">
+              <img th:src="${questionPost.profile}" class="rounded-circle me-2 userProfile" height="32" width="32">
+              <div class="w-100">
+                <h5 th:text="${questionPost.memberName}"></h5>
+              </div>
+            </div>
+            <hr>
+            <div th:id="contentPreview" th:utext="${questionPost.questionPostContent}"></div>
+
+
+          </div> <!-- end card-body-->
+
+        </div> <!-- end card-->
+
+        <div class="card">
+          <div class="card-header">
+            <input type="hidden" id="subjectId" th:value="${subjectId}">
+            <input type="hidden" id="questionPostId" th:value="${questionPost.questionPostId}">
+            <h5 class="card-title mb-1">Comments (<a th:text="${questionPost.commentCount}"></a>)</h5>
+          </div>
+          <div class="card-body">
+            <div th:each="c : ${questionPost.comment}" class="d-flex">
+              <input type="hidden" class="memberId" th:value="${c.memberId}">
+              <img class="me-2 rounded-circle userProfile" th:src="${c.profile}" height="32" width="32">
+              <div class="w-100">
+                <div class="d-flex justify-content-between">
+                  <input type="hidden" class="memberRole">
+                  <th:block th:each="role : ${c.memberRole}">
+                    <input type="hidden" th:value="${role}" th:attr="class='memberRole'">
+                  </th:block>
+                  <h5 class="mt-0 answerMember">
+                    <span th:text="${c.memberName}"></span>
+                  </h5>
+                  <div class="d-flex justify-content-between">
+                    <input type="hidden" class="questionPostCommentId" th:value="${c.questionCommentId}">
+                    <div class="text-muted me-3 createdAt" th:text="${c.createdAt}"></div>
+                    <div class="text-end deleteCommentBtn" style="cursor: pointer;" th:if="${c.memberId != null and #authentication.getPrincipal().getId() == c.memberId}">
+                      <i class="ri-close-fill"></i>
+                    </div>
+                  </div>
+                </div>
+                <pre th:text="${c.questionCommentContent}"></pre>
+              </div>
+            </div>
+            <div class="border rounded mt-4">
+              <textarea id="questionComment" rows="3" class="form-control resize-none" placeholder="Your comment..."></textarea>
+                <div class="text-end">
+                  <div class="btn-group p-2">
+                    <button id="submitBtn" type="button" class="btn btn-success btn-sm">Submit</button>
+                  </div>
+                </div>
+            </div>
+          </div> <!-- end card-body-->
+        </div>
+        <!-- end card-->
+      </div> <!-- end col -->
+    </div>
+    <!-- end row -->
+
+  </div> <!-- container -->
+</th:block>
+</html>

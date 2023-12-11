@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-mode="detached" data-topbar-color="dark" data-menu-color="light" data-sidenav-user="true"
+        xmlns:th="http://www.thymeleaf.org">
+    <th:block th:fragment="inputCodeContentFragment">
+        <div class="content">
+
+            <!-- Start Content-->
+            <div class="container-fluid">
+
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box">
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a href="/">Noteu</a></li>
+                                    <li class="breadcrumb-item"><a href="#">Apps</a></li>
+                                    <li class="breadcrumb-item active">Join Subject</li>
+                                </ol>
+                            </div>
+                            <h4 class="page-title">Input Subject Code</h4>
+                        </div>
+                    </div>
+                </div>
+                <!-- end page title -->
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <div class="row">
+
+                                    <div class="col-10">
+                                        <div class="mb-3 input-group">
+                                            <input type="text" id="subjectCode" name="subjectCode" class="form-control">
+                                            <input id="btn_submit" class="input-group-text btn btn-primary" type="button" value="입력">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end row -->
+
+                            </div>
+                            <!-- end card-body -->
+                        </div>
+                        <!-- end card-->
+                    </div>
+                    <!-- end col-->
+                </div>
+                <!-- end row-->
+                
+            </div>
+            <!-- container -->
+
+        </div>
+        <!-- content -->
+    </th:block>
+</html>

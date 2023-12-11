@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-mode="detached" data-topbar-color="dark" data-menu-color="light" data-sidenav-user="true" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <th:block th:replace="fragments/common/header :: headerFragment"></th:block>
+
+</head>
+<body>
+<div class="wrapper">
+    <th:block th:replace="fragments/common/topbar :: topbarFragment"></th:block>
+    <th:block th:replace="fragments/common/sidebar1 :: sidebar1Fragment"></th:block>
+    <div class="content-page">
+        <th:block th:replace="fragments/content/member/account :: accountFragment"></th:block>
+        <th:block th:replace="fragments/common/footer :: footerFragment"></th:block>
+    </div>
+</div>
+</body>
+<th:block th:replace="fragments/common/script :: scriptFragment"></th:block>
+
+<script type="text/javascript" src="/js/member/account.js"></script>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-mode="detached" data-topbar-color="dark" data-menu-color="light" data-sidenav-user="true"
+        xmlns:th="http://www.thymeleaf.org">
+    <th:block th:fragment="editContentFragment">
+        <div class="content">
+
+            <!-- Start Content-->
+            <div class="container-fluid">
+
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box">
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a href="/subjects">Noteu</a></li>
+                                    <li class="breadcrumb-item"><a href="#">Apps</a></li>
+                                    <li class="breadcrumb-item"><a href="'/subjects/'+${subjectId}+'/tasks'">Task</a></li>
+                                    <li class="breadcrumb-item active">Edit Task</li>
+                                </ol>
+                            </div>
+                            <h4 class="page-title">Edit Task</h4>
+                        </div>
+                    </div>
+                </div>
+                <!-- end page title -->
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <input type="hidden" id="taskId" name="taskId" th:value="${taskId}">
+                                <input type="hidden" id="subjectId" name="subjectId" th:value="${subjectId}">
+
+                                <div class="row">
+                                    <div class="col-10">
+                                        <div class="mb-3">
+                                            <label for="title" class="form-label">Title</label>
+                                            <input type="text" id="taskTitle" name="taskTitle" class="form-control" th:value="${task.taskTitle}">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="content" class="form-label">Content</label>
+                                            <textarea class="form-control" id="taskContent" name="taskContent" rows="5" th:text="${task.taskContent}"></textarea>
+                                        </div>
+
+                                        <!-- Date View -->
+                                        <div class="mb-3 position-relative" id="deadLineDiv">
+                                            <label class="form-label">Dead Line</label>
+                                            <input id="deadLineInput" name="deadLine" type="text" class="form-control" th:value="${task.deadLine}" data-provide="datepicker" data-date-container="#deadLineDiv" data-date-format="d-M-yyyy" data-date-autoclose="true">
+                                        </div>   
+
+                                        <div class="mb-3">
+                                            <input type="button" class="btn btn-primary" id="btn_edit" value="Edit">
+                                        </div>
+
+                                    </div> <!-- end col-->
+                                </div>
+                                <!-- end row -->
+
+                            </div> <!-- end card-body -->
+                        </div> <!-- end card-->
+                    </div> <!-- end col-->
+                </div>
+                <!-- end row-->
+                
+            </div> <!-- container -->
+
+        </div> <!-- content -->
+        <!-- content -->
+    </th:block>
+</html>

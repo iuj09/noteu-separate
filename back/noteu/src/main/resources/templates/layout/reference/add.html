@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-mode="detached" data-topbar-color="dark" data-menu-color="light" data-sidenav-user="true" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+  <head>
+    <meta charset="UTF-8">
+    <title>Reference Article Add-Form</title>
+    <th:block th:replace="fragments/common/header :: headerFragment"></th:block>
+    <link href="/css/reference/file-thumbnail.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <th:block th:replace="fragments/common/topbar :: topbarFragment"></th:block>
+      <th:block th:replace="fragments/common/sidebar2 :: sidebar2Fragment"></th:block>
+      <div class="content-page">
+        <div class="content">
+          <th:block th:replace="fragments/content/reference/add-form :: referenceAddForm"></th:block>
+        </div>
+        <th:block th:replace="fragments/common/footer :: footerFragment"></th:block>
+      </div>
+    </div>
+  </body>
+  <th:block th:replace="fragments/common/script :: scriptFragment"></th:block>
+
+  <!-- add-submit.js -->
+  <script src="/js/reference/add-submit.js"></script>
+</html>

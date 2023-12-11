@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-mode="detached" data-topbar-color="dark" data-menu-color="light" data-sidenav-user="true"
+      xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layo₩ut">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <th:block th:replace="fragments/common/header :: headerFragment"></th:block>
+</head>
+<body class="authentication-bg">
+    <div class="content-page m-auto">
+        <th:block th:replace="fragments/content/member/logout :: logoutFragment"></th:block>
+        <footer class="footer footer-alt">
+            2018 - <script>document.write(new Date().getFullYear())</script> © Hyper - Coderthemes.com
+        </footer>
+    </div>
+</body>
+<th:block th:replace="fragments/common/script :: scriptFragment"></th:block>
+</html>

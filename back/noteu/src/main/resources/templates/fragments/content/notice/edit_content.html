@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-mode="detached" data-topbar-color="dark" data-menu-color="light" data-sidenav-user="true"
+        xmlns:th="http://www.thymeleaf.org">
+    <th:block th:fragment="editContentFragment">
+        <div class="content">
+
+            <!-- Start Content-->
+            <div class="container-fluid">
+
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box">
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a href="/subjects">Noteu</a></li>
+                                    <li class="breadcrumb-item"><a href="#">Apps</a></li>
+                                    <li class="breadcrumb-item"><a href="'/subjects/'+${subjectId}+'/notices'">Notice</a></li>
+                                    <li class="breadcrumb-item active">Create Notice</li>
+                                </ol>
+                            </div>
+                            <h4 class="page-title">Edit Notice</h4>
+                        </div>
+                    </div>
+                </div>
+                <!-- end page title -->
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <input type="hidden" id="noticeId" name="noticeId" th:value="${notice.id}">
+                                <input type="hidden" id="subjectId" name="subjectId" th:value="${subjectId}">
+
+                                <div class="row">
+                                    <div class="col-10">
+                                        <div class="mb-3">
+                                            <label for="title" class="form-label">Title</label>
+                                            <input type="text" id="noticeTitle" name="noticeTitle" class="form-control" th:value="${notice.noticeTitle}">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="content" class="form-label">Content</label>
+                                            <textarea class="form-control" id="noticeContent" name="noticeContent" rows="5" th:text="${notice.noticeContent}"></textarea>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <input type="button" class="btn btn-primary" id="btn_edit" value="Edit">
+                                        </div>
+
+                                    </div> <!-- end col-->
+                                </div>
+                                <!-- end row -->
+
+                            </div> <!-- end card-body -->
+                        </div> <!-- end card-->
+                    </div> <!-- end col-->
+                </div>
+                <!-- end row-->
+                
+            </div> <!-- container -->
+
+        </div> <!-- content -->
+        <!-- content -->
+    </th:block>
+</html>

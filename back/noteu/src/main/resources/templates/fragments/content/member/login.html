@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-mode="detached" data-topbar-color="dark" data-menu-color="light" data-sidenav-user="true">
+    <th:block th:fragment="loginFragment">
+        <div class="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xxl-4 col-lg-5">
+                        <div class="card">
+
+                            <!-- Logo -->
+                            <div class="card-header py-4 text-center bg-primary">
+                                <a href="/">
+                                    <span><img src="/assets/images/noteuLogo.png" alt="logo" height="22"></span>
+                                </a>
+                            </div>
+
+                            <div class="card-body p-4">
+                                
+                                <div class="text-center w-75 m-auto">
+                                    <h4 class="text-dark-50 text-center pb-0 fw-bold">Login</h4>
+                                    <p class="text-muted mb-4">Enter your ID and password to access NOTEU service.</p>
+                                </div>
+
+                                <form th:action="@{/auth/login}" method="post">
+                                    <div th:if="${param.error}">
+                                        <div class="alert alert-info alert-dismissible fade show text-center" role="alert">
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                            <strong>ID</strong> 또는 <strong>Password</strong>를 확인해 주세요.
+                                        </div>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="username" name="username" placeholder="Enter your ID">
+                                        <label for="username">ID</label>
+                                    </div>
+
+                                    <div class="form-floating mb-3">
+<!--                                        <a href="pages-recoverpw.html" class="text-muted float-end"><small>Forgot your password?</small></a>-->
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password">
+                                        <label for="password">Password</label>
+                                    </div>
+
+<!--                                    <div class="mb-3 mb-3">-->
+<!--                                        <div class="form-check">-->
+<!--                                            <input type="checkbox" class="form-check-input" id="checkbox-signin" checked>-->
+<!--                                            <label class="form-check-label" for="checkbox-signin">Remember me</label>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+
+                                    <div class="mb-3 mb-0 text-center">
+                                        <button class="btn btn-primary" id="login_btn" type="submit"> Log In </button>
+                                    </div>
+                                </form>
+                                <ul class="social-list list-inline mt-3 mb-0 text-center d-flex align-items-center justify-content-center gap-2">
+                                    <li class="list-inline-item">
+                                        <a href="/oauth2/authorization/kakao" class="social-list-item border-warning text-black font-20">
+                                            <i class="ri-kakao-talk-fill"></i>
+                                        </a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <a href="/oauth2/authorization/naver" class="social-list-item border-success text-success font-17 fw-bold">
+                                            N
+                                        </a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <a href="/oauth2/authorization/google" class="social-list-item border-secondary text-secondary">
+                                            <i class="uil uil-google"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div> <!-- end card-body -->
+                        </div>
+                        <!-- end card -->
+
+                        <div class="row mt-3">
+                            <div class="col-12 text-center">
+                                <p class="text-muted">Don't have an account? <a href="/auth/sign-up" class="text-muted ms-1"><b>Sign Up</b></a></p>
+                            </div> <!-- end col -->
+                        </div>
+                        <!-- end row -->
+
+                    </div> <!-- end col -->
+                </div>
+                <!-- end row -->
+            </div>
+            <!-- end container -->
+        </div>
+        <!-- end page -->
+    </th:block>
+</html>

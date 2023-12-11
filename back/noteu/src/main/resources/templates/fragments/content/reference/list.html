@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-mode="detached" data-topbar-color="dark" data-menu-color="light" data-sidenav-user="true"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <th:block th:fragment="references">
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box">
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Noteu</a></li>
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Apps</a></li>
+                            <li class="breadcrumb-item">ReferenceRoom</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title">Reference Room List</h4>
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <h4 class="header-title">자료실</h4>
+                                <p class="text-muted font-14">
+                                    수업에 필요한 자료 파일들을 다운로드 받을 수 있는 공간입니다.
+                                </p>
+                            </div>
+                            <div class="col-6 app-search dropdown d-none d-lg-block">
+                                <form id="search" th:action="@{/subjects/{subjectId}/references/search(subjectId = ${subjectId})}" method="POST">
+                                    <div class="input-group">
+                                        <input type="search" class="form-control dropdown-toggle" id="searchWord" name="searchWord" placeholder="Search...">
+                                        <button class="input-group-text btn btn-primary" type="submit">
+                                            <i class="mdi mdi-magnify search-icon"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- { Role : TEACHER } Only -->
+                        <button type="button" id="addForm" class="btn btn-success rounded-pill" th:onclick="|location.href='@{/subjects/{subjectId}/references/add-form(subjectId = ${subjectId})}'|"
+                                sec:authorize="hasRole('ROLE_TEACHER')">+ Create Reference</button>
+
+                        <div class="tab-content mt-2">
+                            <div class="tab-pane show active" id="buttons-table-preview">
+                                <table id="datatable-buttons" class="table table-hover dt-responsive nowrap w-100">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Title</th>
+                                        <th>Date</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <tr th:each="r:${list}" class="detail">
+                                        <input type="hidden" class="rid" th:value="${r.referenceRoomId}">
+                                        <input type="hidden" class="sid" th:value="${r.subject.id}">
+                                        <td th:text="${r.referenceRoomId}"></td>
+                                        <td th:text="${r.referenceRoomTitle}"></td>
+                                        <td class="createdAt" th:text="${r.createdAt}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div th:if="${!list.isEmpty()}">
+                                    <ul class="pagination justify-content-center">
+                                        <li class="page-item" th:classappend="${!list.hasPrevious} ? 'disabled'">
+                                            <a class="page-link"
+                                               th:href="@{|?page=${list.number-1}|}">
+                                                <span>Previous</span>
+                                            </a>
+                                        </li>
+                                        <li th:each="page: ${#numbers.sequence(0, list.totalPages-1)}"
+                                            th:if="${page >= list.number-5 and page <= list.number+5}"
+                                            th:classappend="${page == list.number} ? 'active'"
+                                            class="page-item">
+                                            <a th:text="${page + 1}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                                        </li>
+                                        <li class="page-item" th:classappend="${!list.hasNext} ? 'disabled'">
+                                            <a class="page-link" th:href="@{|?page=${list.number+1}|}">
+                                                <span>Next</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div> <!-- end preview-->
+                        </div> <!-- end tab-content-->
+
+                    </div> <!-- end card body-->
+                </div> <!-- end card -->
+            </div><!-- end col-->
+        </div> <!-- end row-->
+    </th:block>
+</html>

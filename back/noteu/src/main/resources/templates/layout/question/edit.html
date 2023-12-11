@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-mode="detached" data-topbar-color="dark" data-menu-color="light" data-sidenav-user="true" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Question Post Edit-Form</title>
+    <th:block th:replace="fragments/common/header :: headerFragment"></th:block>
+
+    <!-- SimpleMDE css -->
+    <link href="/assets/vendor/simplemde/simplemde.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="wrapper">
+    <th:block th:replace="fragments/common/topbar :: topbarFragment"></th:block>
+    <th:block th:replace="fragments/common/sidebar2 :: sidebar2Fragment"></th:block>
+    <div class="content-page">
+        <div class="content">
+            <th:block th:replace="fragments/content/question/edit-form :: questionEditForm"></th:block>
+        </div>
+        <th:block th:replace="fragments/common/footer :: footerFragment"></th:block>
+    </div>
+</div>
+</body>
+<th:block th:replace="fragments/common/script :: scriptFragment"></th:block>
+
+<!-- Simplemde Editor js -->
+<script src="/assets/vendor/simplemde/simplemde.min.js"></script>
+
+<!-- Simplemde Demo js -->
+<script src="/assets/js/pages/demo.simplemde.js"></script>
+
+<!-- edit-submit.js -->
+<script src="/js/question/edit-submit.js"></script>
+</html>

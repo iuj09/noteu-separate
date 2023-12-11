@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-mode="detached" data-topbar-color="dark" data-menu-color="light" data-sidenav-user="true">
+<th:block th:fragment="changeProfileFragment">
+        <div class="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xxl-4 col-lg-5">
+                        <div class="card">
+                            <!-- Logo -->
+                            <div class="card-header py-4 text-center bg-primary">
+                                <a href="/">
+                                    <span><img src="/assets/images/noteuLogo.png" alt="logo" height="22"></span>
+                                </a>
+                            </div>
+
+                            <div class="card-body p-4">
+                                <div class="text-center w-75 m-auto">
+                                    <img th:src="${member.profile}" height="64" alt="user-image" class="rounded-circle avatar-lg img-thumbnail">
+                                    <h4 class="text-dark-50 text-center mt-3 fw-bold" th:text="${member.memberName}"></h4>
+                                    <p class="text-muted mb-4">프로필 사진을 변경해보세요 !</p>
+                                </div>
+
+                                <form th:action="@{|/members/profile/${member.id}|}" method="post" enctype="multipart/form-data">
+                                    <div class="mb-3">
+                                        <label for="profile" class="form-label">Profile</label>
+                                        <input class="form-control" type="file" id="profile" name="profileFile" required>
+                                    </div>
+                                    <div class="mb-0 text-center">
+                                        <button class="btn btn-primary" type="submit">Save</button>
+                                    </div>
+                                </form>
+                            </div> <!-- end card-body-->
+                        </div>
+                        <!-- end card-->
+
+                        <div class="row mt-3">
+                            <div class="col-12 text-center">
+                                <p class="text-muted">return <a th:href="@{|/members/account/${#authentication.principal.id}|}" class="text-muted ms-1"><b>>My Account</b></a></p>
+                            </div> <!-- end col -->
+                        </div>
+                        <!-- end row -->
+
+                    </div> <!-- end col -->
+                </div>
+                <!-- end row -->
+            </div>
+            <!-- end container -->
+        </div>
+        <!-- end page -->
+</th:block>
+</html>
