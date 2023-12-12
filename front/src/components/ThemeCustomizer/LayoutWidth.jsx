@@ -19,7 +19,7 @@ const LayoutWidth = ({
               id="layout-mode-fluid"
               value={layoutConstants.fluid}
               onChange={(e) => handleChangeLayoutWidth(e.target.value)}
-              checked={layoutWidth === layoutConstants.fluid}
+              checked={layoutWidth === layoutConstants.detached}
             />
             <Form.Check.Label
               className="p-0 avatar-md w-100"
