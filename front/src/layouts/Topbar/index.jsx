@@ -1,19 +1,16 @@
 import { Link } from 'react-router-dom';
-import { notifications, profileMenus, searchOptions } from './data';
+import { notifications, profileMenus } from './data';
 import LanguageDropdown from './LanguageDropdown';
 import NotificationDropdown from './NotificationDropdown';
 import ProfileDropdown from './ProfileDropdown';
-import SearchDropdown from './SearchDropdown';
-import TopbarSearch from './TopbarSearch';
-import AppsDropdown from './AppsDropdown';
 import MaximizeScreen from './MaximizeScreen';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 // assets
 import userImage from '@/assets/images/users/avatar-1.jpg';
-import logo from '@/assets/images/logo.png';
+import logo from '@/assets/images/noteuLogo.png';
 import logoDark from '@/assets/images/logo-dark.png';
-import logoSm from '@/assets/images/logo-sm.png';
+import logoSm from '@/assets/images/noteuLogo.png';
 import logoDarkSm from '@/assets/images/logo-dark-sm.png';
 import { ThemeSettings, useThemeContext } from '@/common';
 import useThemeCustomizer from '@/components/ThemeCustomizer/useThemeCustomizer';
@@ -120,22 +117,22 @@ const Topbar = ({ topbarDark, toggleMenu, navOpen }) => {
 						</div>
 					</button>
 
-					<TopbarSearch options={searchOptions} />
+					{/* <TopbarSearch options={searchOptions} /> */}
 				</div>
 
 				<ul className="topbar-menu d-flex align-items-center gap-3">
-					<li className="dropdown d-lg-none">
+					{/* <li className="dropdown d-lg-none">
 						<SearchDropdown />
 					</li>
 					<li className="dropdown">
 						<LanguageDropdown />
-					</li>
+					</li> */}
 					<li className="dropdown notification-list">
 						<NotificationDropdown notifications={notifications} />
 					</li>
-					<li className="dropdown d-none d-sm-inline-block">
+					{/* <li className="dropdown d-none d-sm-inline-block">
 						<AppsDropdown />
-					</li>
+					</li> */}
 					<li className="d-none d-sm-inline-block">
 						<button
 							className="nav-link dropdown-toggle end-bar-toggle arrow-none btn btn-link shadow-none"

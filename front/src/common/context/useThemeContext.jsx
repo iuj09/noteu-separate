@@ -43,18 +43,18 @@ export function ThemeProvider({ children }) {
   const [settings, setSettings] = useState({
     layout: {
       type: ThemeSettings.layout.type.vertical,
-      mode: ThemeSettings.layout.mode.fluid,
+      mode: ThemeSettings.layout.mode.detached,
       menuPosition: ThemeSettings.layout.menuPosition.fixed,
     },
     theme: ThemeSettings.theme.light,
     topbar: {
-      theme: ThemeSettings.topbar.theme.light,
+      theme: ThemeSettings.topbar.theme.dark,
       logo: ThemeSettings.topbar.logo.show,
     },
     sidebar: {
-      theme: ThemeSettings.sidebar.theme.dark,
+      theme: ThemeSettings.sidebar.theme.light,
       size: ThemeSettings.sidebar.size.default,
-      user: ThemeSettings.sidebar.user.hidden,
+      user: ThemeSettings.sidebar.user.show,
     },
     rightSidebar: ThemeSettings.rightSidebar.hidden,
   });

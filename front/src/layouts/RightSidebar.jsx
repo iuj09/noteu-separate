@@ -40,7 +40,7 @@ const RightSideBar = () => {
 					</SimpleBar>
 				</Offcanvas.Body>
 
-				<div className="offcanvas-footer border-top p-3 text-center">
+				{/* <div className="offcanvas-footer border-top p-3 text-center">
 					<Row>
 						<div className="col-6">
 							<button
@@ -63,7 +63,7 @@ const RightSideBar = () => {
 							</a>
 						</div>
 					</Row>
-				</div>
+				</div> */}
 			</Offcanvas>
 		</>
 	);
