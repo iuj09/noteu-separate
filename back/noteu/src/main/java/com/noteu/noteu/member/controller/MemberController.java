@@ -1,9 +1,6 @@
 package com.noteu.noteu.member.controller;
 
-import com.noteu.noteu.member.dto.MemberDto;
-import com.noteu.noteu.member.dto.MemberEditDto;
-import com.noteu.noteu.member.dto.MemberInfo;
-import com.noteu.noteu.member.dto.MemberPasswordDto;
+import com.noteu.noteu.member.dto.*;
 import com.noteu.noteu.member.entity.Member;
 import com.noteu.noteu.member.entity.Role;
 import com.noteu.noteu.member.service.MemberDetailsService;
@@ -14,6 +11,7 @@ import com.noteu.noteu.subject.service.SubjectMemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -29,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/members")
 public class MemberController {
@@ -40,7 +38,7 @@ public class MemberController {
     private final QuestionPostService questionPostService;
 
     @GetMapping("/account/{id}")
-    public String account(@PathVariable("id") Long memberId, Model model) throws ClassNotFoundException {
+    public ResponseEntity<AccountInfo> getAccount(@PathVariable("id") Long memberId, Model model) {
         // 회원 정보 수정
         Member member = memberDetailsService.getById(memberId);
         List<Role> roleList = new ArrayList<>(member.getRole());
@@ -55,38 +53,38 @@ public class MemberController {
                 .role(roleList)
                 .build();
 
-        model.addAttribute("member", memberDto);
-
         // 과목 목록
         List<SubjectInfoDto> subjectInfoList = subjectMemberService.getSubjectInfoList(memberId);
-        model.addAttribute("subjectInfoList", subjectInfoList);
 
         // 최근 질문글 목록
         List<RecentQuestionDto> recentQuestionList = questionPostService.getRecentQuestionList(memberId);
-        model.addAttribute("resentQuestionList", recentQuestionList);
 
-        return "layout/member/account";
+        AccountInfo accountInfo = AccountInfo.builder()
+                .memberDto(memberDto)
+                .subjectInfoList(subjectInfoList)
+                .recentQuestionList(recentQuestionList)
+                .build();
+
+        return new ResponseEntity<>(accountInfo, HttpStatus.OK);
     }
 
-    @GetMapping("/test")
-    public void qTest() {
-        questionPostService.getRecentQuestionList(3L);
-    }
-
-    @PostMapping("/account/{id}")
-    public String editInformation(@PathVariable("id") Long memberId, @AuthenticationPrincipal MemberInfo memberInfo, MemberEditDto memberEditDto) {
+    @PutMapping("/account/{id}")
+    public ResponseEntity<Void> editInformation(@PathVariable("id") Long memberId, @AuthenticationPrincipal MemberInfo memberInfo, @RequestBody MemberEditDto memberEditDto) {
+        log.info("[check] memberInfo: {}", memberInfo.toString());
         if (!memberId.equals(memberInfo.getId())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
         }
 
         memberDetailsService.updateUser(memberEditDto);
-        return "redirect:/members/account/{id}";
+        return ResponseEntity.noContent()
+                .build();
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable("id") Long memberId, @AuthenticationPrincipal MemberInfo memberInfo) {
+    public ResponseEntity<Void> delete(@PathVariable("id") Long memberId, @AuthenticationPrincipal MemberInfo memberInfo) {
         memberDetailsService.deleteUser(memberId, memberInfo.getUsername());
-        return "redirect:/auth/sign-out";
+        return ResponseEntity.noContent()
+                .build();
     }
 
     @GetMapping("/password/{id}")
@@ -104,16 +102,15 @@ public class MemberController {
         return "redirect:/members/account/" + memberId;
     }
 
-    @ResponseBody
     @PostMapping("/pw-check")
-    public String passwordCheck(@AuthenticationPrincipal MemberInfo memberInfo, MemberPasswordDto memberPasswordDto) {
+    public ResponseEntity<String> passwordCheck(@AuthenticationPrincipal MemberInfo memberInfo, MemberPasswordDto memberPasswordDto) {
         Member member = memberDetailsService.getById(memberInfo.getId());
         String previousPassword = memberPasswordDto.getPreviousPassword();
 
         if (passwordEncoder.matches(previousPassword, member.getPassword())) {
-            return "1";
+            return ResponseEntity.ok("1");
         } else {
-            return "0";
+            return ResponseEntity.ok("0");
         }
     }
 
