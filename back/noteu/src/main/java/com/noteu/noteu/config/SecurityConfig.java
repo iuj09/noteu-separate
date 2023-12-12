@@ -1,6 +1,10 @@
 package com.noteu.noteu.config;
 
-import com.noteu.noteu.member.handler.CustomAuthenticationSuccessHandler;
+import com.noteu.noteu.member.security.config.CustomFilterConfig;
+import com.noteu.noteu.member.security.handler.MemberAccessDeniedHandler;
+import com.noteu.noteu.member.security.handler.MemberAuthenticationEntryPoint;
+import com.noteu.noteu.member.security.handler.MemberAuthenticationFailureHandler;
+import com.noteu.noteu.member.security.utils.JwtUtils;
 import com.noteu.noteu.member.service.MemberDetailsService;
 import com.noteu.noteu.member.service.OauthDetailsService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +16,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -26,6 +31,7 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final JwtUtils jwtUtils;
     private final MemberDetailsService memberDetailsService;
     private final OauthDetailsService oauthDetailsService;
 
@@ -43,30 +49,27 @@ public class SecurityConfig {
                 .headers((headers) -> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
-                .cors(Customizer.withDefaults())
+                .formLogin(AbstractHttpConfigurer::disable)
+                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(e -> {
+                    e.authenticationEntryPoint(new MemberAuthenticationEntryPoint());
+                    e.accessDeniedHandler(new MemberAccessDeniedHandler());
+                })
+                .apply(new CustomFilterConfig(jwtUtils));
+        http
+                .userDetailsService(memberDetailsService);
 
-                // 로컬 로그인 설정
-                .formLogin((formLogin) -> formLogin
-                        .loginPage("/auth/login")
-                        .usernameParameter("username")
-                        .passwordParameter("password")
-                        .successHandler(new CustomAuthenticationSuccessHandler()))
-                .userDetailsService(memberDetailsService)
-                // 소셜 로그인 설정
-                .oauth2Login(oauth2Login -> oauth2Login
-                        .loginPage("/auth/login")
-                        .successHandler(new CustomAuthenticationSuccessHandler())
-                        .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
-                                .userService(oauthDetailsService)) // 소셜 로그인이 완료된 뒤 소셜 회원의 엑세스 토큰, 정보를 받아옴
-                )
-                // 로그아웃 설정
-                .logout(logout -> logout
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/auth/sign-out"))
-                        .logoutSuccessUrl("/auth/logout")
-                        .invalidateHttpSession(true) // 세션 삭제
-                );
+        // 소셜 로그인 설정
+//                .oauth2Login(oauth2Login -> oauth2Login
+//                        .loginPage("/auth/login")
+//                        .successHandler(new MemberAuthenticationSuccessHandler(jwtUtils))
+//                        .failureHandler(new MemberAuthenticationFailureHandler())
+//                        .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
+//                                .userService(oauthDetailsService))
+//                )
         return http.build();
     }
 
