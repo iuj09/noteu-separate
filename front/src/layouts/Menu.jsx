@@ -211,22 +211,6 @@ const AppMenu = ({ menuItems }) => {
           </React.Fragment>
         );
       })}
-
-      <div className="help-box text-white text-center">
-        <Link to="" className="float-end close-btn text-white">
-          <i className="mdi mdi-close" />
-        </Link>
-        <img src={helpBoxImage} height="90" alt="Helper Icon Image" />
-        <h5 className="mt-3">Unlimited Access</h5>
-        <p className="mb-3">Upgrade to plan to get access to unlimited reports</p>
-        <Link
-          to="https://themes.getbootstrap.com/product/hyper-react-admin-dashboard-template"
-          className="btn btn-secondary btn-sm"
-          target="_blank"
-        >
-          Upgrade
-        </Link>
-      </div>
     </ul>
   );
 };
