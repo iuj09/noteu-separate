@@ -1,64 +1,45 @@
 package com.noteu.noteu.member.controller;
 
+import com.noteu.noteu.member.dto.SignInDto;
 import com.noteu.noteu.member.dto.SignUpDto;
 import com.noteu.noteu.member.entity.Member;
 import com.noteu.noteu.member.service.MemberDetailsService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.regex.Pattern;
 
 @Slf4j
-@Controller
+@RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 @RequestMapping("/auth")
 public class AuthController {
 
     private final MemberDetailsService memberDetailsService;
 
-    @GetMapping("/sign-up")
-    public String signup(SignUpDto signUpDto) {
-        return "layout/member/sign_up";
-    }
-
     @PostMapping("/sign-up")
-    public String signup(@Valid SignUpDto signUpDto, BindingResult bindingResult) {
-
-        // 오류 메세지
-        if (bindingResult.hasErrors()) {
-            return "layout/member/sign_up";
-        }
-
-        // 비밀번호 확인
-        if (!signUpDto.getPassword1().equals(signUpDto.getPassword2())) {
-            bindingResult.rejectValue("password2", "passwordInCorrect",
-                    "비밀번호와 비밀번호 확인이 일치하지 않습니다.");
-            return "layout/member/sign_up";
-        }
-
+    public ResponseEntity<SignUpDto> signup(@RequestBody SignUpDto signUpDto) {
         memberDetailsService.createUser(signUpDto);
-        return "redirect:/auth/login";
+        return new ResponseEntity<>(signUpDto, HttpStatus.CREATED);
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "layout/member/login";
+    @PostMapping("/login")
+    public ResponseEntity<SignInDto> login(@RequestBody SignInDto signInDto) {
+        return new ResponseEntity<>(signInDto, HttpStatus.OK);
     }
 
-    @GetMapping("/logout")
-    public String logout() {
-        return "layout/member/logout";
-    }
+//    @GetMapping("/logout")
+//    public String logout() {
+//        return "layout/member/logout";
+//    }
 
-    @ResponseBody
     @GetMapping("/id-check")
-    public JSONObject idCheck(String id) {
+    public ResponseEntity<JSONObject> idCheck(String id) {
         Member member = memberDetailsService.getByUsername(id.trim());
 
         boolean flag = false;
@@ -80,26 +61,24 @@ public class AuthController {
         obj.put("flag", flag);
         obj.put("msg", msg);
 
-        return obj;
+        return ResponseEntity.ok(obj);
     }
 
-    @ResponseBody
     @GetMapping("/email-check")
-    public boolean emailCheck(String email) {
+    public ResponseEntity<Boolean> emailCheck(String email) {
         Member member = memberDetailsService.getByEmail(email);
         if (member == null) {
-            return false;
+            return ResponseEntity.ok(false);
         }
-        return true;
+        return ResponseEntity.ok(true);
     }
 
-    @ResponseBody
     @GetMapping("/tel-check")
-    public boolean telCheck(String tel) {
+    public ResponseEntity<Boolean> telCheck(String tel) {
         Member member = memberDetailsService.getByTel(tel);
         if (member == null) {
-            return false;
+            return ResponseEntity.ok(false);
         }
-        return true;
+        return ResponseEntity.ok(true);
     }
 }
