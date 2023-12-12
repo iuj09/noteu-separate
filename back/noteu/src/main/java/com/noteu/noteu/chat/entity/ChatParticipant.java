@@ -24,10 +24,4 @@ public class ChatParticipant extends AuditingFields {
     @ManyToOne
     private Member member;
 
-//    @Column
-//    LocalDateTime lastStay;
-
-//    public void updateLastStay() {
-//        this.lastStay = LocalDateTime.now();
-//    }
 }

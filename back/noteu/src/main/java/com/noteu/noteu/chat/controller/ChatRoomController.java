@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("subjects/{subject-id}/chats")
 public class ChatRoomController {
@@ -30,39 +30,27 @@ public class ChatRoomController {
     private final RestChatService restChatService;
     private final SseEmitterService sseEmitterService;
 
-    @GetMapping
-    public String room(@PathVariable("subject-id") Long subjectId,
-                       @AuthenticationPrincipal MemberInfo memberInfo,
-                       Model model) {
-        model.addAttribute("subjectId", subjectId);
-        model.addAttribute("memberId", memberInfo.getId());
-        model.addAttribute("memberName", memberInfo.getMemberName());
-        model.addAttribute("profile", memberInfo.getProfile());
-
-        return "layout/chat/chat";
-    }
-
     // 모든 채팅방 목록 반환
     @GetMapping("/rooms")
-    @ResponseBody
-    public ChatRoomInfoResponseDto getAllRoom(@PathVariable("subject-id") Long subjectId,
-                                              @AuthenticationPrincipal MemberInfo memberInfo) {
+    public ResponseEntity<ChatRoomInfoResponseDto> getAllRoom(@PathVariable("subject-id") Long subjectId,
+                                                              @AuthenticationPrincipal MemberInfo memberInfo) {
 
-        return restChatService.findAllById(subjectId, memberInfo.getId());
+        ChatRoomInfoResponseDto res = restChatService.findAllById(subjectId, memberInfo.getId());
+
+        return ResponseEntity.ok(res);
     }
 
     // 같은반 친구들 목록 반환
     @GetMapping("/friends")
-    @ResponseBody
-    public List<MemberResponseDto> getAllFriend(@PathVariable("subject-id") Long subjectId,
-                                                @AuthenticationPrincipal MemberInfo memberInfo) {
+    public ResponseEntity<List<MemberResponseDto>> getAllFriend(@PathVariable("subject-id") Long subjectId,
+                                                                @AuthenticationPrincipal MemberInfo memberInfo) {
         List<MemberResponseDto> allSubjectsBySubjectId = restChatService.findAllSubjectsBySubjectId(subjectId, memberInfo.getId());
         log.info("멤버 정보들을 다 가져옵니다. {}", allSubjectsBySubjectId);
-        return allSubjectsBySubjectId;
+
+        return ResponseEntity.ok(allSubjectsBySubjectId);
     }
 
     @PostMapping("/rooms")
-    @ResponseBody
     public ResponseEntity<ChatRoomResponse> createRoom(@RequestBody Map<String, Long> requestBody,
                                                        @AuthenticationPrincipal MemberInfo memberInfo,
                                                        @PathVariable("subject-id") Long subjectId) {
@@ -87,21 +75,20 @@ public class ChatRoomController {
     }
 
     // 채팅방 입장 화면
-    @GetMapping("/rooms/enter/{roomId}")
-    public String roomDetail(Model model, @PathVariable Long roomId,
-                             @AuthenticationPrincipal MemberInfo memberInfo) {
+//    @GetMapping("/rooms/enter/{roomId}")
+//    public String roomDetail(Model model, @PathVariable Long roomId,
+//                             @AuthenticationPrincipal MemberInfo memberInfo) {
+//
+//        model.addAttribute("roomId", roomId);
+//
+//        return "fragments/content/chat/roomdetail";
+//    }
 
-        model.addAttribute("roomId", roomId);
-
-        return "fragments/content/chat/roomdetail";
-    }
-
-    @ResponseBody
     @GetMapping("/rooms/api")
-    public List<ChatMessageResponseDto> pastChat(@RequestParam Long roomId) {
+    public ResponseEntity<List<ChatMessageResponseDto>> pastChat(@RequestParam Long roomId) {
         List<ChatMessageResponseDto> chatMessageResponseDtos = restChatService.findPastChat(roomId);
         log.info("이전 채팅 불러오기 : {}", chatMessageResponseDtos);
 
-        return chatMessageResponseDtos;
+        return ResponseEntity.ok(chatMessageResponseDtos);
     }
 }
