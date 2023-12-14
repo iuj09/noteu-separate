@@ -10,7 +10,7 @@ import java.util.List;
 public interface TaskService {
     void save(TaskRequestDto taskRequestDto, Long memberId, Long subjectId, LocalDateTime deadLine);
     TaskResponseDto getTask(Long id);
-    List<Task> getAll(Long subjectId);
+    List<TaskResponseDto> getAll(Long subjectId);
     void updateById(TaskRequestDto taskRequestDto, Long taskId, LocalDateTime deadLine);
     void delTask(Long taskId);
 }

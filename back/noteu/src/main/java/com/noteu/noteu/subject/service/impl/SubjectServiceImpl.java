@@ -46,10 +46,21 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public ArrayList<Subject> getAll(Long memberId) {
+    public ArrayList<SubjectResponseDto> getAll(Long memberId) {
         Member member = memberRepository.findById(memberId).orElse(null);
         ArrayList<Subject> list = subjectMemberRepository.findByMember(member);
-        return list;
+        ArrayList<SubjectResponseDto> result = new ArrayList<>();
+        for(Subject subject: list){
+            result.add(SubjectResponseDto.builder()
+                    .id(subject.getId())
+                    .createdAt(subject.getCreatedAt())
+                    .modifiedAt(subject.getModifiedAt())
+                    .subjectName(subject.getSubjectName())
+                    .subjectCode(subject.getSubjectCode())
+                    .build());
+        }
+
+        return result;
     }
 
     @Override

@@ -1,12 +1,6 @@
 package com.noteu.noteu.task.controller;
 
 import com.noteu.noteu.member.dto.MemberInfo;
-import com.noteu.noteu.member.entity.Member;
-import com.noteu.noteu.notice.dto.NoticeResponseDto;
-import com.noteu.noteu.subject.dto.SubjectResponseDto;
-import com.noteu.noteu.subject.entity.Subject;
-import com.noteu.noteu.subject.service.SubjectService;
-import com.noteu.noteu.task.dto.TaskCommentResponseDto;
 import com.noteu.noteu.task.dto.TaskRequestDto;
 import com.noteu.noteu.task.dto.TaskResponseDto;
 import com.noteu.noteu.task.entity.Task;
@@ -16,8 +10,9 @@ import com.noteu.noteu.task.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +20,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@RestController
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/subjects/{subject-id}/tasks")
@@ -34,79 +29,63 @@ public class TaskController {
     private final TaskService taskService;
     private final TaskCommentService taskCommentService;
 
-    @GetMapping("/add-form")
-    public String addForm(@PathVariable("subject-id") Long subjectId, Model m){
-
-        m.addAttribute("subjectId", subjectId);
-
-        return "layout/task/add";
-    }
-
+    // 과제 리스트
     @GetMapping
-    public String list(@PathVariable("subject-id") Long subjectId, Model m){
-        ArrayList<Task> task_list = (ArrayList<Task>) taskService.getAll(subjectId);
+    public ResponseEntity<List<TaskResponseDto>> list(@AuthenticationPrincipal MemberInfo memberInfo, @PathVariable("subject-id") Long subjectId){
+        ArrayList<TaskResponseDto> task_list = (ArrayList<TaskResponseDto>) taskService.getAll(subjectId);
 
-        m.addAttribute("task_list", task_list);
-        m.addAttribute("subjectId", subjectId);
-
-        return "layout/task/list";
+        if(memberInfo==null)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        else if(task_list.isEmpty())
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        else
+            return ResponseEntity.ok(task_list);
     }
 
+    // 과제 추가
     @PostMapping
-    public String addTask(@AuthenticationPrincipal MemberInfo memberInfo, @PathVariable("subject-id") Long subjectId,
-                          String taskTitle, String taskContent,
-                          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime deadLine
+    public ResponseEntity<String> addTask(@AuthenticationPrincipal MemberInfo memberInfo, @PathVariable("subject-id") Long subjectId,
+                                          String taskTitle, String taskContent,
+                                          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime deadLine
                           ){
         TaskRequestDto taskRequestDto = TaskRequestDto.builder()
                 .taskTitle(taskTitle)
                 .taskContent(taskContent)
                 .build();
-        taskService.save(taskRequestDto, memberInfo.getId(), subjectId, deadLine);
-
-        return "redirect:/subjects/{subject-id}/tasks";
-    }
-
-    @GetMapping("/{task-id}")
-    public String detailForm(@AuthenticationPrincipal MemberInfo memberInfo, @PathVariable("subject-id") Long subjectId, @PathVariable("task-id") Long taskId, Model m){
-        TaskResponseDto taskResponseDto = taskService.getTask(taskId);
-        List<TaskComment> taskCommentList;
-        if (memberInfo.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_TEACHER"))) {
-            taskCommentList = taskCommentService.getAll(taskId);
-        } else {
-            taskCommentList = taskCommentService.getAllTaskComment(taskId, memberInfo.getId());
+        if(memberInfo==null)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("로그인 후 이용해 주세요.");
+        else if(!memberInfo.getAuthorities().toString().contains("ROLE_TEACHER"))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("선생님만 사용할 수 있는 서비스 입니다.");
+        else {
+            taskService.save(taskRequestDto, memberInfo.getId(), subjectId, deadLine);
+            return ResponseEntity.status(HttpStatus.CREATED).body("과제 생성이 완료되었습니다.");
         }
-
-        m.addAttribute("task", taskResponseDto);
-        m.addAttribute("taskId", taskId);
-        m.addAttribute("subjectId", subjectId);
-        m.addAttribute("taskCommentList", taskCommentList);
-
-        return "layout/task/detail";
     }
 
-    @GetMapping("/{task-id}/edit-form")
-    public String editForm(@PathVariable("subject-id") Long subjectId, @PathVariable("task-id") Long taskId, Model m){
-        TaskResponseDto taskResponseDto = taskService.getTask(taskId);
-
-        m.addAttribute("task", taskResponseDto);
-        m.addAttribute("subjectId", subjectId);
-        m.addAttribute("taskId", taskId);
-
-        return "layout/task/edit";
+    // 과제 수정
+    @PutMapping("/{task-id}")
+    public ResponseEntity<String> editTask(@AuthenticationPrincipal MemberInfo memberInfo, @RequestBody TaskRequestDto taskRequestDto, @PathVariable("subject-id") Long subjectId, @PathVariable("task-id") Long taskId, @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime deadLine){
+        if(memberInfo==null)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("로그인 후 이용해 주세요.");
+        else if(!memberInfo.getAuthorities().toString().contains("ROLE_TEACHER"))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("선생님만 사용할 수 있는 서비스 입니다.");
+        else {
+            taskService.updateById(taskRequestDto, taskId, deadLine);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("과제 수정이 완료되었습니다.");
+        }
     }
 
-    @PostMapping("/edit/{task-id}")
-    public String editTask(TaskRequestDto taskRequestDto, @PathVariable("subject-id") Long subjectId, @PathVariable("task-id") Long taskId, @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime deadLine){
-        taskService.updateById(taskRequestDto, taskId, deadLine);
-
-        return "redirect:/subjects/{subject-id}/tasks";
-    }
-
+    // 과제 삭제
     @PostMapping("/{task-id}")
-    public String deleteTask(@PathVariable("subject-id") Long subjectId, @PathVariable("task-id") Long taskId){
-        taskService.delTask(taskId);
-
-        return "redirect:/subjects/{subject-id}/tasks";
+    public ResponseEntity<String> deleteTask(@AuthenticationPrincipal MemberInfo memberInfo, @PathVariable("subject-id") Long subjectId, @PathVariable("task-id") Long taskId){
+        if(memberInfo==null)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("로그인 후 이용해 주세요.");
+        else if(!memberInfo.getAuthorities().toString().contains("ROLE_TEACHER"))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("선생님만 사용할 수 있는 서비스 입니다.");
+        else {
+            taskService.delTask(taskId);
+            return ResponseEntity.status(HttpStatus.OK).body("과제 삭제가 완료되었습니다.");
+        }
     }
 
 }
