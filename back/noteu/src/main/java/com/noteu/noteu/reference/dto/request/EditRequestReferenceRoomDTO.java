@@ -23,6 +23,4 @@ public class EditRequestReferenceRoomDTO {
     private List<Long> referenceSize;
 
     private List<Long> referenceId;
-
-    private List<MultipartFile> referenceFile;
 }
