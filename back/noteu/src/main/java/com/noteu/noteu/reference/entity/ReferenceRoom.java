@@ -3,13 +3,9 @@ package com.noteu.noteu.reference.entity;
 import com.noteu.noteu.audit.AuditingFields;
 import com.noteu.noteu.member.entity.Member;
 import com.noteu.noteu.subject.entity.Subject;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -30,8 +26,17 @@ public class ReferenceRoom extends AuditingFields {
     @Column(nullable = false, length = 1024)
     private String referenceRoomContent;
 
+    @Column(columnDefinition = "bigint default 0", nullable = false)
+    private Long views;
+
+    @PrePersist
+    public void prePersist() {
+        this.views = this.views == null ? 0 : this.views;
+    }
+
     public void update(String newTitle, String newContent) {
         this.referenceRoomTitle = newTitle;
         this.referenceRoomContent = newContent;
     }
+
 }

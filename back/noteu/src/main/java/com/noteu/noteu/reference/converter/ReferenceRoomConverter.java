@@ -104,12 +104,13 @@ public interface ReferenceRoomConverter {
 
         return DetailResponseReferenceRoomDTO.builder()
                 .referenceRoomId(referenceRoom.getId())
-                .subject(referenceRoom.getSubject())
+                .subjectId(referenceRoom.getSubject().getId())
                 .memberId(referenceRoom.getMember().getId())
                 .memberName(referenceRoom.getMember().getMemberName())
                 .referenceRoomTitle(referenceRoom.getReferenceRoomTitle())
                 .referenceRoomContent(referenceRoom.getReferenceRoomContent())
                 .reference(referenceDTOList)
+                .views(referenceRoom.getViews())
                 .createdAt(referenceRoom.getCreatedAt())
                 .modifiedAt(referenceRoom.getModifiedAt())
                 .build();
@@ -123,10 +124,11 @@ public interface ReferenceRoomConverter {
     default GetAllResponseReferenceRoomDTO toGetAllResponseReferenceRoomDto(ReferenceRoom referenceRoom) {
         return GetAllResponseReferenceRoomDTO.builder()
                 .referenceRoomId(referenceRoom.getId())
-                .subject(referenceRoom.getSubject())
+                .subjectId(referenceRoom.getSubject().getId())
                 .memberId(referenceRoom.getMember().getId())
                 .memberName(referenceRoom.getMember().getMemberName())
                 .referenceRoomTitle(referenceRoom.getReferenceRoomTitle())
+                .views(referenceRoom.getViews())
                 .createdAt(referenceRoom.getCreatedAt())
                 .build();
     }

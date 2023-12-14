@@ -18,7 +18,7 @@ public class DetailResponseReferenceRoomDTO {
 
     private Long referenceRoomId;
 
-    private Subject subject;
+    private Long subjectId;
 
     private Long memberId;
 
@@ -29,6 +29,8 @@ public class DetailResponseReferenceRoomDTO {
     private String referenceRoomContent;
 
     private List<ReferenceDTO> reference;
+
+    private Long views;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
