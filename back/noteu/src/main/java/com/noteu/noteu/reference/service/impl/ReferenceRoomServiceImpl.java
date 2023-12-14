@@ -104,6 +104,12 @@ public class ReferenceRoomServiceImpl implements ReferenceRoomService {
 
     @Transactional(readOnly = true)
     @Override
+    public void updateViews(Long referenceRoomId) {
+        referenceRoomRepository.updateViewById(referenceRoomId);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
     public ReferenceDTO getFileById(Long referenceId) {
         Reference reference = referenceRepository.findById(referenceId)
                 .orElseThrow(() -> new EntityNotFoundException("Entity가 존재하지 않습니다." + referenceId));

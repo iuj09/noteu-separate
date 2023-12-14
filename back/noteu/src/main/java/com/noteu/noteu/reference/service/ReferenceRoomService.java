@@ -16,9 +16,11 @@ public interface ReferenceRoomService {
 
     DetailResponseReferenceRoomDTO getById(Long referenceRoomId);
 
+    void updateViews(Long referenceRoomId);
+
     void saveFile(AddRequestReferenceRoomDTO requestReferenceRoomDTO, Long referenceRoomId);
 
-    ReferenceDTO getFileById(Long referenceId);
+    ReferenceDTO getFileById(Long referenceRoomId);
 
     Page<GetAllResponseReferenceRoomDTO> getAll(int page, Long subjectId);
 

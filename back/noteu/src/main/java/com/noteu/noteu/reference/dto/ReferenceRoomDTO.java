@@ -23,6 +23,8 @@ public class ReferenceRoomDTO {
 
     private String referenceRoomContent;
 
+    private Long views;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime modifiedAt;
