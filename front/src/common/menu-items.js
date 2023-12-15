@@ -9,6 +9,7 @@ const MENU_ITEMS = [
 		label: 'Subject',
 		isTitle: false,
 		icon: 'uil-home-alt',
+		url: '/apps/subjects/list'
 		// badge: { variant: 'success', text: '5' },
 		// children: [
 		// 	{
@@ -67,14 +68,14 @@ const MENU_ITEMS = [
 		label: 'QuestionPost',
 		isTitle: false,
 		icon: 'ri-question-line',
-		url: '/apps/questionPost',
+		url: '/apps/questionPost/list',
 	},
 	{
 		key: 'apps-referenceRoom',
 		label: 'ReferenceRoom',
 		isTitle: false,
 		icon: 'ri-folders-line',
-		url: '/apps/referenceRoom',
+		url: '/apps/referenceRoom/list',
 	},
 	{
 		key: 'apps-task',
