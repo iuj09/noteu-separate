@@ -8,6 +8,7 @@ import com.noteu.noteu.reference.dto.request.EditRequestReferenceRoomDTO;
 import com.noteu.noteu.reference.dto.request.AddRequestReferenceRoomDTO;
 import com.noteu.noteu.reference.dto.response.DetailResponseReferenceRoomDTO;
 import com.noteu.noteu.reference.dto.response.GetAllResponseReferenceRoomDTO;
+import com.noteu.noteu.reference.dto.response.ResponseReferenceDTO;
 import com.noteu.noteu.reference.entity.Reference;
 import com.noteu.noteu.reference.entity.ReferenceRoom;
 import com.noteu.noteu.reference.repository.ReferenceRepository;
@@ -102,7 +103,6 @@ public class ReferenceRoomServiceImpl implements ReferenceRoomService {
         return detailResponseReferenceRoomDTO;
     }
 
-    @Transactional(readOnly = true)
     @Override
     public void updateViews(Long referenceRoomId) {
         referenceRoomRepository.updateViewById(referenceRoomId);
@@ -110,11 +110,11 @@ public class ReferenceRoomServiceImpl implements ReferenceRoomService {
 
     @Transactional(readOnly = true)
     @Override
-    public ReferenceDTO getFileById(Long referenceId) {
+    public ResponseReferenceDTO getFileById(Long referenceId) {
         Reference reference = referenceRepository.findById(referenceId)
                 .orElseThrow(() -> new EntityNotFoundException("Entity가 존재하지 않습니다." + referenceId));
 
-        ReferenceDTO referenceDTO = referenceRoomConverter.referenceEntityToReferenceDTO(reference);
+        ResponseReferenceDTO referenceDTO = referenceRoomConverter.referenceEntityToReferenceDTO(reference);
 
         return referenceDTO;
     }
