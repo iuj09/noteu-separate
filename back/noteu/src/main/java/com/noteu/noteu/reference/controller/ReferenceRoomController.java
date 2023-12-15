@@ -8,6 +8,7 @@ import com.noteu.noteu.reference.dto.request.EditRequestReferenceRoomDTO;
 import com.noteu.noteu.reference.dto.request.AddRequestReferenceRoomDTO;
 import com.noteu.noteu.reference.dto.response.DetailResponseReferenceRoomDTO;
 import com.noteu.noteu.reference.dto.response.GetAllResponseReferenceRoomDTO;
+import com.noteu.noteu.reference.dto.response.ResponseReferenceDTO;
 import com.noteu.noteu.reference.service.impl.ReferenceRoomServiceImpl;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,7 +33,6 @@ import java.nio.file.Path;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 
@@ -170,32 +170,33 @@ public class ReferenceRoomController {
                     .status(HttpStatus.FORBIDDEN)
                     .build();
         } else {
-            Cookie oldCookie = null;
-            Cookie[] cookies = request.getCookies();
-            if(cookies != null) {
-                for(Cookie cookie : cookies) {
-                    if(cookie.getName().equals("referenceRoomView")) {
-                        oldCookie = cookie;
+            DetailResponseReferenceRoomDTO detailResponseReferenceRoomDTO = referenceRoomService.getById(referenceId);
+            if(detailResponseReferenceRoomDTO != null) {
+                Cookie oldCookie = null;
+                Cookie[] cookies = request.getCookies();
+                if(cookies != null) {
+                    for(Cookie cookie : cookies) {
+                        if(cookie.getName().equals("referenceRoomView")) {
+                            oldCookie = cookie;
+                        }
                     }
                 }
-            }
-            if(oldCookie != null) {
-                if (!oldCookie.getValue().contains("["+ referenceId.toString() +"]")) {
+                if(oldCookie != null) {
+                    if (!oldCookie.getValue().contains("["+ referenceId.toString() +"]")) {
+                        referenceRoomService.updateViews(referenceId);
+                        oldCookie.setValue(oldCookie.getValue() + "_[" + referenceId + "]");
+                        oldCookie.setPath("/");
+                        oldCookie.setMaxAge(60 * 60 * 12);
+                        response.addCookie(oldCookie);
+                    }
+                } else {
+                    Cookie newCookie = new Cookie("referenceRoomView", "[" + referenceId + "]");
                     referenceRoomService.updateViews(referenceId);
-                    oldCookie.setValue(oldCookie.getValue() + "_[" + referenceId + "]");
-                    oldCookie.setPath("/");
-                    oldCookie.setMaxAge(60 * 60 * 12);
-                    response.addCookie(oldCookie);
+                    newCookie.setPath("/");
+                    newCookie.setMaxAge(60 * 60 * 12);
+                    response.addCookie(newCookie);
                 }
-            } else {
-                Cookie newCookie = new Cookie("referenceRoomView", "[" + referenceId + "]");
-                referenceRoomService.updateViews(referenceId);
-                newCookie.setPath("/");
-                newCookie.setMaxAge(60 * 60 * 12);
-                response.addCookie(newCookie);
             }
-
-            DetailResponseReferenceRoomDTO detailResponseReferenceRoomDTO = referenceRoomService.getById(referenceId);
 
             return ResponseEntity.ok(detailResponseReferenceRoomDTO);
         }
@@ -230,7 +231,7 @@ public class ReferenceRoomController {
              */
             if (!originReferenceIds.isEmpty() && originReferenceIds != null) {
                 for (Long originReferenceId : originReferenceIds) {
-                    ReferenceDTO referenceDTO = referenceRoomService.getFileById(originReferenceId);
+                    ResponseReferenceDTO referenceDTO = referenceRoomService.getFileById(originReferenceId);
                     fileNames.add(referenceDTO.getReferenceName());
                     fileSizes.add(referenceDTO.getReferenceSize());
                     fileTypes.add(referenceDTO.getReferenceType());
