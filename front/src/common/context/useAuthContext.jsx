@@ -10,7 +10,7 @@ export function useAuthContext() {
   return context;
 }
 
-const authSessionKey = '_HYPER_AUTH';
+const authSessionKey = '_NOTEU_AUTH';
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(
