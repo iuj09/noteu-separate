@@ -34,24 +34,23 @@ export default function Login() {
       <PageBreadcrumb title="Login" />
       <AccountWrapper bottomLinks={<BottomLink />}>
         <div className="text-center w-75 m-auto">
-          <h4 className="text-dark-50 text-center mt-0 fw-bold">{t('Sign In')}</h4>
+          <h4 className="text-dark-50 text-center mt-0 fw-bold">{t('')}</h4>
           <p className="text-muted mb-4">
-            {t('Enter your username and password to access admin panel.')}
+            {t('Enter your ID and password to access NOTEU service.')}
           </p>
         </div>
 
         <Form
           onSubmit={login}
           schema={loginFormSchema}
-          defaultValues={{ email: 'hyper@coderthemes.com', password: 'Hyper' }}
         >
           <Row>
             <Col>
               <TextInput
-                name="email"
-                label={t('Email Address')}
-                type="email"
-                placeholder={t('Enter your email')}
+                name="username"
+                label={t('ID')}
+                type="text"
+                placeholder={t('Enter your ID')}
                 containerClass="mb-3"
               />
             </Col>

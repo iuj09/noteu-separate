@@ -9,6 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.regex.Pattern;
@@ -21,22 +24,13 @@ import java.util.regex.Pattern;
 public class AuthController {
 
     private final MemberDetailsService memberDetailsService;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     @PostMapping("/sign-up")
     public ResponseEntity<SignUpDto> signup(@RequestBody SignUpDto signUpDto) {
         memberDetailsService.createUser(signUpDto);
         return new ResponseEntity<>(signUpDto, HttpStatus.CREATED);
     }
-
-    @PostMapping("/login")
-    public ResponseEntity<SignInDto> login(@RequestBody SignInDto signInDto) {
-        return new ResponseEntity<>(signInDto, HttpStatus.OK);
-    }
-
-//    @GetMapping("/logout")
-//    public String logout() {
-//        return "layout/member/logout";
-//    }
 
     @GetMapping("/id-check")
     public ResponseEntity<JSONObject> idCheck(String id) {
