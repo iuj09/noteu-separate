@@ -4,9 +4,11 @@ import ChatUsers from './ChatUsers';
 import ChatArea from './ChatArea';
 import ChatProfile from './ChatProfile';
 import { useChatApp } from './hooks';
+import {useState} from "react";
 
 const ChatApp = () => {
 	const { selectedUser, onUserChange } = useChatApp();
+	const [messages, setMessages] = useState([]);
 
 	return (
 		<>
@@ -14,11 +16,11 @@ const ChatApp = () => {
 
 			<Row>
 				<Col xxl={3} xl={{ span: 6, order: 1 }}>
-					<ChatUsers onUserSelect={onUserChange} />
+					<ChatUsers onUserSelect={onUserChange} setMessages={setMessages} />
 				</Col>
 
 				<Col xxl={6} xl={{ span: 12, order: 2 }}>
-					<ChatArea selectedUser={selectedUser} />
+					<ChatArea selectedUser={selectedUser} messages={messages} setMessages={setMessages}/>
 				</Col>
 
 				<Col xxl={{ span: 3, order: 2 }} xl={{ span: 6, order: 1 }}>

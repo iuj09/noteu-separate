@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -20,9 +21,9 @@ public class ChatController {
 
     @MessageMapping("/chat/message")
     public void enter(ChatMessageRequestDto chatMessageRequestDto) {
+        log.info("채팅으로 넘어온 값 : {}", chatMessageRequestDto);
 
         ChatMessageResponse chatMessageResponseDto = chatService.reqMessage(chatMessageRequestDto);
-        log.info("chat response values : {}", chatMessageResponseDto);
 
         sendingOperations.convertAndSend("/topic/chats/room/"+chatMessageRequestDto.getRoomId(),chatMessageResponseDto);
     }

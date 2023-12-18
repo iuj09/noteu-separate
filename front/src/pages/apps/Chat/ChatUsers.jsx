@@ -1,14 +1,14 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import { Card } from 'react-bootstrap';
 import classnames from 'classnames';
 import SimpleBar from 'simplebar-react';
 import { useChatUsers } from './hooks';
 
-const ChatUsers = ({ onUserSelect }) => {
-	const groupFilters = ['All', 'Favourties', 'Friends'];
-	const { user, selectedUser, selectedGroup, filterUsers, search, activateUser } =
-		useChatUsers(onUserSelect);
+const ChatUsers = ({ onUserSelect, setMessages }) => {
+	const groupFilters = ['Chats', 'Friends'];
+	const { user, selectedUser, selectedGroup, filterUsers, search, activateUser, messages } =
+		useChatUsers(onUserSelect, setMessages);
 
 	return (
 		<Card>

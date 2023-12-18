@@ -11,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 public class ChatMessageResponseDto implements ChatMessageResponse {
     Long roomId;
-    Long senderId;
+    Long senderId; // senderId
     String senderName;
     String message;
     String createdAt;

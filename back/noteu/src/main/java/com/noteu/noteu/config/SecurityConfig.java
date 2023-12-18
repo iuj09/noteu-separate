@@ -79,7 +79,8 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true); // 쿠키 가능
         configuration.setAllowedOrigins(Arrays.asList(
-                        "http://localhost:8081"
+                        "http://localhost:8081",
+                        "http://localhost:5173"
                 )
         ); // * 은 문제 발생
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE", "UPDATE"));

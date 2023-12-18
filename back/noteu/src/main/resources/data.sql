@@ -69,10 +69,10 @@ insert into chat_participant (created_at, modified_at, chat_room_id, member_id) 
 -- insert into chat_participant (created_at, modified_at, chat_room_id, member_id) values ('2023-11-17 16:27:51.67171', '2023-11-17 16:27:51.67171', 7, 1);
 
 -- 채팅 추가
-insert into chat_message (created_at, modified_at, room_id, sender_id, sender_name, message) values ('2023-11-17 16:27:51.67171', '2023-11-17 16:27:51.67171', 1, 1, 'aaaa', '테스트 메시지란 말이에요111~~~~~');
-insert into chat_message (created_at, modified_at, room_id, sender_id, sender_name, message) values ('2023-11-17 16:27:51.67171', '2023-11-17 16:27:51.67171', 1, 1, 'aaaa', '테스트 메시지란 말이에요222~~~~~');
-insert into chat_message (created_at, modified_at, room_id, sender_id, sender_name, message) values ('2023-11-17 16:27:51.67171', '2023-11-17 16:27:51.67171', 1, 2, 'bbbb', '테스트 메시지란 말이에요333~~~~~');
-insert into chat_message (created_at, modified_at, room_id, sender_id, sender_name, message) values ('2023-11-17 16:27:51.67171', '2023-11-17 16:27:51.67171', 1, 2, 'bbbb', '테스트 메시지란 말이에요444~~~~~');
+insert into chat_message (created_at, modified_at, room_id, sender_id, sender_name, message) values ('2023-11-17 16:27:51.67171', '2023-11-17 16:27:51.67171', 1, 1, 'nameA', '테스트 메시지란 말이에요111~~~~~');
+insert into chat_message (created_at, modified_at, room_id, sender_id, sender_name, message) values ('2023-11-17 16:27:51.67171', '2023-11-17 16:27:51.67171', 1, 1, 'nameA', '테스트 메시지란 말이에요222~~~~~');
+insert into chat_message (created_at, modified_at, room_id, sender_id, sender_name, message) values ('2023-11-17 16:27:51.67171', '2023-11-17 16:27:51.67171', 1, 2, 'nameB', '테스트 메시지란 말이에요333~~~~~');
+insert into chat_message (created_at, modified_at, room_id, sender_id, sender_name, message) values ('2023-11-17 16:27:51.67171', '2023-11-17 16:27:51.67171', 1, 2, 'nameB', '테스트 메시지란 말이에요444~~~~~');
 
 -- 질문 게시글
 insert into question_post (subject_id, member_id, question_post_title, question_post_content, created_at, modified_at) values (1, 3, 'test title1', 'test content1', '2023-11-17 16:27:51.67171', '2023-11-17 16:27:51.67171');

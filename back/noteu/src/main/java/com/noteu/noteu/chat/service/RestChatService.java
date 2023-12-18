@@ -4,13 +4,14 @@ import com.noteu.noteu.chat.dto.ChatRoomResponse;
 import com.noteu.noteu.chat.dto.response.ChatMessageResponseDto;
 import com.noteu.noteu.chat.dto.response.ChatRoomInfoResponseDto;
 import com.noteu.noteu.chat.dto.response.ChatRoomResponseDto;
+import com.noteu.noteu.member.dto.MemberInfo;
 import com.noteu.noteu.member.dto.response.MemberResponseDto;
 
 import java.util.List;
 
 public interface RestChatService {
 
-    ChatRoomInfoResponseDto findAllById(Long friendId, Long loginId);
+    ChatRoomInfoResponseDto findAllById(Long friendId, MemberInfo memberInfo);
 
     //채팅방 생성
     List<ChatMessageResponseDto> findPastChat(Long roomId);

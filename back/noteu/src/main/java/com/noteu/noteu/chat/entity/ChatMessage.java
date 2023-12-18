@@ -18,7 +18,7 @@ public class ChatMessage extends AuditingFields {
 
     private Long roomId;
 
-    private Long senderId;
+    private Long senderId; //senderId
 
     private String senderName;
 

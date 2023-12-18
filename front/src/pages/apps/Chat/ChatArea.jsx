@@ -7,9 +7,11 @@ import { Form, TextInput } from '@/components';
 import { useChatArea } from './hooks';
 import { chatSchema } from './hooks/useChatArea';
 
-const UserMessage = ({ message, toUser }) => {
+const UserMessage = ({ message, loginId }) => {
+	console.log(" message 이게 무슨 값인지 확인하자 : "+JSON.stringify(message));
+	console.log(" loginId 이게 무슨 값인지 확인하자 : "+loginId);
 	return (
-		<li className={classnames('clearfix', { odd: message.from.id === toUser.id })}>
+		<li className={classnames('clearfix', { odd: message.from.senderId === loginId })}>
 			<div className="chat-avatar">
 				<img src={message.from.avatar} className="rounded" alt="" />
 				<i>{message.sendOn}</i>
@@ -75,20 +77,21 @@ const AlwaysScrollToBottom = () => {
 	return <div ref={elementRef} />;
 };
 
-const ChatArea = ({ selectedUser }) => {
-	const { toUser, userMessages, sendChatMessage } = useChatArea(selectedUser);
-
+const ChatArea = ({ selectedUser, messages, setMessages }) => {
+	const { loginId, loginMemberName, toUser, userMessages, sendChatMessage } = useChatArea(selectedUser, setMessages);
+	
 	return (
 		<Card>
 			<Card.Body className="position-relative px-0 pb-0">
 				<SimpleBar style={{ height: '538px', width: '100%' }}>
 					<ul className="conversation-list px-3">
-						{userMessages.map((message, index) => {
+						{/*{messages.map((item, index) => <div key={index}>{item.body.message}</div>)}*/}
+						{messages.map((message, index) => {
 							return (
 								<UserMessage
 									key={index.toString()}
 									message={message}
-									toUser={toUser}
+									loginId={loginId}
 								/>
 							);
 						})}
@@ -117,12 +120,6 @@ const ChatArea = ({ selectedUser }) => {
 									</div>
 									<div className="col-sm-auto">
 										<div className="btn-group">
-											<Link to="" className="btn btn-light">
-												<i className="uil uil-paperclip"></i>
-											</Link>
-											<Link to="" className="btn btn-light">
-												<i className="uil uil-smile"></i>
-											</Link>
 											<button
 												type="submit"
 												className="btn btn-success chat-send btn-block"

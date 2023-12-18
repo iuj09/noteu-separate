@@ -23,8 +23,6 @@ public class SocketChatServiceImpl implements SocketChatService {
 
     @Override
     public ChatMessageResponse reqMessage(ChatMessageRequestDto chatMessageRequestDto) {
-        log.info("채팅으로 넘어온 값 : {}", chatMessageRequestDto);
-
         if (MessageType.TALK.equals(chatMessageRequestDto.getMessageType())) {
             ChatMessage save = chatMessageRepository.save(converter.chatMessageRequestDtoToChatMessageEntity(chatMessageRequestDto));
             return converter.chatMessageEntityToChatMessageResponsedto(save);
