@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @Slf4j
@@ -60,10 +59,19 @@ public class TaskServiceImpl implements TaskService {
 
     @Transactional(readOnly = true)
     @Override
-    public ArrayList<Task> getAll(Long subjectId) {
+    public ArrayList<TaskResponseDto> getAll(Long subjectId) {
         Subject subject = subjectRepository.findById(subjectId).orElse(null);
         ArrayList<Task> task_list = (ArrayList<Task>) taskRepository.findTasksBySubject(subjectId);
-        return task_list;
+        ArrayList<TaskResponseDto> result = new ArrayList<>();
+        for(Task task: task_list){
+            result.add(TaskResponseDto.builder()
+                    .id(task.getId())
+                    .taskTitle(task.getTaskTitle())
+                    .taskContent(task.getTaskContent())
+                    .deadLine(task.getDeadLine())
+                    .build());
+        }
+        return result;
     }
 
 

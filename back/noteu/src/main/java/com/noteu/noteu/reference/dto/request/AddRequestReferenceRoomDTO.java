@@ -22,5 +22,5 @@ public class AddRequestReferenceRoomDTO {
 
     private List<Long> referenceSize;
 
-    private List<MultipartFile> referenceFile;
+//    private List<MultipartFile> referenceFile;
 }

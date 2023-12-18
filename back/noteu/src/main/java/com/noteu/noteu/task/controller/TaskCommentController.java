@@ -11,11 +11,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -23,25 +20,24 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 
-@Controller
+@RestController
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/subjects/{subject-id}/tasks")
 public class TaskCommentController {
 
-    private final TaskService taskService;
     private final TaskCommentService taskCommentService;
 
     @Value("${spring.servlet.multipart.location}")
     private String path;
 
+    // 과제 제출
     @PostMapping("/{task-id}/task-comment")
-    public String addTaskComment(@AuthenticationPrincipal MemberInfo memberInfo,
+    public ResponseEntity<String> addTaskComment(@AuthenticationPrincipal MemberInfo memberInfo,
                                  @PathVariable("subject-id") Long subjectId, @PathVariable("task-id") Long taskId,
-                                 String taskCommentTitle, MultipartFile taskCommentFile
+                                 @RequestPart("taskCommentTitle") String taskCommentTitle, @RequestPart("taskCommentFile") MultipartFile taskCommentFile
     ){
 
-        log.info("taskCommentFile: {}", taskCommentFile);
         String fileName = taskCommentFile.getOriginalFilename();
 
         File directory = new File(path + "/task/");
@@ -54,21 +50,41 @@ public class TaskCommentController {
             }
         }
 
-        File newFile = new File(directory, fileName);
-        try {
-            taskCommentFile.transferTo(newFile);
+        if(memberInfo==null)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("로그인 후 이용해 주세요.");
+        else if(taskCommentFile == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("파일이 선택 되지 않았습니다.");
+        else if(taskCommentTitle == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("내용을 입력해주세요.");
+        else {
 
-            TaskCommentRequestDto taskCommentRequestDto = TaskCommentRequestDto.builder()
-                    .taskCommentTitle(taskCommentTitle)
-                    .taskCommentFileName(fileName)
-                    .build();
-            taskCommentService.save(taskCommentRequestDto, taskId, memberInfo.getId());
+            File newFile = new File(directory, fileName);
+            try {
+                taskCommentFile.transferTo(newFile);
 
-        } catch (IOException e) {
-            e.printStackTrace();
+                TaskCommentRequestDto taskCommentRequestDto = TaskCommentRequestDto.builder()
+                        .taskCommentTitle(taskCommentTitle)
+                        .taskCommentFileName(fileName)
+                        .build();
+                taskCommentService.save(taskCommentRequestDto, taskId, memberInfo.getId());
+                return ResponseEntity.status(HttpStatus.CREATED).body("과제 제출이 완료되었습니다.");
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("과제 제출에 실패하였습니다.");
+            }
         }
+    }
 
-        return "redirect:/subjects/{subject-id}/tasks/{task-id}";
+    // 과제 삭제
+    @PostMapping("/{task-id}/{task-comment-id}")
+    public ResponseEntity<String> deleteTaskComment(@AuthenticationPrincipal MemberInfo memberInfo, @PathVariable("subject-id") Long subjectId, @PathVariable("task-id") Long taskId, @PathVariable("task-comment-id") Long taskCommentId){
+        if(memberInfo==null)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("로그인 후 이용해 주세요.");
+        else {
+            taskCommentService.deleteTaskComment(taskCommentId);
+            return ResponseEntity.status(HttpStatus.OK).body("과제 삭제가 완료되었습니다.");
+        }
     }
 
     @RequestMapping("/down")
@@ -88,13 +104,6 @@ public class TaskCommentController {
             throw new RuntimeException(e);
         }
         return result;
-    }
-
-    @PostMapping("/{task-id}/{task-comment-id}")
-    public String deleteTaskComment(@PathVariable("subject-id") Long subjectId, @PathVariable("task-id") Long taskId, @PathVariable("task-comment-id") Long taskCommentId){
-        taskCommentService.deleteTaskComment(taskCommentId);
-
-        return "redirect:/subjects/{subject-id}/tasks/{task-id}";
     }
 
 }

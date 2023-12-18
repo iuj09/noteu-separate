@@ -1,12 +1,12 @@
-import { ReactNode } from 'react';
+import { BGCircles } from '@/components';
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { BGCircles } from '@/components';
 
 // images
 import Logo from '@/assets/images/logo.png';
 
 export default function AccountWrapper({ bottomLinks, children }) {
+	const currentYear = new Date().getFullYear();
 	return (
 		<>
 			<BGCircles />
@@ -30,9 +30,10 @@ export default function AccountWrapper({ bottomLinks, children }) {
 				</Container>
 			</div>
 			<footer className="footer footer-alt">
-				2018 - {new Date().getFullYear()} © Hyper -
-				<Link to="https://coderthemes.com/" target="_blank">
-					Coderthemes.com
+				{currentYear}
+				&nbsp;© Noteu -&nbsp;
+				<Link to="https://github.com/noteu/noteu-separate" target="_blank">
+				github.com/noteu/noteu-separate
 				</Link>
 			</footer>
 		</>

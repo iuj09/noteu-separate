@@ -23,7 +23,7 @@ public class MemberAuthenticationFailureHandler implements AuthenticationFailure
 
     private void sendErrorResponse(HttpServletResponse response, AuthenticationException e) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        ErrorResponse errorResponse = ErrorResponse.create(e, HttpStatus.UNAUTHORIZED, "입력 정보가 올바르지 않습니다.");
+        ErrorResponse errorResponse = ErrorResponse.create(e, HttpStatus.UNAUTHORIZED, "ID or Password is incorrect.");
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.getWriter().write(mapper.writeValueAsString(errorResponse));

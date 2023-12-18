@@ -1,9 +1,8 @@
 package com.noteu.noteu.reference.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.noteu.noteu.member.entity.Member;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.noteu.noteu.reference.dto.ReferenceDTO;
-import com.noteu.noteu.subject.entity.Subject;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +17,7 @@ public class DetailResponseReferenceRoomDTO {
 
     private Long referenceRoomId;
 
-    private Subject subject;
+    private Long subjectId;
 
     private Long memberId;
 
@@ -28,7 +27,9 @@ public class DetailResponseReferenceRoomDTO {
 
     private String referenceRoomContent;
 
-    private List<ReferenceDTO> reference;
+    private List<ResponseReferenceDTO> reference;
+
+    private Long views;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;

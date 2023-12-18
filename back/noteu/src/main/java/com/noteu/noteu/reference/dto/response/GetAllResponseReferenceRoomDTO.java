@@ -14,13 +14,15 @@ public class GetAllResponseReferenceRoomDTO {
 
     private Long referenceRoomId;
 
-    private Subject subject;
+    private Long subjectId;
 
     private Long memberId;
 
     private String memberName;
 
     private String referenceRoomTitle;
+
+    private Long views;
 
     private LocalDateTime createdAt;
 }

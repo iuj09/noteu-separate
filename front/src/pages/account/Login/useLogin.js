@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 
 export const loginFormSchema = yup.object({
-	email: yup.string().email('Please enter valid email').required('Please enter email'),
+	username: yup.string().matches(/^[a-z0-9]+$/, '영어 소문자와 숫자로 구성해주세요.').required('Please enter ID'),
 	password: yup.string().required('Please enter password'),
 });
 
@@ -26,12 +26,15 @@ export default function useLogin() {
 		setLoading(true);
 		try {
 			const res = await authApi.login(values);
-			if (res.data.token) {
-				saveSession({ ...(res.data ?? {}), token: res.data.token });
+			if (!res.statusCode) {
+				saveSession({ ...(res.data ?? {}), token: res.headers.authorization });
 				navigate(redirectUrl);
 			}
 		} catch (error) {
-			showNotification({ message: error.toString(), type: 'error' });
+			console.log(error);
+			showNotification({ 
+				message: error.toString().slice(7), type: 'error'
+			});
 		} finally {
 			setLoading(false);
 		}

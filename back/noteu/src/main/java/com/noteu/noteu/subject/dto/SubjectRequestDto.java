@@ -1,14 +1,12 @@
 package com.noteu.noteu.subject.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.io.Serializable;
+import lombok.*;
 
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class SubjectRequestDto{
+public class SubjectRequestDto {
     private String subjectName;
 }
