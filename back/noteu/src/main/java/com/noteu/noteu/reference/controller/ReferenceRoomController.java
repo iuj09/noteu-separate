@@ -8,6 +8,7 @@ import com.noteu.noteu.reference.dto.request.EditRequestReferenceRoomDTO;
 import com.noteu.noteu.reference.dto.request.AddRequestReferenceRoomDTO;
 import com.noteu.noteu.reference.dto.response.DetailResponseReferenceRoomDTO;
 import com.noteu.noteu.reference.dto.response.GetAllResponseReferenceRoomDTO;
+import com.noteu.noteu.reference.dto.response.ResponseReferenceDTO;
 import com.noteu.noteu.reference.service.impl.ReferenceRoomServiceImpl;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,8 +33,6 @@ import java.nio.file.Path;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 
 
 @Slf4j
@@ -50,13 +49,13 @@ public class ReferenceRoomController {
 
     @PostMapping
     public ResponseEntity<Void> addReferenceRoom(@AuthenticationPrincipal MemberInfo memberInfo, @PathVariable("subject-id") Long subjectId,
-                                                 @RequestPart("addRequestReferenceRoomDTO") AddRequestReferenceRoomDTO addRequestReferenceRoomDTO, @RequestPart("referenceFile") List<MultipartFile> referenceFile) {
+                                    @RequestPart("addRequestReferenceRoomDTO") AddRequestReferenceRoomDTO addRequestReferenceRoomDTO, @RequestPart("referenceFile") List<MultipartFile> referenceFile) {
 
-        if (memberInfo == null) {
+        if(memberInfo == null) {
             return ResponseEntity
-                    .status(HttpStatus.FORBIDDEN)
+                    .status(HttpStatus.UNAUTHORIZED)
                     .build();
-        } else if (!memberInfo.getAuthorities().toString().contains("ROLE_TEACHER")) {
+        } else if(!memberInfo.getAuthorities().toString().contains("ROLE_TEACHER")) {
             return ResponseEntity
                     .status(HttpStatus.FORBIDDEN)
                     .build();
@@ -66,7 +65,7 @@ public class ReferenceRoomController {
             log.info("[log] 제목 : {}", addRequestReferenceRoomDTO.getReferenceRoomTitle());
             log.info("[log] 내용 : {}", addRequestReferenceRoomDTO.getReferenceRoomContent());
             log.info("[log] 파일 : {}", referenceFile);
-            if (addRequestReferenceRoomDTO.getReferenceRoomTitle().isEmpty()
+            if(addRequestReferenceRoomDTO.getReferenceRoomTitle().isEmpty()
                     || addRequestReferenceRoomDTO.getReferenceRoomContent().isEmpty()
                     || referenceFile.size() == 0) {
                 return ResponseEntity
@@ -100,7 +99,7 @@ public class ReferenceRoomController {
                 List<Long> fileSizes = new ArrayList<>();
                 List<String> fileTypes = new ArrayList<>();
 
-                for (MultipartFile file : fileList) {
+                for(MultipartFile file : fileList) {
                     String fileName = Normalizer.normalize(file.getOriginalFilename(), Normalizer.Form.NFC);
 
                     Long bytes = file.getSize();
@@ -131,9 +130,9 @@ public class ReferenceRoomController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<GetAllResponseReferenceRoomDTO>> referenceRoomList(@AuthenticationPrincipal MemberInfo memberInfo, @PathVariable("subject-id") Long subjectId,
+    public ResponseEntity<Page<GetAllResponseReferenceRoomDTO>> referenceRoomList(@AuthenticationPrincipal MemberInfo memberInfo,@PathVariable("subject-id") Long subjectId,
                                     @RequestParam(value = "page", defaultValue = "0") int page) {
-        if (memberInfo == null) {
+        if(memberInfo == null) {
             return ResponseEntity
                     .status(HttpStatus.FORBIDDEN)
                     .build();
@@ -145,13 +144,13 @@ public class ReferenceRoomController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<Page<GetAllResponseReferenceRoomDTO>> referenceRoomListByTitle(@AuthenticationPrincipal MemberInfo memberInfo, @PathVariable("subject-id") Long subjectId,
-                                           @RequestParam(value = "page", defaultValue = "0") int page, @RequestBody String searchWord) {
-        if (memberInfo == null) {
+    public ResponseEntity<Page<GetAllResponseReferenceRoomDTO>> referenceRoomListByTitle(@AuthenticationPrincipal MemberInfo memberInfo,
+                                           @PathVariable("subject-id") Long subjectId, @RequestParam(value = "page", defaultValue = "0") int page, @RequestBody String searchWord) {
+        if(memberInfo == null) {
             return ResponseEntity
                     .status(HttpStatus.FORBIDDEN)
                     .build();
-        } else if (!memberInfo.getAuthorities().toString().equals("[ROLE_{authority=ROLE_TEACHER}]")) {
+        } else if(!memberInfo.getAuthorities().toString().equals("[ROLE_{authority=ROLE_TEACHER}]")) {
             return ResponseEntity
                     .status(HttpStatus.FORBIDDEN)
                     .build();
@@ -164,38 +163,39 @@ public class ReferenceRoomController {
 
     @GetMapping("/{referenceId}")
     public ResponseEntity<DetailResponseReferenceRoomDTO> getReferenceRoomById(@AuthenticationPrincipal MemberInfo memberInfo, @PathVariable("subject-id") Long subjectId,
-                                                                               @PathVariable Long referenceId, HttpServletRequest request, HttpServletResponse response) {
-        if (memberInfo == null) {
+                                           @PathVariable Long referenceId, HttpServletRequest request, HttpServletResponse response) {
+        if(memberInfo == null) {
             return ResponseEntity
-                    .status(HttpStatus.FORBIDDEN)
+                    .status(HttpStatus.UNAUTHORIZED)
                     .build();
         } else {
-            Cookie oldCookie = null;
-            Cookie[] cookies = request.getCookies();
-            if(cookies != null) {
-                for(Cookie cookie : cookies) {
-                    if(cookie.getName().equals("referenceRoomView")) {
-                        oldCookie = cookie;
+            DetailResponseReferenceRoomDTO detailResponseReferenceRoomDTO = referenceRoomService.getById(referenceId);
+            if(detailResponseReferenceRoomDTO != null) {
+                Cookie oldCookie = null;
+                Cookie[] cookies = request.getCookies();
+                if(cookies != null) {
+                    for(Cookie cookie : cookies) {
+                        if(cookie.getName().equals("referenceRoomView")) {
+                            oldCookie = cookie;
+                        }
                     }
                 }
-            }
-            if(oldCookie != null) {
-                if (!oldCookie.getValue().contains("["+ referenceId.toString() +"]")) {
+                if(oldCookie != null) {
+                    if(!oldCookie.getValue().contains("[" + referenceId.toString() + "]")) {
+                        referenceRoomService.updateViews(referenceId);
+                        oldCookie.setValue(oldCookie.getValue() + "_[" + referenceId + "]");
+                        oldCookie.setPath("/");
+                        oldCookie.setMaxAge(60 * 60 * 12);
+                        response.addCookie(oldCookie);
+                    }
+                } else {
+                    Cookie newCookie = new Cookie("referenceRoomView", "[" + referenceId + "]");
                     referenceRoomService.updateViews(referenceId);
-                    oldCookie.setValue(oldCookie.getValue() + "_[" + referenceId + "]");
-                    oldCookie.setPath("/");
-                    oldCookie.setMaxAge(60 * 60 * 12);
-                    response.addCookie(oldCookie);
+                    newCookie.setPath("/");
+                    newCookie.setMaxAge(60 * 60 * 12);
+                    response.addCookie(newCookie);
                 }
-            } else {
-                Cookie newCookie = new Cookie("referenceRoomView", "[" + referenceId + "]");
-                referenceRoomService.updateViews(referenceId);
-                newCookie.setPath("/");
-                newCookie.setMaxAge(60 * 60 * 12);
-                response.addCookie(newCookie);
             }
-
-            DetailResponseReferenceRoomDTO detailResponseReferenceRoomDTO = referenceRoomService.getById(referenceId);
 
             return ResponseEntity.ok(detailResponseReferenceRoomDTO);
         }
@@ -204,9 +204,13 @@ public class ReferenceRoomController {
 
     @PutMapping("/{referenceRoomId}")
     public ResponseEntity<Void> referenceRoomUpdate(@AuthenticationPrincipal MemberInfo memberInfo, @PathVariable Long referenceRoomId,
-                                                    @RequestPart("editRequestReferenceRoomDTO") EditRequestReferenceRoomDTO editRequestReferenceRoomDTO, @RequestPart("referenceFile") List<MultipartFile> referenceFile) {
+                                            @RequestPart("editRequestReferenceRoomDTO") EditRequestReferenceRoomDTO editRequestReferenceRoomDTO, @RequestPart("referenceFile") List<MultipartFile> referenceFile) {
 
-        if(!memberInfo.getId().equals(referenceRoomService.getById(referenceRoomId).getMemberId())) {
+        if(memberInfo == null) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .build();
+        } else if(!memberInfo.getId().equals(referenceRoomService.getById(referenceRoomId).getMemberId())) {
             return ResponseEntity
                     .status(HttpStatus.FORBIDDEN)
                     .build();
@@ -228,14 +232,14 @@ public class ReferenceRoomController {
              *  1.4. originReferenceIds에 값이 없으면 fileDir에 존재하는 모든 파일 삭제
              *  1.5. 삭제되지 않은 파일들은 파일 정보를 담는 각각의 List에 파일 정보 저장
              */
-            if (!originReferenceIds.isEmpty() && originReferenceIds != null) {
+            if(!originReferenceIds.isEmpty() && originReferenceIds != null) {
                 for (Long originReferenceId : originReferenceIds) {
-                    ReferenceDTO referenceDTO = referenceRoomService.getFileById(originReferenceId);
+                    ResponseReferenceDTO referenceDTO = referenceRoomService.getFileById(originReferenceId);
                     fileNames.add(referenceDTO.getReferenceName());
                     fileSizes.add(referenceDTO.getReferenceSize());
                     fileTypes.add(referenceDTO.getReferenceType());
                 }
-                for (File file : files) {
+                for(File file : files) {
                     String originFileName = file.getName();
                     log.info("[log] 기존 파일 명 : {}", originFileName);
                     long bytes = file.length();
@@ -248,7 +252,7 @@ public class ReferenceRoomController {
 
                         boolean shouldDeleteFile = true;
 
-                        for (int i = 0; i < fileNames.size(); i++) {
+                        for(int i = 0; i < fileNames.size(); i++) {
                             String fileName = fileNames.get(i);
                             Long fileSize = fileSizes.get(i);
                             String fileType = fileTypes.get(i);
@@ -261,7 +265,7 @@ public class ReferenceRoomController {
                             log.info("[log] fileName.length : {}", fileName.length());
                             log.info("[log] originFileSize.equals(fileSize) : {}", originFileSize.equals(fileSize));
                             log.info("[log] originFileType.equals(fileType)) : {}", originFileType.equals(fileType));
-                            if (originFileName.equals(fileName) &&
+                            if(originFileName.equals(fileName) &&
                                     originFileSize.equals(fileSize) &&
                                     originFileType.equals(fileType)) {
 
@@ -270,7 +274,7 @@ public class ReferenceRoomController {
                             }
                             log.info("[log] 파일 삭제 여부 : {}", shouldDeleteFile);
                         }
-                        if (shouldDeleteFile) {
+                        if(shouldDeleteFile) {
                             file.delete();
                         }
                     } catch (IOException e) {
@@ -278,7 +282,7 @@ public class ReferenceRoomController {
                     }
                 }
             } else {
-                for (File file : files) {
+                for(File file : files) {
                     file.delete();
                 }
             }
@@ -291,8 +295,8 @@ public class ReferenceRoomController {
              */
             List<MultipartFile> referenceFiles = referenceFile;
 
-            if (referenceFiles != null && !referenceFiles.isEmpty()) {
-                for (MultipartFile file : referenceFiles) {
+            if(referenceFiles != null && !referenceFiles.isEmpty()) {
+                for(MultipartFile file : referenceFiles) {
                     String fileName = file.getOriginalFilename().strip();
                     Long bytes = file.getSize();
                     Long fileSize = bytes / 1024 / 1024;
@@ -328,21 +332,25 @@ public class ReferenceRoomController {
     @DeleteMapping("/{referenceRoomId}")
     public ResponseEntity<Void> deleteReferenceRoom(@AuthenticationPrincipal MemberInfo memberInfo, @PathVariable("subject-id") Long subjectId,
                                                     @PathVariable Long referenceRoomId) {
-        if(!memberInfo.getId().equals(referenceRoomService.getById(referenceRoomId).getMemberId())) {
+        if(memberInfo == null) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .build();
+        } else if(!memberInfo.getId().equals(referenceRoomService.getById(referenceRoomId).getMemberId())) {
             return ResponseEntity
                     .status(HttpStatus.FORBIDDEN)
                     .build();
         } else {
             File delDir = new File(path + "/reference/" + referenceRoomId);
 
-            if (delDir.exists()) {
+            if(delDir.exists()) {
                 File[] files = delDir.listFiles();
-                if (files != null) {
-                    for (File file : files) {
+                if(files != null) {
+                    for(File file : files) {
                         file.delete();
                     }
                 }
-                if (delDir.isDirectory() && delDir.list().length == 0) {
+                if(delDir.isDirectory() && delDir.list().length == 0) {
                     delDir.delete();
                 }
             }

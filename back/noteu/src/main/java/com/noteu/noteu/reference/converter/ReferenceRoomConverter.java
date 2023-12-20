@@ -5,6 +5,7 @@ import com.noteu.noteu.reference.dto.ReferenceRoomDTO;
 import com.noteu.noteu.reference.dto.request.AddRequestReferenceRoomDTO;
 import com.noteu.noteu.reference.dto.response.DetailResponseReferenceRoomDTO;
 import com.noteu.noteu.reference.dto.response.GetAllResponseReferenceRoomDTO;
+import com.noteu.noteu.reference.dto.response.ResponseReferenceDTO;
 import com.noteu.noteu.reference.entity.Reference;
 import com.noteu.noteu.reference.entity.ReferenceRoom;
 
@@ -76,10 +77,10 @@ public interface ReferenceRoomConverter {
      * @param reference
      * @return ReferenceDTO
      */
-    default ReferenceDTO referenceEntityToReferenceDTO(Reference reference) {
-        return ReferenceDTO.builder()
+    default ResponseReferenceDTO referenceEntityToReferenceDTO(Reference reference) {
+        return ResponseReferenceDTO.builder()
                 .id(reference.getId())
-                .referenceRoom(reference.getReferenceRoom())
+                .referenceRoomId(reference.getReferenceRoom().getId())
                 .referenceName(reference.getReferenceName())
                 .referenceSize(reference.getReferenceSize())
                 .referenceType(reference.getReferenceType())
@@ -94,11 +95,7 @@ public interface ReferenceRoomConverter {
      */
     default DetailResponseReferenceRoomDTO toDetailResponseReferenceRoomDto(ReferenceRoom referenceRoom, List<Reference> referenceName) {
 
-        List<Reference> matchingReferences = referenceName.stream()
-                .filter(reference -> reference.getReferenceRoom().getId() == referenceRoom.getId())
-                .toList();
-
-        List<ReferenceDTO> referenceDTOList = matchingReferences.stream()
+        List<ResponseReferenceDTO> responseReferenceDTOList = referenceName.stream()
                 .map(this::referenceEntityToReferenceDTO)
                 .collect(Collectors.toList());
 
@@ -109,7 +106,7 @@ public interface ReferenceRoomConverter {
                 .memberName(referenceRoom.getMember().getMemberName())
                 .referenceRoomTitle(referenceRoom.getReferenceRoomTitle())
                 .referenceRoomContent(referenceRoom.getReferenceRoomContent())
-                .reference(referenceDTOList)
+                .reference(responseReferenceDTOList)
                 .views(referenceRoom.getViews())
                 .createdAt(referenceRoom.getCreatedAt())
                 .modifiedAt(referenceRoom.getModifiedAt())
