@@ -50,7 +50,9 @@ export default function useFileUploader(showPreview = true) {
 
   return {
     selectedFiles,
+    setSelectedFiles,
     handleAcceptedFiles,
     removeFile,
+    formatBytes,
   };
 }
