@@ -12,27 +12,6 @@ import { useNavigate } from "react-router-dom";
 const CreateSubject = () => {
 
 	const { schema, handleValidSubmit } = useSubjectForm();
-	const navigate = useNavigate();
-
-	const token = localStorage.getItem("_NOTEU_AUTH").replace(/^"(.*)"$/, '$1');
-
-	const [subjectName, setSubjectName] = useState('')
-
-	const create = () => {
-
-		console.log("2. subject name: ", subjectName);
-		axios.post('http://localhost:8081/subjects', { subjectName: subjectName }, {
-			headers: { Authorization: token }
-		})
-			.then(res => {
-				if (res.status === 201) {
-					alert("과목 생성이 완료되었습니다.");
-					navigate("/apps/subjects/list");
-				} else {
-					console.log("error : " + res.status);
-				}
-			})
-	};
 
 	return (
 		<>
