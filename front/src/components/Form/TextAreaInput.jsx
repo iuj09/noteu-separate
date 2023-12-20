@@ -1,7 +1,7 @@
 import { Form } from 'react-bootstrap';
 import { Controller } from 'react-hook-form';
 
-export default function TextInput({
+export default function TextAreaInput({
   name,
   id,
   label,

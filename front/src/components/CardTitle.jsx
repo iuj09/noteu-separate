@@ -18,6 +18,7 @@ const CardTitle = ({ title, containerClass, icon, menuItems }) => {
                 {item.hasDivider && <Dropdown.Divider as="div" />}
                 <Dropdown.Item
                   className={classNames(item.variant ? item.variant : '')}
+                  onClick={item.onClick}
                 >
                   {item.icon && <i className={classNames(item.icon, 'me-1')}></i>}
                   {item.label}
