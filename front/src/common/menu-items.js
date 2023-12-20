@@ -1017,7 +1017,7 @@ const HORIZONTAL_MENU_ITEMS = [
 			{
 				key: 'apps-notice',
 				label: 'Notice',
-				url: '/apps/notice',
+				url: '/apps/notices/list',
 				parentKey: 'apps',
 			},
 			{
