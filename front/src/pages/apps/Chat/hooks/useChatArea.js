@@ -25,11 +25,12 @@ export default function useChatArea(selectedUser, setMessages) {
      */
     const getMessagesForUser = useCallback(() => {
         const subjectId = 1;
+        const token = localStorage.getItem("_NOTEU_AUTH").replace(/^"(.*)"$/, '$1');
 
         if (selectedUser) {
             const response = axios.get(`http://localhost:8081/subjects/${subjectId}/chats/rooms/api?roomId=${selectedUser.id}`, {
                 headers: {
-                    Authorization: `Bearer_eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwcm9maWxlIjoiL2ZpbGUvcHJvZmlsZS9kZWZhdWx0LnBuZyIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJST0xFX0FETUlOIn1dLCJtZW1iZXJOYW1lIjoibmFtZUEiLCJ1c2VySWQiOjEsInVzZXJuYW1lIjoiYWFhYSIsImlhdCI6MTcwMjg2ODEyMCwiZXhwIjo3NzAyODY4MDYwfQ.RX-VkBUbWn7OxDVu5DEe6jCOOEOMDDfBYHOdg-oqPk0`
+                    Authorization: token
                 }
             })
                 .then(response => {
