@@ -67,7 +67,7 @@ const profileMenus = [
 	{
 		label: 'My Account',
 		icon: 'mdi mdi-account-circle',
-		redirectTo: '#',
+		redirectTo: '/pages/Profile2',
 	},
 	{
 		label: 'Settings',

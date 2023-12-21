@@ -32,8 +32,8 @@ export default function useLogin() {
 			}
 		} catch (error) {
 			console.log(error);
-			showNotification({ 
-				message: error.toString().slice(7), type: 'error'
+			showNotification({
+				message: error.toString().slice(error.toString().indexOf(':') + 2), type: 'error'
 			});
 		} finally {
 			setLoading(false);

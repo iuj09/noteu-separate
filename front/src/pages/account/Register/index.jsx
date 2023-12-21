@@ -1,9 +1,10 @@
-import { CheckInput, Form, PasswordInput, TextInput, PageBreadcrumb } from '@/components';
+import { CheckInput, Form, PageBreadcrumb, PasswordInput, TextInput } from '@/components';
 import { Button, Col, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link, Navigate } from 'react-router-dom';
 import AccountWrapper from '../AccountWrapper';
 import useRegister from './useRegister';
+import RadioInput from "@/components/Form/RadioInput.jsx";
 
 const BottomLink = () => {
 	const { t } = useTranslation();
@@ -20,7 +21,7 @@ const BottomLink = () => {
 			</Col>
 		</Row>
 	);
-};
+}; 
 
 export default function Register() {
 	const { t } = useTranslation();
@@ -32,53 +33,91 @@ export default function Register() {
 			{isAuthenticated && <Navigate to="/" replace />}
 			<PageBreadcrumb title="Register" />
 			<AccountWrapper bottomLinks={<BottomLink />}>
-				<div className="text-center w-75 m-auto">
-					<h4 className="text-dark-50 text-center mt-0 fw-bold">{t('Free Sign Up')}</h4>
+				<div className="text-center m-auto">
+					<h4 className="text-dark-50 text-center mt-0 fw-bold">{t('Sign Up')}</h4>
 					<p className="text-muted mb-4">
 						{t(
-							"Don't have an account? Create your account, it takes less than a minute"
+							"Don't have an account?"
 						)}
+						<br/>
+						{t('Create your account, it takes less than a minute!')}
+
 					</p>
 				</div>
 
 				<Form
 					onSubmit={register}
 					schema={schema}
-					defaultValues={{
-						email: 'hyper@coderthemes.com',
-						username: 'Hyper',
-						password1: 'HyperCoderthemes',
-						password2: 'HyperCoderthemes',
-					}}
 				>
 					<TextInput
-						label={t('Full name')}
+						label={t('ID')}
 						type="text"
 						name="username"
+						placeholder={t('Enter your ID')}
+						containerClass="mb-3"
+					/>
+					<PasswordInput
+						label={t('Password')}
+						name="password"
+						placeholder={t('Enter password')}
+						containerClass="mb-2"
+					/>
+					<PasswordInput
+						label={t('Confirm Password')}
+						name="confirmPassword"
+						placeholder={t('Confirm password')}
+						containerClass="mb-3"
+					/>
+					<TextInput
+						label={t('Name')}
+						type="text"
+						name="memberName"
 						placeholder={t('Enter your name')}
 						containerClass="mb-3"
 					/>
 					<TextInput
-						label={t('Email Address')}
+						label={t('Email address')}
 						type="text"
 						name="email"
 						placeholder={t('Enter your email')}
 						containerClass="mb-3"
 					/>
-					<PasswordInput
-						label={t('Password')}
-						name="password1"
-						placeholder={t('Enter password')}
+					<TextInput
+						label={t('Mobile')}
+						type="text"
+						name="tel"
+						placeholder={t('Enter your mobile')}
 						containerClass="mb-3"
 					/>
-
-					<PasswordInput
-						label={t('Confirm Password')}
-						name="password2"
-						placeholder={t('Confirm password')}
-						containerClass="mb-3"
-					/>
-
+{/* <input class="form-check-input" id="teacher" type='radio' name='role' value='ROLE_TEACHER' th:field="*{role}">
+<label for="teacher" class="form-check-label ms-1">Teacher</label>
+</div>
+<div class="form-check-inline">
+<input class="form-check-input" id="student" type='radio' name='role' value='ROLE_STUDENT' th:field="*{role}">
+<label for="student" class="form-check-label ms-1">Student</label> */}
+					<label htmlFor="role" className="form-label">Type</label>
+					<div id="role" className="mb-3 d-flex justify-content-center">
+						<div className="mx-2">
+							<RadioInput
+								type="radio"
+								name="role"
+								id="teacher"
+								value="ROLE_TEACHER"
+								className="mx-2"
+								label="Teacher"
+							/>
+						</div>
+						<div className="mx-2">
+							<RadioInput
+								type="radio"
+								name="role"
+								id="student"
+								value="ROLE_STUDENT"
+								className="mx-2"
+								label="Student"
+							/>
+						</div>
+					</div>
 					<CheckInput
 						name="checkbox"
 						type="checkbox"
@@ -86,7 +125,7 @@ export default function Register() {
 						label={
 							<>
 								I accept
-								<span className="text-muted cursor-pointer">
+						              		<span className="text-muted cursor-pointer ms-1">
 									Terms and Conditions
 								</span>
 							</>
