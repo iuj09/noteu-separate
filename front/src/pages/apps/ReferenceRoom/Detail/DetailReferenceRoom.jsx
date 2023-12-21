@@ -31,7 +31,7 @@ const DetailReferenceRoom = () => {
     try{
       const response = await axios.delete(`http://localhost:8081/subjects/1/references/${referenceRoomId}`, {headers:{Authorization:token}});
       console.log(response.status);
-      navigate(`/apps/referenceRoom/list/${referenceRoomId}`);
+      navigate(`/apps/referenceRoom/list`);
     } catch(error) {
       console.log("error : " + error);
     }
