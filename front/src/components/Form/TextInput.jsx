@@ -1,5 +1,5 @@
-import { Form } from 'react-bootstrap';
-import { Controller, useFormContext } from "react-hook-form";
+import {Form} from 'react-bootstrap';
+import {Controller, useForm, useFormContext} from "react-hook-form";
 
 export default function TextInput({
   name,
@@ -12,6 +12,7 @@ export default function TextInput({
   errors,
   register,
   type,
+  defaultValue,
   ...props
 }) {
 
@@ -21,6 +22,7 @@ export default function TextInput({
     <Controller
       name={name}
       control={control}
+      defaultValue={defaultValue}
       render={({ field, fieldState }) => (
         <Form.Group className={containerClass ?? ''}>
           {label && <Form.Label>{label}</Form.Label>}

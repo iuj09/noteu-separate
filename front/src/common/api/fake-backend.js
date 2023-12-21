@@ -7,21 +7,22 @@ const TOKEN =
 const mock = new MockAdapter(axios, { onNoMatch: 'passthrough' });
 
 export default function configureFakeBackend() {
-	const users = [
-		{
-			id: 1,
-			email: 'hyper@coderthemes.com',
-			username: 'Hyper',
-			password: 'Hyper',
-			firstName: 'Hyper',
-			lastName: 'Coderthemes',
-			role: 'Admin',
-			token: TOKEN,
-		},
-	];
+
+	// const users = [
+	// 	{
+	// 		id: 1,
+	// 		email: 'hyper@coderthemes.com',
+	// 		username: 'Hyper',
+	// 		password: 'Hyper',
+	// 		firstName: 'Hyper',
+	// 		lastName: 'Coderthemes',
+	// 		role: 'Admin',
+	// 		token: TOKEN,
+	// 	},
+	// ];
 
 	mock.onPost('/login/').reply(function (config) {
-		console.info("login")
+		console.info("fake-backend login")
 		return new Promise(function (resolve, reject) {
 			setTimeout(function () {
 				// get parameters from post request
@@ -29,7 +30,7 @@ export default function configureFakeBackend() {
 
 				// find if any user matches login credentials
 				let filteredUsers = users.filter((user) => {
-					return user.email === params.email && user.password === params.password;
+					return user.username === params.username && user.password === params.password;
 				});
 
 				if (filteredUsers.length) {
@@ -38,7 +39,7 @@ export default function configureFakeBackend() {
 					resolve([200, user]);
 				} else {
 					// else return error
-					resolve([401, { message: 'Email or Password is incorrect' }]);
+					resolve([401, { message: 'ID or Password is incorrect' }]);
 				}
 			}, 1000);
 		});

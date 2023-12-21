@@ -45,11 +45,11 @@ public class MemberDetailsService implements UserDetailsManager{
 
         Member member = Member.builder()
                 .username(signUpDto.getUsername())
-                .password(passwordEncoder.encode(signUpDto.getPassword1()))
+                .password(passwordEncoder.encode(signUpDto.getPassword()))
                 .memberName(signUpDto.getMemberName())
                 .email(signUpDto.getEmail())
                 .tel(signUpDto.getTel())
-                .profile("/file/profile/default.png")
+                .profile("/src/assets/images/profile/default.png")
                 .role(Role.equals(signUpDto.getRole()))
                 .build();
 

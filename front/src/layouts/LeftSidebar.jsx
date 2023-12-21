@@ -10,18 +10,22 @@ import logoDark from '@/assets/images/logo-dark.png';
 import logoSm from '@/assets/images/logo-sm.png';
 import logoDarkSm from '@/assets/images/logo-dark-sm.png';
 import { getMenuItems } from './utils/menu';
+import {extractClaims} from "@/pages/account/Login/extractClaims.js";
 
 const UserBox = () => {
+	const profileImg = extractClaims().profile;
+	const memberName = extractClaims().memberName;
+
 	return (
 		<div className="leftbar-user">
-			<Link to="/pages/profile">
+			<Link to="/pages/profile2">
 				<img
 					src={profileImg}
 					alt="user-image"
 					height="42"
 					className="rounded-circle shadow-sm"
 				/>
-				<span className="leftbar-user-name mt-2">Dominic Keller</span>
+				<span className="leftbar-user-name mt-2">{memberName}</span>
 			</Link>
 		</div>
 	);
