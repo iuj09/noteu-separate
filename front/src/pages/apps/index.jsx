@@ -12,7 +12,6 @@ const SocialFeed = lazy(() => import('./SocialFeed'));
 const Tasks = lazy(() => import('./tasks'));
 const FileManager = lazy(() => import('./FileManager'));
 const Subject = lazy(() => import('./Subject'));
-const Notice = lazy(() => import('./Notice'));
 
 export default function Apps() {
 	return (
@@ -29,7 +28,6 @@ export default function Apps() {
 				<Route path="tasks/*" element={<Tasks />} />
 				<Route path="file" element={<FileManager />} />
 				<Route path="subjects/*" element={<Subject />} />
-				<Route path="notices/*" element={<Notice />} />
 			</Route>
 		</Routes>
 	);
