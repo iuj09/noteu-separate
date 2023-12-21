@@ -9,10 +9,8 @@ $(document).ready(function () {
 
 btn_submit.addEventListener("click", () => {
     var subjectId = document.getElementById("subjectId").value;
-
     var taskTitle = document.getElementById("taskTitle").value;
     var taskContent = document.getElementById("taskContent").value;
-    
     var deadLineValue = document.getElementById("deadLineInput").value;
     var formattedDate = new Date(deadLineValue).toISOString();
 

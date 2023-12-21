@@ -80,6 +80,8 @@ export default function useChatArea(selectedUser, setMessages) {
      */
     const sendChatMessage = (value) => {
         sendMessage(selectedUser, value.newMessage, loginId, loginMemberName);
+        // 메시지 전송 후에 input 비우기
+        document.getElementById('chat-form').reset();
     };
 
     return {
