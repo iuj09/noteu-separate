@@ -16,7 +16,7 @@ const CreateReferenceRoom = () => {
 	const { schema, handleValidSubmit } = useReferenceRoomForm();
 
 	const { control } = useForm();
-	const [selectedFiles, setSelectedFiles] = useState([]);
+	const [ selectedFiles, setSelectedFiles ] = useState([]);
 
     const navigate = useNavigate();
 
@@ -36,7 +36,7 @@ const CreateReferenceRoom = () => {
 						<Card.Body>
 							<Row>
 								<Col>
-									<RHForm onSubmit={handleValidSubmit(selectedFiles)} schema={schema}>
+									<RHForm onSubmit={(data) => handleValidSubmit(data, selectedFiles)} schema={schema}>
 										<Row>
 											<Col xl={12}>
 												<TextInput
@@ -80,7 +80,7 @@ const CreateReferenceRoom = () => {
 										<Row className="mt-2">
 											<Col>
                                                 <div className="button-list d-flex flex-wrap gap-2">
-												    <Button type='submit' variant="primary">
+												    <Button type="submit" variant="primary">
 													    Create
 												    </Button>
                                                     <Button variant="danger" onClick={cancel}>
