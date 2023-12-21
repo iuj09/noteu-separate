@@ -35,7 +35,7 @@ public class ChatRoomController {
     public ResponseEntity<ChatRoomInfoResponseDto> getAllRoom(@PathVariable("subject-id") Long subjectId,
                                                               @AuthenticationPrincipal MemberInfo memberInfo) {
 
-        ChatRoomInfoResponseDto res = restChatService.findAllById(subjectId, memberInfo.getId());
+        ChatRoomInfoResponseDto res = restChatService.findAllById(subjectId, memberInfo);
 
         return ResponseEntity.ok(res);
     }
@@ -73,16 +73,6 @@ public class ChatRoomController {
                 .created(URI.create("/subjects/" + subjectId + "/chats"))
                 .body(chatRoomResponseDto);
     }
-
-    // 채팅방 입장 화면
-//    @GetMapping("/rooms/enter/{roomId}")
-//    public String roomDetail(Model model, @PathVariable Long roomId,
-//                             @AuthenticationPrincipal MemberInfo memberInfo) {
-//
-//        model.addAttribute("roomId", roomId);
-//
-//        return "fragments/content/chat/roomdetail";
-//    }
 
     @GetMapping("/rooms/api")
     public ResponseEntity<List<ChatMessageResponseDto>> pastChat(@RequestParam Long roomId) {

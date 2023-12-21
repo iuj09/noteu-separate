@@ -1,5 +1,5 @@
 ### 로그인 시도
-POST http://localhost:8081/members/sign-in
+POST http://localhost:8081/auth/login
 Content-Type: application/json
 
 {
@@ -8,5 +8,5 @@ Content-Type: application/json
 }
 
 ### 프로필 조회
-GET http://localhost:8081/members/
-Authorization: Bearer_eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9XSwidXNlcklkIjoxLCJ1c2VybmFtZSI6ImFhYWEiLCJpYXQiOjE3MDAxODg0NDYsImV4cCI6MTcwMDE5OTI0Nn0._5OiDuMqgG_8YCqdeXEVEK0S4JUY7GUvT6XPszgihNc
+GET http://localhost:8081/members/account
+Authorization: Bearer_eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwcm9maWxlIjoiL2ZpbGUvcHJvZmlsZS9kZWZhdWx0LnBuZyIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJST0xFX0FETUlOIn1dLCJtZW1iZXJOYW1lIjoibmFtZUEiLCJ1c2VySWQiOjEsInVzZXJuYW1lIjoiYWFhYSIsImlhdCI6MTcwMjg2ODEyMCwiZXhwIjo3NzAyODY4MDYwfQ.RX-VkBUbWn7OxDVu5DEe6jCOOEOMDDfBYHOdg-oqPk0

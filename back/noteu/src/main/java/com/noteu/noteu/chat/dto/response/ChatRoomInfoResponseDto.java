@@ -14,4 +14,5 @@ import java.util.List;
 public class ChatRoomInfoResponseDto {
     List<ChatRoomResponseDto> chatRoomResponseDtos;
     Long loginId;
+    String loginMemberName;
 }

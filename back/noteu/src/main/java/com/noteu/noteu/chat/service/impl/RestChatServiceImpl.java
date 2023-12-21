@@ -12,6 +12,7 @@ import com.noteu.noteu.chat.repository.ChatMessageRepository;
 import com.noteu.noteu.chat.repository.ChatParticipantRepository;
 import com.noteu.noteu.chat.repository.ChatRoomRepository;
 import com.noteu.noteu.chat.service.RestChatService;
+import com.noteu.noteu.member.dto.MemberInfo;
 import com.noteu.noteu.member.dto.response.MemberResponseDto;
 import com.noteu.noteu.member.entity.Member;
 import com.noteu.noteu.member.repository.MemberRepository;
@@ -47,12 +48,12 @@ public class RestChatServiceImpl implements RestChatService {
 
     @Transactional(readOnly = true)
     @Override
-    public ChatRoomInfoResponseDto findAllById(Long subjectId, Long loginId) {
-        List<ChatRoomResponseDto> chatRoomResponseDtos = chatRoomRepository.findAllBySubjectId(subjectId, loginId).stream()
+    public ChatRoomInfoResponseDto findAllById(Long subjectId, MemberInfo memberInfo) {
+        List<ChatRoomResponseDto> chatRoomResponseDtos = chatRoomRepository.findAllBySubjectId(subjectId, memberInfo.getId()).stream()
                 .map(chatRoom -> {
                     ChatMessage lastMessage = chatMessageRepository.findFirstByRoomIdOrderByCreatedAtDesc(chatRoom.getId())
                             .orElse(new ChatMessage(null, null, null, ""));
-                    return converter.chatRoomEntityToChatRoomDto(chatRoom, loginId, lastMessage);
+                    return converter.chatRoomEntityToChatRoomDto(chatRoom, memberInfo.getId(), lastMessage);
                 })
                 .toList();
 
@@ -60,7 +61,8 @@ public class RestChatServiceImpl implements RestChatService {
 
         return ChatRoomInfoResponseDto.builder()
                 .chatRoomResponseDtos(chatRoomResponseDtos)
-                .loginId(loginId)
+                .loginId(memberInfo.getId())
+                .loginMemberName(memberInfo.getMemberName())
                 .build();
     }
 

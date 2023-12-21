@@ -1,77 +1,111 @@
-import { useCallback, useEffect, useState } from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import * as yup from 'yup';
-import { messages } from '../data';
 import avatar from '@/assets/images/users/avatar-1.jpg';
+import axios from 'axios';
+import useChatUsers from './useChatUsers';
+import {formatLocalDateTime, sendMessage} from './chat';
 
-/*
-	 * form validation schema
-	 */
 export const chatSchema = yup.object().shape({
-	newMessage: yup.string().required('Please enter your messsage'),
+    newMessage: yup.string().required('Please enter your messsage'),
 })
 
-export default function useChatArea(selectedUser) {
-	const [userMessages, setUserMessages] = useState([]);
-	const [toUser] = useState({
-		id: 9,
-		name: 'Shreyu N',
-		avatar: avatar,
-		email: 'support@coderthemes.com',
-		phone: '+1 456 9595 9594',
-		location: 'California, USA',
-		languages: 'English, German, Spanish',
-		groups: 'Work, Friends',
-	});
+export default function useChatArea(selectedUser, setMessages) {
+    const {loginMemberName, loginId} = useChatUsers();
+    const [toUser, setToUser] = useState({
+        id: loginId,
+        name: loginMemberName,
+        avatar: avatar
+    });
 
-	/*
-	 *  Fetches the messages for selected user
-	 */
-	const getMessagesForUser = useCallback(() => {
-		if (selectedUser) {
-			setUserMessages([
-				...messages.filter(
-					(m) =>
-						(m.to.id === toUser.id && m.from.id === selectedUser.id) ||
-						(toUser.id === m.from.id && m.to.id === selectedUser.id)
-				),
-			]);
-		}
-	}, [selectedUser, toUser]);
+    console.log("loginMemberName :" + loginMemberName);
+    console.log("loginId :" + loginId);
 
-	useEffect(() => {
-		getMessagesForUser();
-	}, [getMessagesForUser]);
+    /*
+     *  Fetches the messages for selected user
+     */
+    const getMessagesForUser = useCallback(() => {
+        const subjectId = 1;
+
+        if (selectedUser) {
+            const response = axios.get(`http://localhost:8081/subjects/${subjectId}/chats/rooms/api?roomId=${selectedUser.id}`, {
+                headers: {
+                    Authorization: `Bearer_eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwcm9maWxlIjoiL2ZpbGUvcHJvZmlsZS9kZWZhdWx0LnBuZyIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJST0xFX0FETUlOIn1dLCJtZW1iZXJOYW1lIjoibmFtZUEiLCJ1c2VySWQiOjEsInVzZXJuYW1lIjoiYWFhYSIsImlhdCI6MTcwMjg2ODEyMCwiZXhwIjo3NzAyODY4MDYwfQ.RX-VkBUbWn7OxDVu5DEe6jCOOEOMDDfBYHOdg-oqPk0`
+                }
+            })
+                .then(response => {
+                    let chats = [];
+                    console.log(response.data);
+
+                    response.data.forEach(chat => {
+                        const sendOn = formatLocalDateTime(chat.createdAt);
+                        const message = chat.message;
+                        const roomId = chat.roomId;
+                        const senderId = chat.senderId;
+                        const senderName = chat.senderName;
+
+                        chats.push({
+                            roomId,
+                            from: {
+                                senderId: senderId,
+                                name: senderName,
+                            },
+                            message: {
+                                type: 'text',
+                                value: {text: message}
+                            },
+                            sendOn
+                        });
+                    });
+
+                    console.log("chats : " + JSON.stringify(chats));
+
+                    setMessages(
+                        chats
+                    );
+                })
+                .catch(error => {
+                    console.error('There was an error!', error);
+                });
 
 
+        }
+    }, [selectedUser]);
 
-	/**
-	 * sends the chat message
-	 */
-	const sendChatMessage = (value) => {
-		let newUserMessages = [...userMessages];
-		newUserMessages.push({
-			id: userMessages.length + 1,
-			from: toUser,
-			to: selectedUser,
-			message: { type: 'text', value: { text: value.newMessage } },
-			sendOn: new Date().getHours() + ':' + new Date().getMinutes(),
-		});
-		setTimeout(() => {
-			let otherNewMessages = [...newUserMessages];
-			otherNewMessages.push({
-				id: userMessages.length + 1,
-				from: selectedUser,
-				to: toUser,
-				message: { type: 'text', value: { text: value.newMessage } },
-				sendOn: new Date().getHours() + ':' + new Date().getMinutes(),
-			});
-			setUserMessages(otherNewMessages);
-		}, 1000);
-		setUserMessages(newUserMessages);
-	};
-	return {
-		toUser,
-		userMessages,
-		sendChatMessage,
-	};
+    useEffect(() => {
+        getMessagesForUser();
+    }, [getMessagesForUser]);
+
+    /**
+     * sends the chat message
+     */
+    const sendChatMessage = (value) => {
+        sendMessage(selectedUser, value.newMessage, loginId, loginMemberName);
+        // 메시지 전송 후에 input 비우기
+        document.getElementById('chat-form').reset();
+    };
+
+    return {
+        loginId,
+        loginMemberName,
+        toUser,
+        sendChatMessage,
+        recvChat,
+    };
+}
+
+export const recvChat = (recv) => {
+    console.log("리비스 받은값 이거 찍여야됨 : " + JSON.stringify(recv));
+
+    // let newUserMessages = [...userMessages];
+    // newUserMessages.push({
+    // 	id: recv.roomId,
+    // 	from: {
+    // 		id: recv.senderId,
+    // 		name: recv.senderName,
+    // 	},
+    // 	message: { type: 'text', value: { text: recv.message } },
+    // 	sendOn: formatLocalDateTime(recv.createdAt),
+    // });
+
+    // setUserMessages(newUserMessages);
 }

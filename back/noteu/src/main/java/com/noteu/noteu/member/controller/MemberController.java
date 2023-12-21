@@ -68,6 +68,37 @@ public class MemberController {
         return new ResponseEntity<>(accountInfo, HttpStatus.OK);
     }
 
+    @GetMapping("/account")
+    public ResponseEntity<AccountInfo> getMyAccount(@AuthenticationPrincipal MemberInfo memberInfo) {
+        // 내정보
+        Member member = memberDetailsService.getById(memberInfo.getId());
+        List<Role> roleList = new ArrayList<>(member.getRole());
+        MemberDto memberDto = MemberDto.builder()
+                .id(member.getId())
+                .username(member.getUsername())
+                .memberName(member.getMemberName())
+                .email(member.getEmail())
+                .tel(member.getTel())
+                .introduction(member.getIntroduction())
+                .profile(member.getProfile())
+                .role(roleList)
+                .build();
+
+        // 과목 목록
+        List<SubjectInfoDto> subjectInfoList = subjectMemberService.getSubjectInfoList(memberInfo.getId());
+
+        // 최근 질문글 목록
+        List<RecentQuestionDto> recentQuestionList = questionPostService.getRecentQuestionList(memberInfo.getId());
+
+        AccountInfo accountInfo = AccountInfo.builder()
+                .memberDto(memberDto)
+                .subjectInfoList(subjectInfoList)
+                .recentQuestionList(recentQuestionList)
+                .build();
+
+        return new ResponseEntity<>(accountInfo, HttpStatus.OK);
+    }
+
     @PutMapping("/account/{id}")
     public ResponseEntity<Void> editInformation(@PathVariable("id") Long memberId, @AuthenticationPrincipal MemberInfo memberInfo, @RequestBody MemberEditDto memberEditDto) {
         log.info("[check] memberInfo: {}", memberInfo.toString());
