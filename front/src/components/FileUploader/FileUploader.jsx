@@ -2,13 +2,34 @@ import { Link } from 'react-router-dom';
 import { Row, Col, Card } from 'react-bootstrap';
 import Dropzone from 'react-dropzone';
 import useFileUploader from './useFileUploader';
+import React, { useImperativeHandle } from 'react';
 
-const FileUploader = ({ showPreview = true, onFileUpload }) => {
-  const { selectedFiles, handleAcceptedFiles, removeFile } = useFileUploader(showPreview);
+const FileUploader = React.forwardRef(({ showPreview = true, onFileUpload }, ref) => {
+  const { selectedFiles, setSelectedFiles, removeFile, formatBytes } = useFileUploader(showPreview);
+
+  useImperativeHandle(ref, () => ({
+    getFiles: () => selectedFiles
+  }));
+
+  const handleAcceptedFiles = (files) => {
+    var allFiles = files.map((file) =>
+      Object.assign(file, {
+        preview:
+          file['type'].split('/')[0] === 'image' ? URL.createObjectURL(file) : null,
+        formattedSize: formatBytes(file.size),
+      })
+    );
+
+    allFiles = [...selectedFiles, ...allFiles];
+    setSelectedFiles(allFiles);
+
+    // 선택된 파일들을 상위 컴포넌트로 전달
+    if (onFileUpload) onFileUpload(allFiles);
+  };
 
   return (
     <>
-      <Dropzone onDrop={(acceptedFiles) => handleAcceptedFiles(acceptedFiles, onFileUpload)}>
+      <Dropzone onDrop={handleAcceptedFiles}>
         {({ getRootProps, getInputProps }) => (
           <div className="dropzone">
             <div className="dz-message needsclick" {...getRootProps()}>
@@ -78,6 +99,6 @@ const FileUploader = ({ showPreview = true, onFileUpload }) => {
       )}
     </>
   );
-};
+});
 
 export { FileUploader };

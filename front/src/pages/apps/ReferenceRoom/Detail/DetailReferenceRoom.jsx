@@ -2,17 +2,18 @@ import axios from 'axios';
 import { Row, Col, Card } from 'react-bootstrap';
 import Files from './Files';
 import { CardTitle, PageBreadcrumb } from '@/components';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 const DetailReferenceRoom = () => {
   
   const {referenceRoomId} = useParams();
   const [data, setData] = useState(null);
-  const token = localStorage.getItem("_NOTEU_AUTH");
+  const token = localStorage.getItem("_NOTEU_AUTH").replace(/^"(.*)"$/, '$1');
+  const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get("http://localhost:8081/subjects/1/references/" + referenceRoomId, {headers:{Authorization:token}})
+    axios.get(`http://localhost:8081/subjects/1/references/${referenceRoomId}`, {headers:{Authorization:token}, withCredentials: true})
     .then(res => {
       if(res.status === 200) {
         setData(res.data);
@@ -21,6 +22,20 @@ const DetailReferenceRoom = () => {
       }
     })
   },[])
+
+  const editReferenceRoom = () => {
+    navigate(`/apps/referenceRoom/update/${referenceRoomId}`);
+  };
+
+  const deleteReferenceRoom = async () => {
+    try{
+      const response = await axios.delete(`http://localhost:8081/subjects/1/references/${referenceRoomId}`, {headers:{Authorization:token}});
+      console.log(response.status);
+      navigate(`/apps/referenceRoom/list/${referenceRoomId}`);
+    } catch(error) {
+      console.log("error : " + error);
+    }
+  }
 
   return (
     <>
@@ -35,8 +50,8 @@ const DetailReferenceRoom = () => {
                 icon="ri-more-fill"
                 title={<h3>{data ? data.referenceRoomTitle : 'Loding...'}</h3>}
                 menuItems={[
-                  { label: 'Edit', icon: 'mdi mdi-pencil' },
-                  { label: 'Delete', icon: 'mdi mdi-delete' },
+                  { label: 'Edit', icon: 'mdi mdi-pencil', onClick: editReferenceRoom },
+                  { label: 'Delete', icon: 'mdi mdi-delete', onClick: deleteReferenceRoom },
                 ]}
               />
 
