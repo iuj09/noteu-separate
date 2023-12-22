@@ -14,7 +14,7 @@ public class GetAllResponseQuestionPostDTO {
 
     private Long questionPostId;
 
-    private Subject subject;
+    private Long subjectId;
 
     private Long memberId;
 
