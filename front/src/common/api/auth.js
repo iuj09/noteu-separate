@@ -3,7 +3,7 @@ import axios from 'axios';
 
 function AuthService() {
   return {
-    login: async (values) => {
+    login: (values) => {
       console.log('login start');
       console.log(values);
       return axios.post(`http://localhost:8081/auth/login`, values
@@ -21,7 +21,18 @@ function AuthService() {
       return HttpClient.post('/logout/', {});
     },
     register: (values) => {
-      return HttpClient.post('/register/', values);
+      console.log('sign-up start');
+      console.log(values);
+      return axios.post(`http://localhost:8081/auth/sign-up`, values
+      ).then(res => {
+        if (!res.data.statusCode) {
+          console.log('sign-up request success!');
+          return res;
+        } else {
+          console.log('sign-up request failed.');
+          throw new Error('Please check the information and try again.');
+        }
+      })
     },
     forgetPassword: (values) => {
       return HttpClient.post('/forget-password/', values);

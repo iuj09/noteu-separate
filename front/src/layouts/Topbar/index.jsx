@@ -1,20 +1,19 @@
-import { Link } from 'react-router-dom';
-import { notifications, profileMenus } from './data';
-import LanguageDropdown from './LanguageDropdown';
+import {Link} from 'react-router-dom';
+import {notifications, profileMenus} from './data';
 import NotificationDropdown from './NotificationDropdown';
 import ProfileDropdown from './ProfileDropdown';
 import MaximizeScreen from './MaximizeScreen';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import {OverlayTrigger, Tooltip} from 'react-bootstrap';
 
 // assets
-import userImage from '@/assets/images/users/avatar-1.jpg';
 import logo from '@/assets/images/noteuLogo.png';
-import logoDark from '@/assets/images/logo-dark.png';
 import logoSm from '@/assets/images/noteuLogo.png';
+import logoDark from '@/assets/images/logo-dark.png';
 import logoDarkSm from '@/assets/images/logo-dark-sm.png';
-import { ThemeSettings, useThemeContext } from '@/common';
+import {ThemeSettings, useThemeContext} from '@/common';
 import useThemeCustomizer from '@/components/ThemeCustomizer/useThemeCustomizer';
-import { useViewport } from '@/hooks';
+import {useViewport} from '@/hooks';
+import {extractClaims} from "@/pages/account/Login/extractClaims.js";
 
 const Topbar = ({ topbarDark, toggleMenu, navOpen }) => {
 	const { settings, updateSettings, updateSidebar } = useThemeContext();
@@ -22,6 +21,11 @@ const Topbar = ({ topbarDark, toggleMenu, navOpen }) => {
 	const { sideBarType } = useThemeCustomizer();
 
 	const { width } = useViewport();
+
+	console.log(extractClaims());
+	const userImage = extractClaims().profile
+	const username = extractClaims().memberName;
+	const role = extractClaims().roleType;
 
 	/**
 	 * Toggle the leftmenu when having mobile screen
@@ -161,8 +165,8 @@ const Topbar = ({ topbarDark, toggleMenu, navOpen }) => {
 						<ProfileDropdown
 							userImage={userImage}
 							menuItems={profileMenus}
-							username={'Dominic Keller'}
-							userTitle={'Founder'}
+							username={username}
+							userTitle={role}
 						/>
 					</li>
 				</ul>

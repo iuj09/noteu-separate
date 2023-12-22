@@ -1,106 +1,57 @@
-import { Row, Col, InputGroup, Form } from 'react-bootstrap';
-import { Form as RHForm } from '@/components';
-import { Link } from 'react-router-dom';
-import { PasswordInput, TextAreaInput, TextInput } from '@/components';
+import {Col, Form, InputGroup, Row} from 'react-bootstrap';
+import {Form as RHForm, TextAreaInput, TextInput} from '@/components';
+import {useForm} from "react-hook-form";
 
-const PersonalInfo = () => {
-	return (
-		<>
-			<h5 className="mb-4 text-uppercase">
-				<i className="mdi mdi-account-circle me-1"></i> Personal Info
-			</h5>
-			<Row>
-				<Col md={6}>
-					<TextInput
-						label="First Name"
-						type="text"
-						name="firstname"
-						placeholder="Enter first name"
-						containerClass={'mb-3'}
-						key="firstname"
-					/>
-				</Col>
-				<Col md={6}>
-					<TextInput
-						label="Last Name"
-						type="text"
-						name="lastname"
-						placeholder="Enter last name"
-						containerClass={'mb-3'}
-						key="lastname"
-					/>
-				</Col>
-			</Row>
-			<Row>
-				<Col>
-					<TextAreaInput
-						label="Bio"
-						name="userbio"
-						placeholder="Write something..."
-						rows={4}
-						containerClass={'mb-3'}
-						key="userbio"
-					/>
-				</Col>
-			</Row>
-			<Row>
-				<Col md={6} className="mb-3">
-					<TextInput
-						label="Email Address"
-						type="email"
-						name="usermail"
-						placeholder="Enter email"
-						key="useremail"
-					/>
-					<span className="form-text text-muted">
-						<small>
-							If you want to change email please <Link to="">click</Link> here.
-						</small>
-					</span>
-				</Col>
-				<Col md={6} className="mb-3">
-					<PasswordInput
-						label="Password"
-						name="userpassword"
-						placeholder="Enter password"
-						key="userpassword"
-					/>
-					<span className="form-text text-muted">
-						<small>
-							If you want to change password please <Link to="">click</Link> here.
-						</small>
-					</span>
-				</Col>
-			</Row>
-		</>
-	);
-};
-
-const CompanyInfo = () => {
+const PersonalInfo = ({ member }) => {
+	console.log('information 값 확인: ' + JSON.stringify(member));
+	console.log('information 필드 확인: ' + member.memberName);
 	return (
 		<>
 			<h5 className="mb-3 text-uppercase bg-light p-2">
-				<i className="mdi mdi-office-building me-1"></i> Company Info
+				<i className="mdi mdi-account-circle me-1"></i> Information
 			</h5>
 			<Row>
-				<Col md={6}>
-					<TextInput
-						label="Company Name"
-						type="text"
-						name="companyname"
-						placeholder="Enter company name"
+				<Col>
+					<TextAreaInput
+						label="About Me"
+						name="introduction"
+						placeholder={!member.introduction || member.introduction.trim() === '' ? "소개 글을 입력해보세요!" : member.introduction}
+						rows={4}
 						containerClass={'mb-3'}
-						key="companyname"
+						key="introduction"
 					/>
 				</Col>
-				<Col md={6}>
+			</Row>
+			<Row>
+				<Col className="mb-3">
 					<TextInput
-						label="Website"
+						label="Name"
 						type="text"
-						name="cwebsite"
-						placeholder="Enter website url"
-						containerClass={'mb-3'}
-						key="cwebsite"
+						name="memberName"
+						placeholder={member.memberName}
+						key="memberName"
+					/>
+				</Col>
+			</Row>
+			<Row>
+				<Col className="mb-3">
+					<TextInput
+						label="Email Address"
+						type="email"
+						name="email"
+						placeholder={member.email}
+						key="email"
+					/>
+				</Col>
+			</Row>
+			<Row>
+				<Col className="mb-3">
+					<TextInput
+						label="Mobile"
+						type="text"
+						name="tel"
+						placeholder={member.tel}
+						key="tel"
 					/>
 				</Col>
 			</Row>
@@ -124,7 +75,7 @@ const Social = ({ socialinfo }) => {
 								<span className="input-group-text">
 									<i className={item.icon}></i>
 								</span>
-								<Form.Control placeholder={item.placeholder} />
+								<Form.Control placeholder={item.placeholder} disabled={true} />
 							</InputGroup>
 						</Col>
 					);
@@ -134,7 +85,12 @@ const Social = ({ socialinfo }) => {
 	);
 };
 
-const Settings = () => {
+const Settings = ({ member }) => {
+	const { control } = useForm({
+		defaultValues: {
+			memberName: member.memberName
+		},
+	});
 	const socialInfo = [
 		{
 			label: 'Facebook',
@@ -170,9 +126,8 @@ const Settings = () => {
 
 	return (
 		<RHForm onSubmit={(e) => e.preventDefault()}>
-			<PersonalInfo />
-			<CompanyInfo />
-			<Social socialinfo={socialInfo} />
+			<PersonalInfo member={member} />
+			<Social socialinfo={socialInfo}/>
 
 			<div className="text-end">
 				<button type="submit" className="btn btn-success mt-2">
