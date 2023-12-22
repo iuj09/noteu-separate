@@ -1,0 +1,1 @@
+import{C as a,r as n}from"./chart-4d87ace3.js";function l(r,e){let s=parseInt(r.slice(1,3),16),t=parseInt(r.slice(3,5),16),i=parseInt(r.slice(5,7),16);return e?"rgba("+s+", "+t+", "+i+", "+e+")":"rgb("+s+", "+t+", "+i+")"}a.register(...n);export{l as h};
