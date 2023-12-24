@@ -29,7 +29,7 @@ public class NoticeController {
         ArrayList<NoticeResponseDto> notice_list = noticeService.getAll(subjectId);
 
         if(memberInfo==null)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         else if(notice_list.isEmpty())
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         else
@@ -40,7 +40,7 @@ public class NoticeController {
     @PostMapping
     public ResponseEntity<String> addNotice(@AuthenticationPrincipal MemberInfo memberInfo, @PathVariable("subject-id") Long subjectId, @RequestBody NoticeRequestDto noticeRequestDto){
         if(memberInfo==null)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("로그인 후 이용해 주세요.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 후 이용해 주세요.");
         else if(!memberInfo.getAuthorities().toString().contains("ROLE_TEACHER"))
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("선생님만 사용할 수 있는 서비스 입니다.");
         else {
@@ -49,11 +49,20 @@ public class NoticeController {
         }
     }
 
+    @GetMapping("/{noticeId}")
+    public ResponseEntity<NoticeResponseDto> getNoticeByID(@AuthenticationPrincipal MemberInfo memberInfo, @PathVariable("subject-id") Long subjectId, @PathVariable("notice-id") Long noticeId){
+        NoticeResponseDto noticeResponseDto = noticeService.getNotice(noticeId);
+        if(memberInfo == null)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        else
+            return ResponseEntity.ok(noticeResponseDto);
+    }
+
     // 공지사항 수정
     @PutMapping("/{notice-id}")
     public ResponseEntity<String> editNotice(@AuthenticationPrincipal MemberInfo memberInfo, @RequestBody NoticeRequestDto noticeRequestDto, @PathVariable("subject-id") Long subjectId, @PathVariable("notice-id") Long noticeId){
         if(memberInfo==null)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("로그인 후 이용해 주세요.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 후 이용해 주세요.");
         else if(!memberInfo.getAuthorities().toString().contains("ROLE_TEACHER"))
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("선생님만 사용할 수 있는 서비스 입니다.");
         else {
@@ -66,7 +75,7 @@ public class NoticeController {
     @DeleteMapping("/{notice-id}")
     public ResponseEntity<String> deleteNotice(@AuthenticationPrincipal MemberInfo memberInfo, @PathVariable("subject-id") Long subjectId, @PathVariable("notice-id") Long noticeId){
         if(memberInfo==null)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("로그인 후 이용해 주세요.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 후 이용해 주세요.");
         else if(!memberInfo.getAuthorities().toString().contains("ROLE_TEACHER"))
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("선생님만 사용할 수 있는 서비스 입니다.");
         else {
