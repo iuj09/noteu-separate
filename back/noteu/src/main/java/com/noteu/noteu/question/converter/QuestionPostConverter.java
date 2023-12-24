@@ -104,7 +104,7 @@ public interface QuestionPostConverter {
                 .build();
     }
 
-    default GetAllResponseQuestionPostDTO toGetAllResponseReferenceRoomDTO(QuestionPost questionPost) {
+    default GetAllResponseQuestionPostDTO toGetAllResponseReferenceRoomDTO(QuestionPost questionPost, Long commentCnt) {
         return GetAllResponseQuestionPostDTO.builder()
                 .questionPostId(questionPost.getId())
                 .subjectId(questionPost.getSubject().getId())
@@ -112,6 +112,8 @@ public interface QuestionPostConverter {
                 .memberName(questionPost.getMember().getMemberName())
                 .profile(questionPost.getMember().getProfile())
                 .questionPostTitle(questionPost.getQuestionPostTitle())
+                .commentCnt(commentCnt)
+                .views(questionPost.getViews())
                 .createdAt(questionPost.getCreatedAt())
                 .build();
     }

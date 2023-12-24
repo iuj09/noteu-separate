@@ -25,6 +25,14 @@ public class QuestionPost extends AuditingFields {
     @Column(nullable = false, length = 1024)
     private String questionPostContent;
 
+    @Column(columnDefinition = "bigint default 0", nullable = false)
+    private Long views;
+
+    @PrePersist
+    public void prePersist() {
+        this.views = this.views == null ? 0 : this.views;
+    }
+
     public void update(String newTitle, String newContent) {
         this.questionPostTitle = newTitle;
         this.questionPostContent = newContent;
