@@ -94,7 +94,7 @@ const SideBarContent = () => {
 			label: 'Notice',
 			isTitle: false,
 			icon: 'ri-notification-2-line',
-			url: `/apps/subjects/${subjectId}/notice`,
+			url: `/apps/subjects/${subjectId}/notices/list`,
 		},
 		{
 			key: 'apps-chat',
@@ -122,7 +122,7 @@ const SideBarContent = () => {
 			label: 'Task',
 			isTitle: false,
 			icon: 'ri-book-open-line',
-			url: `/apps/subjects/${subjectId}/task`,
+			url: `/apps/subjects/${subjectId}/tasks/list`,
 		},
 	];
 
