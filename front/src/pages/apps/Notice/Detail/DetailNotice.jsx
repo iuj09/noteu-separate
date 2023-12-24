@@ -37,6 +37,20 @@ const DetailNotice = () => {
     })
   },[])
 
+  const handleDelete = () => {
+    axios.delete(`http://localhost:8081/subjects/${subjectId}/notices/${data[0].id}`, { headers: { Authorization: token } })
+      .then(res => {
+        if (res.status === 200) {
+          alert("공지사항이 삭제되었습니다.");
+          location.href = history.back();
+        } else {
+          alert("공지사항 삭제에 실패하였습니다.");
+          console.log("error : " + res.status);
+        }
+      });
+  };
+
+
   return (
     <>
       <PageBreadcrumb title="Notice Detail" subName="Notice" />
@@ -51,7 +65,7 @@ const DetailNotice = () => {
                 title={<h3>{data ? data[0].noticeTitle : 'Loding...'}</h3>}
                 menuItems={[
                   { label: 'Edit', icon: 'mdi mdi-pencil' },
-                  { label: 'Delete', icon: 'mdi mdi-delete' },
+                  { label: 'Delete', icon: 'mdi mdi-delete', onClick: handleDelete },
                 ]}
               />
               <hr />
