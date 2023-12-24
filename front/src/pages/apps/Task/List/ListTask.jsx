@@ -48,7 +48,7 @@ const ListTask = () => {
 						<Card.Body>
 							<Row className="mb-2">
 								<Col sm={5}>
-									<Link to={`/apps/subject/${subjectId}/task/create`} className="btn btn-danger btn-rounded mb-2">
+									<Link to={`/apps/subjects/${subjectId}/tasks/create`} className="btn btn-danger btn-rounded mb-2">
 										<i className="mdi mdi-plus-circle me-2"></i> Create
 									</Link>
 								</Col>

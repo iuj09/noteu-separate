@@ -11,7 +11,7 @@ export default function Dashboard() {
 			<Route path="/*" element={<Outlet />}>
 				<Route path="list" element={<List />} />
 				<Route path="create" element={<Create />} />
-				<Route path="detail/*" element={<Detail />} />
+				<Route path="detail/:taskId" element={<Detail />} />
 			</Route>
 		</Routes>
 	);
