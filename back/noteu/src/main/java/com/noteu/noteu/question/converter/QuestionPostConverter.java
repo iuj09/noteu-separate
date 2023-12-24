@@ -62,7 +62,7 @@ public interface QuestionPostConverter {
     default ResponseQuestionCommentDTO questionCommentEntityToResponseQuestionCommentDTO(QuestionComment questionComment) {
         return ResponseQuestionCommentDTO.builder()
                 .questionCommentId(questionComment.getId())
-                .questionPost(questionComment.getQuestionPost())
+                .questionPostId(questionComment.getQuestionPost().getId())
                 .memberId(questionComment.getMember().getId())
                 .memberName(questionComment.getMember().getMemberName())
                 .memberRole(questionComment.getMember().getRole())
