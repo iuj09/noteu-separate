@@ -28,7 +28,7 @@ export default function useLogin() {
 			const res = await authApi.login(values);
 			if (!res.statusCode) {
 				saveSession({ ...(res.data ?? {}), token: res.headers.authorization });
-				navigate(redirectUrl);
+				navigate("/apps/subjects/list");
 			}
 		} catch (error) {
 			console.log(error);

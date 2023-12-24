@@ -22,10 +22,14 @@ const UserBox = () => {
 		data();
 	}, []);
 
+	const imageUrl = 'http://localhost:8081' + memberDto.profile;
+
 	return (
 		<Card className="text-center">
 			<Card.Body>
-				<img src={memberDto.profile} className="rounded-circle avatar-lg img-thumbnail" alt="" />
+				<Link to="/pages/change-profile">
+				<img src={imageUrl} className="rounded-circle avatar-lg img-thumbnail" alt="profile-image" />
+				</Link>
 				<h4 className="mb-0 mt-2">{memberDto.memberName}</h4>
 				<p className="text-muted font-14">{memberDto.role}</p>
 				<button type="button" className="btn btn-success btn-sm mb-2">

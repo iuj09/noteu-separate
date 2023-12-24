@@ -28,8 +28,9 @@ const PersonalInfo = ({ member }) => {
 						label="Name"
 						type="text"
 						name="memberName"
-						placeholder={member.memberName}
+						placeholder="Enter name"
 						key="memberName"
+						type={member.memberName}
 					/>
 				</Col>
 			</Row>

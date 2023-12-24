@@ -3,7 +3,7 @@ import { Card, Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 // images
-import Logo from '@/assets/images/logo.png';
+import Logo from '/src/assets/images/noteuLogo.png';
 
 export default function AccountWrapper({ bottomLinks, children }) {
 	const currentYear = new Date().getFullYear();

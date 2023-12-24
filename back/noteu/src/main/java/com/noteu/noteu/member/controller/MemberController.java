@@ -31,7 +31,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/members")
 public class MemberController {
-    private String path = "/src/main/resources/static/file/";
+    private String path = "/src/main/resources/static/assets/";
     private final MemberDetailsService memberDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final SubjectMemberService subjectMemberService;
@@ -103,7 +103,7 @@ public class MemberController {
     public ResponseEntity<Void> editInformation(@PathVariable("id") Long memberId, @AuthenticationPrincipal MemberInfo memberInfo, @RequestBody MemberEditDto memberEditDto) {
         log.info("[check] memberInfo: {}", memberInfo.toString());
         if (!memberId.equals(memberInfo.getId())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다.");
         }
 
         memberDetailsService.updateUser(memberEditDto);
@@ -146,18 +146,18 @@ public class MemberController {
     }
 
     @GetMapping("/profile/{id}")
-    public String profileForm(@PathVariable("id") Long memberId, @AuthenticationPrincipal MemberInfo memberInfo, Model model) {
+    public ResponseEntity<MemberInfo> profileForm(@PathVariable("id") Long memberId, @AuthenticationPrincipal MemberInfo memberInfo) {
         if (!memberId.equals(memberInfo.getId())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
         }
-        model.addAttribute("member", memberInfo);
-        return "layout/member/change_profile";
+        return ResponseEntity.ok(memberInfo);
     }
 
-    @PostMapping("/profile/{id}")
-    public String changeProfile(@PathVariable("id") Long memberId, MultipartFile profileFile) throws IOException {
+    @PutMapping("/profile/{id}")
+    public ResponseEntity<Void> changeProfile(@PathVariable("id") Long memberId, @RequestPart("profileFile") MultipartFile profileFile) throws IOException {
         String OriginalfileName = profileFile.getOriginalFilename();
         String currentPath = Paths.get("").toAbsolutePath().toString();
+        log.info("[log] current path: {}", currentPath);
 
         File directory = new File(currentPath + path + "profile/");
         if (!directory.exists()) {
@@ -180,8 +180,9 @@ public class MemberController {
         profileFile.transferTo(newFile);
         log.info("newFile: {}", newFile.getAbsolutePath());
 
-        memberDetailsService.changeProfile(memberId, "/file/profile/" + editFileName);
-        return "redirect:/members/account/{id}";
+        memberDetailsService.changeProfile(memberId, "/assets/profile/" + editFileName);
+        return ResponseEntity.noContent()
+                .build();
     }
 
     public static String getFileName(String filename) {

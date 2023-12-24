@@ -12,7 +12,6 @@ export default function TextInput({
   errors,
   register,
   type,
-  defaultValue,
   ...props
 }) {
 
@@ -22,7 +21,6 @@ export default function TextInput({
     <Controller
       name={name}
       control={control}
-      defaultValue={defaultValue}
       render={({ field, fieldState }) => (
         <Form.Group className={containerClass ?? ''}>
           {label && <Form.Label>{label}</Form.Label>}
