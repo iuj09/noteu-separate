@@ -26,6 +26,8 @@ public class QuestionPostDTO {
 
     private String questionPostContent;
 
+    private Long views;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime modifiedAt;

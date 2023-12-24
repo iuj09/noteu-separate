@@ -16,6 +16,8 @@ public interface QuestionPostService {
 
     DetailResponseQuestionPostDTO getById(Long questionPostId);
 
+    void updateViews(Long questionPostId);
+
     Page<GetAllResponseQuestionPostDTO> getAll(int page, Long subjectId);
 
     Page<GetAllResponseQuestionPostDTO> getByTitle(int page, Long subjectId, String title);

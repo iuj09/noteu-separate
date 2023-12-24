@@ -62,6 +62,11 @@ public class QuestionPostServiceImpl implements QuestionPostService {
         return detailResponseQuestionPostDTO;
     }
 
+    @Override
+    public void updateViews(Long questionPostId) {
+        questionPostRepository.updateViewById(questionPostId);
+    }
+
     @Transactional(readOnly = true)
     @Override
     public Page<GetAllResponseQuestionPostDTO> getAll(int page, Long subjectId) {
@@ -73,7 +78,8 @@ public class QuestionPostServiceImpl implements QuestionPostService {
         Page<QuestionPost> entityList = questionPostRepository.findBySubject(pageable, subject);
         List<GetAllResponseQuestionPostDTO> dtoList = new ArrayList<>();
         for (QuestionPost questionPost : entityList) {
-            GetAllResponseQuestionPostDTO getAllResponseQuestionPostDTO = questionPostConverter.toGetAllResponseReferenceRoomDTO(questionPost);
+            Long commentCnt = (long) questionCommentRepository.findByQuestionPost(questionPost).size();
+            GetAllResponseQuestionPostDTO getAllResponseQuestionPostDTO = questionPostConverter.toGetAllResponseReferenceRoomDTO(questionPost, commentCnt);
             dtoList.add(getAllResponseQuestionPostDTO);
         }
         PageImpl<GetAllResponseQuestionPostDTO> pageNationDtoList = new PageImpl<>(dtoList, pageable, entityList.getTotalElements());
@@ -92,7 +98,8 @@ public class QuestionPostServiceImpl implements QuestionPostService {
         Page<QuestionPost> entityList = questionPostRepository.findBySubjectAndQuestionPostTitleContaining(pageable, subject, title);
         List<GetAllResponseQuestionPostDTO> dtoList = new ArrayList<>();
         for (QuestionPost questionPost : entityList) {
-            GetAllResponseQuestionPostDTO getAllResponseQuestionPostDTO = questionPostConverter.toGetAllResponseReferenceRoomDTO(questionPost);
+            Long commentCnt = (long) questionCommentRepository.findByQuestionPost(questionPost).size();
+            GetAllResponseQuestionPostDTO getAllResponseQuestionPostDTO = questionPostConverter.toGetAllResponseReferenceRoomDTO(questionPost, commentCnt);
             dtoList.add(getAllResponseQuestionPostDTO);
         }
         PageImpl<GetAllResponseQuestionPostDTO> pageNationDtoList = new PageImpl<>(dtoList, pageable, entityList.getTotalElements());
@@ -120,7 +127,8 @@ public class QuestionPostServiceImpl implements QuestionPostService {
 
         List<GetAllResponseQuestionPostDTO> dtoList = new ArrayList<>();
         for (QuestionPost questionPost : pageNationEntityList) {
-            GetAllResponseQuestionPostDTO getAllResponseQuestionPostDTO = questionPostConverter.toGetAllResponseReferenceRoomDTO(questionPost);
+            Long commentCnt = (long) questionCommentRepository.findByQuestionPost(questionPost).size();
+            GetAllResponseQuestionPostDTO getAllResponseQuestionPostDTO = questionPostConverter.toGetAllResponseReferenceRoomDTO(questionPost, commentCnt);
             dtoList.add(getAllResponseQuestionPostDTO);
         }
         PageImpl<GetAllResponseQuestionPostDTO> pageNationDtoList = new PageImpl<>(dtoList, pageable, pageNationEntityList.getTotalElements());

@@ -24,5 +24,9 @@ public class GetAllResponseQuestionPostDTO {
 
     private String questionPostTitle;
 
+    private Long views;
+
+    private Long commentCnt;
+
     private LocalDateTime createdAt;
 }

@@ -35,5 +35,7 @@ public class DetailResponseQuestionPostDTO {
 
     private List<ResponseQuestionCommentDTO> comment;
 
+    private Long views;
+
     private int commentCount;
 }

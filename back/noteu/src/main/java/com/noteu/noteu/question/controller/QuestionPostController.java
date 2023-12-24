@@ -8,6 +8,9 @@ import com.noteu.noteu.question.dto.request.SearchRequestQuestionPostDTO;
 import com.noteu.noteu.question.dto.response.DetailResponseQuestionPostDTO;
 import com.noteu.noteu.question.dto.response.GetAllResponseQuestionPostDTO;
 import com.noteu.noteu.question.service.QuestionPostService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -78,17 +81,43 @@ public class QuestionPostController {
 
     @GetMapping("/{questionPostId}")
     public ResponseEntity<DetailResponseQuestionPostDTO> getQuestionPostById(@AuthenticationPrincipal MemberInfo memberInfo, @PathVariable("subject-id") Long subjectId,
-            @PathVariable Long questionPostId) {
+                                                                             @PathVariable Long questionPostId, HttpServletRequest request, HttpServletResponse response) {
         if(memberInfo == null) {
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
                     .build();
         } else {
             DetailResponseQuestionPostDTO detailResponseQuestionPostDTO = questionPostService.getById(questionPostId);
+            if(detailResponseQuestionPostDTO != null) {
+                Cookie oldCookie = null;
+                Cookie[] cookies = request.getCookies();
+                if(cookies != null) {
+                    for(Cookie cookie : cookies) {
+                        if(cookie.getName().equals("questionPostView")) {
+                            oldCookie = cookie;
+                        }
+                    }
+                }
+                if(oldCookie != null) {
+                    if(!oldCookie.getValue().contains("[" + questionPostId.toString() + "]")) {
+                        questionPostService.updateViews(questionPostId);
+                        oldCookie.setValue(oldCookie.getValue() + "_[" + questionPostId + "]");
+                        oldCookie.setPath("/");
+                        oldCookie.setMaxAge(60 * 60 * 12);
+                        response.addCookie(oldCookie);
+                    }
+                } else {
+                    Cookie newCookie = new Cookie("questionPostView", "[" + questionPostId + "]");
+                    questionPostService.updateViews(questionPostId);
+                    newCookie.setPath("/");
+                    newCookie.setMaxAge(60 * 60 * 12);
+                    response.addCookie(newCookie);
+                }
+            }
             String renderedContent = commonUtil.markdown(detailResponseQuestionPostDTO.getQuestionPostContent());
             detailResponseQuestionPostDTO.setQuestionPostContent(renderedContent);
             return ResponseEntity.ok(detailResponseQuestionPostDTO);
-        }
+            }
 
     }
 
