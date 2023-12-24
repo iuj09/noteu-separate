@@ -24,7 +24,7 @@ const TaskTable = (props) => {
 	return (
 		<Card>
 			<Card.Body>
-				<h4 className="header-title">공지사항</h4>
+				<h4 className="header-title">과제</h4>
 				<p className="text-muted font-14">
 					해당 과목의 과제 입니다.
 				</p>
