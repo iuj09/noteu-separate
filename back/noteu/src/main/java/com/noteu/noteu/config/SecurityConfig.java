@@ -80,7 +80,8 @@ public class SecurityConfig {
         configuration.setAllowCredentials(true); // 쿠키 가능
         configuration.setAllowedOrigins(Arrays.asList(
                         "http://localhost:8081",
-                        "http://localhost:5173"
+                        "http://localhost:5173",
+                        "https://noteu.github.io"
                 )
         ); // * 은 문제 발생
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE", "UPDATE"));

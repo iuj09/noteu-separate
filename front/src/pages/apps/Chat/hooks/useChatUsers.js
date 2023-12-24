@@ -16,10 +16,11 @@ export default function useChatUsers(onUserSelect, setMessages) {
 
     useEffect(() => {
         const subjectId = 1;
+        const token = localStorage.getItem("_NOTEU_AUTH").replace(/^"(.*)"$/, '$1');
 
         axios.get(`http://localhost:8081/subjects/${subjectId}/chats/friends`, {
             headers: {
-                Authorization: `Bearer_eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwcm9maWxlIjoiL2ZpbGUvcHJvZmlsZS9kZWZhdWx0LnBuZyIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJST0xFX0FETUlOIn1dLCJtZW1iZXJOYW1lIjoibmFtZUEiLCJ1c2VySWQiOjEsInVzZXJuYW1lIjoiYWFhYSIsImlhdCI6MTcwMjg2ODEyMCwiZXhwIjo3NzAyODY4MDYwfQ.RX-VkBUbWn7OxDVu5DEe6jCOOEOMDDfBYHOdg-oqPk0`
+                Authorization: token
             }
         }).then(response => {
             let friends = [];
@@ -52,10 +53,12 @@ export default function useChatUsers(onUserSelect, setMessages) {
 
     useEffect(() => {
         const subjectId = 1;
+        const token = localStorage.getItem("_NOTEU_AUTH").replace(/^"(.*)"$/, '$1');
 
         axios.get(`http://localhost:8081/subjects/${subjectId}/chats/rooms`, {
             headers: {
-                Authorization: `Bearer_eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwcm9maWxlIjoiL2ZpbGUvcHJvZmlsZS9kZWZhdWx0LnBuZyIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJST0xFX0FETUlOIn1dLCJtZW1iZXJOYW1lIjoibmFtZUEiLCJ1c2VySWQiOjEsInVzZXJuYW1lIjoiYWFhYSIsImlhdCI6MTcwMjg2ODEyMCwiZXhwIjo3NzAyODY4MDYwfQ.RX-VkBUbWn7OxDVu5DEe6jCOOEOMDDfBYHOdg-oqPk0`
+
+                Authorization: token
             }
         })
             .then(response => {
