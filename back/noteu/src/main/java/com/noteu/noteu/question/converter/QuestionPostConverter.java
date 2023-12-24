@@ -91,7 +91,7 @@ public interface QuestionPostConverter {
 
         return DetailResponseQuestionPostDTO.builder()
                 .questionPostId(questionPost.getId())
-                .subject(questionPost.getSubject())
+                .subjectId(questionPost.getSubject().getId())
                 .memberId(questionPost.getMember().getId())
                 .memberName(questionPost.getMember().getMemberName())
                 .profile(questionPost.getMember().getProfile())
@@ -107,7 +107,7 @@ public interface QuestionPostConverter {
     default GetAllResponseQuestionPostDTO toGetAllResponseReferenceRoomDTO(QuestionPost questionPost) {
         return GetAllResponseQuestionPostDTO.builder()
                 .questionPostId(questionPost.getId())
-                .subject(questionPost.getSubject())
+                .subjectId(questionPost.getSubject().getId())
                 .memberId(questionPost.getMember().getId())
                 .memberName(questionPost.getMember().getMemberName())
                 .profile(questionPost.getMember().getProfile())
