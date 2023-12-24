@@ -1,10 +1,9 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import helpBoxImage from '@/assets/images/svg/help-icon.svg';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {Link, useLocation} from 'react-router-dom';
 import classNames from 'classnames';
-import { Collapse } from 'react-bootstrap';
-import { ThemeSettings, useThemeContext } from '@/common';
-import { findAllParent, findMenuItem } from './utils/menu';
+import {Collapse} from 'react-bootstrap';
+import {ThemeSettings, useThemeContext} from '@/common';
+import {findAllParent, findMenuItem} from './utils/menu';
 
 const MenuItemWithChildren = ({
   item,

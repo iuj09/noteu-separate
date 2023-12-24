@@ -1,5 +1,6 @@
 {
   "name": "package.json",
+  "homepage": "http://noteu.com/",
   "private": true,
   "version": "4.0.0",
   "type": "module",

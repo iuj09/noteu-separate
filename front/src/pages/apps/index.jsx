@@ -18,15 +18,15 @@ export default function Apps() {
 		<Routes>
 			<Route path="/*" element={<Outlet />}>
 				<Route path="calendar" element={<Calendar />} />
-				<Route path="chat" element={<Chat />} />
-				<Route path="crm/*" element={<CRM />} />
-				<Route path="ecommerce/*" element={<Ecommerce />} />
-				<Route path="email/*" element={<Email />} />
-				<Route path="projects/*" element={<Projects />} />
-				<Route path="referenceRoom/*" element={<ReferenceRoom />} />
-				<Route path="social" element={<SocialFeed />} />
-				<Route path="tasks/*" element={<Tasks />} />
-				<Route path="file" element={<FileManager />} />
+				<Route path="subjects/:subjectId/chat" element={<Chat />} />
+				<Route path="subjects/:subjectId/crm/*" element={<CRM />} />
+				<Route path="subjects/:subjectId/ecommerce/*" element={<Ecommerce />} />
+				<Route path="subjects/:subjectId/email/*" element={<Email />} />
+				<Route path="subjects/:subjectId/projects/*" element={<Projects />} />
+				<Route path="subjects/:subjectId/referenceRoom/*" element={<ReferenceRoom />} />
+				<Route path="subjects/:subjectId/social" element={<SocialFeed />} />
+				<Route path="subjects/:subjectId/tasks/*" element={<Tasks />} />
+				<Route path="subjects/:subjectId/file" element={<FileManager />} />
 				<Route path="subjects/*" element={<Subject />} />
 			</Route>
 		</Routes>
