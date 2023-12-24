@@ -47,12 +47,12 @@ const CustomDatePicker = (props) => {
     (props.hideAddon || false) === true ? (
       <DatepickerInput
         inputClass={props.inputClass ?? ''}
-        value={props.value.toDateString()}
+        value={props.value}
       />
     ) : (
       <DatepickerInputWithAddon
         inputClass={props.inputClass ?? ''}
-        value={props.value.toDateString()}
+        value={props.value}
       />
     );
 
