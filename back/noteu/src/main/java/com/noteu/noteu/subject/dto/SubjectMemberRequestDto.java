@@ -1,17 +1,15 @@
 package com.noteu.noteu.subject.dto;
 
-import com.noteu.noteu.member.entity.Role;
-import lombok.Value;
-
-import java.io.Serializable;
-import java.util.List;
+import lombok.*;
 
 /**
  * DTO for {@link com.noteu.noteu.subject.entity.SubjectMember}
  */
-@Value
-public class SubjectMemberRequestDto implements Serializable {
-    Long memberId;
-    Long subjectId;
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class SubjectMemberRequestDto {
     String subjectCode;
 }

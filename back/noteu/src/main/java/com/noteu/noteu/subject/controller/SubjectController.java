@@ -35,12 +35,13 @@ public class SubjectController {
     public ResponseEntity<String> addSubject(@AuthenticationPrincipal MemberInfo memberInfo, @RequestBody SubjectRequestDto subjectRequestDto) {
 
         if(memberInfo==null) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("로그인 후 이용해주세요.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 후 이용해주세요.");
         }
         else if(subjectRequestDto==null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("과목 생성에 실패하였습니다.");
         }
         else {
+            log.info("subject name: {}", subjectRequestDto.getSubjectName());
             SubjectResponseDto subjectResponseDto = subjectService.save(subjectRequestDto);
             subjectMemberService.save(subjectResponseDto.getSubjectCode(), memberInfo.getId());
 
@@ -51,13 +52,11 @@ public class SubjectController {
     // 과목 코드 입력
     @PostMapping("/input-code")
     public ResponseEntity<String> inputCode(@AuthenticationPrincipal MemberInfo memberInfo, @RequestBody SubjectMemberRequestDto subjectMemberRequestDto){
-        String subjectCode = subjectMemberRequestDto.getSubjectCode();
-
-        Subject subject = subjectService.getSubjectByCode(subjectCode);
+        Subject subject = subjectService.getSubjectByCode(subjectMemberRequestDto.getSubjectCode());
 
         Member result = subjectMemberService.getMemberBySubjectCode(memberInfo.getId(), subject.getId());
         if (result == null) {
-            subjectMemberService.save(subjectCode, memberInfo.getId());
+            subjectMemberService.save(subject.getSubjectCode(), memberInfo.getId());
             return ResponseEntity.ok("가입이 완료되었습니다");
         } else {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 가입된 과목입니다");
@@ -66,7 +65,7 @@ public class SubjectController {
 
     // 과목 리스트
     @GetMapping
-    public ResponseEntity<List<SubjectResponseDto>> list(@AuthenticationPrincipal MemberInfo memberInfo){
+    public ResponseEntity<List<SubjectResponseDto>> list(@AuthenticationPrincipal MemberInfo memberInfo) {
         List<SubjectResponseDto> list = subjectService.getAll(memberInfo.getId());
 
         if (list != null)
@@ -74,5 +73,4 @@ public class SubjectController {
         else
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-
 }
