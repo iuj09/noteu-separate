@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.util.FileCopyUtils;
@@ -32,7 +33,7 @@ public class TaskCommentController {
     private String path;
 
     // 과제 제출
-    @PostMapping("/{task-id}/task-comment")
+    @PostMapping(value = "/{task-id}/task-comment", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> addTaskComment(@AuthenticationPrincipal MemberInfo memberInfo,
                                  @PathVariable("subject-id") Long subjectId, @PathVariable("task-id") Long taskId,
                                  @RequestPart("taskCommentTitle") String taskCommentTitle, @RequestPart("taskCommentFile") MultipartFile taskCommentFile
@@ -51,7 +52,7 @@ public class TaskCommentController {
         }
 
         if(memberInfo==null)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("로그인 후 이용해 주세요.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 후 이용해 주세요.");
         else if(taskCommentFile == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("파일이 선택 되지 않았습니다.");
         else if(taskCommentTitle == null)

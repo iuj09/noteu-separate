@@ -1,22 +1,18 @@
 package com.noteu.noteu.task.dto;
 
+import com.noteu.noteu.task.entity.TaskComment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
-/**
- * DTO for {@link com.noteu.noteu.task.entity.Task}
- */
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TaskRequestDto {
-    String taskTitle;
-    String taskContent;
-    LocalDateTime deadLine;
-
+public class TaskDetailResponseDto {
+    private TaskResponseDto task;
+    private List<TaskComment> taskCommentList;
 }
