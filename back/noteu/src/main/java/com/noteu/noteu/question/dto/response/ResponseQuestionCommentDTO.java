@@ -17,7 +17,7 @@ public class ResponseQuestionCommentDTO {
 
     private Long questionCommentId;
 
-    private QuestionPost questionPost;
+    private Long questionPostId;
 
     private Long memberId;
     
