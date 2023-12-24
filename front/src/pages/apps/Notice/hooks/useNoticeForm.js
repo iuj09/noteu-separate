@@ -49,7 +49,7 @@ export default function useNoticeForm() {
 
 			if (response.status === 201) {
 				alert("공지사항 등록이 완료되었습니다.");
-				location.href = "/apps/notices/list";
+				location.href = history.back();
 			} else {
 				alert("공지사항 등록 실패");
 				console.log("Error:", response.status);
