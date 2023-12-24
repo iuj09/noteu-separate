@@ -1,9 +1,24 @@
 import { Card, Table } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const ReferenceRoomTable = (props) => {
 
     const { list } = props;
+
+	const location = useLocation();
+	const url = location.pathname;
+	let subjectsIndex = url.indexOf("/subjects/");
+	// "/subjects/" 다음에 숫자를 찾기
+	let numberStartIndex = subjectsIndex + "/subjects/".length;
+	let numberEndIndex = url.indexOf("/", numberStartIndex);
+
+	if (numberEndIndex === -1) {
+		// 숫자가 URL의 끝에 있는 경우
+		numberEndIndex = url.length;
+	}
+
+	// 숫자 추출
+	const subjectId = url.substring(numberStartIndex, numberEndIndex);
 
 	return (
 		<Card>
@@ -19,7 +34,7 @@ const ReferenceRoomTable = (props) => {
 							<th>#</th>
 							<th>Title</th>
 							<th>Date</th>
-							<th>Views</th>
+							<th><i className="mdi mdi-eye" /></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -34,7 +49,7 @@ const ReferenceRoomTable = (props) => {
 								<tr key={item.referenceRoomId}>
 									<th scope="row">{item.referenceRoomId}</th>
 									<td>
-                                        <Link to={`/apps/referenceRoom/detail/${item.referenceRoomId}`}>
+                                        <Link to={`/apps/subjects/${subjectId}/referenceRoom/detail/${item.referenceRoomId}`}>
                                             <div>
                                                 {item.referenceRoomTitle}
                                             </div>
