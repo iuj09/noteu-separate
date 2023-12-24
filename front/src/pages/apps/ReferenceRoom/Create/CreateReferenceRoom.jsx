@@ -7,7 +7,7 @@ import {
 	TextAreaInput,
 } from '@/components';
 import { useReferenceRoomForm } from '../hooks';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { useState } from 'react';
 
@@ -20,9 +20,24 @@ const CreateReferenceRoom = () => {
 
     const navigate = useNavigate();
 
+	const location = useLocation();
+	const url = location.pathname;
+	let subjectsIndex = url.indexOf("/subjects/");
+	// "/subjects/" 다음에 숫자를 찾기
+	let numberStartIndex = subjectsIndex + "/subjects/".length;
+	let numberEndIndex = url.indexOf("/", numberStartIndex);
+
+	if (numberEndIndex === -1) {
+		// 숫자가 URL의 끝에 있는 경우
+		numberEndIndex = url.length;
+	}
+
+	// 숫자 추출
+	const subjectId = url.substring(numberStartIndex, numberEndIndex);
+
     const cancel = () => {
         if(confirm("작성중인 내용은 저장되지 않습니다. 정말 취소하시겠습니까?")) {
-            navigate('/apps/referenceRoom/list');
+            navigate(`/apps/subjects/${subjectId}/referenceRoom/list`);
         }
     }
         
@@ -36,7 +51,7 @@ const CreateReferenceRoom = () => {
 						<Card.Body>
 							<Row>
 								<Col>
-									<RHForm onSubmit={(data) => handleValidSubmit(data, selectedFiles)} schema={schema}>
+									<RHForm onSubmit={(data) => handleValidSubmit(data, selectedFiles, subjectId)} schema={schema}>
 										<Row>
 											<Col xl={12}>
 												<TextInput

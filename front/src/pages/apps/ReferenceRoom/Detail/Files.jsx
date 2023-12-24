@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Card, Row, Button } from 'react-bootstrap';
+import { useLocation } from 'react-router-dom';
 
 const Files = (props) => {
 
@@ -7,8 +8,24 @@ const Files = (props) => {
 
 	const token = localStorage.getItem("_NOTEU_AUTH").replace(/^"(.*)"$/, '$1');
 
+	const location = useLocation();
+	const url = location.pathname;
+	let subjectsIndex = url.indexOf("/subjects/");
+	// "/subjects/" 다음에 숫자를 찾기
+	let numberStartIndex = subjectsIndex + "/subjects/".length;
+	let numberEndIndex = url.indexOf("/", numberStartIndex);
+
+	if (numberEndIndex === -1) {
+		// 숫자가 URL의 끝에 있는 경우
+		numberEndIndex = url.length;
+	}
+
+	// 숫자 추출
+	const subjectId = url.substring(numberStartIndex, numberEndIndex);
+	console.log("subjectId :" + subjectId);
+
 	const download = (id, referenceName) => {
-		axios.get(`http://localhost:8081/subjects/1/references/down?id=${id}&referenceName=${referenceName}`, {headers:{Authorization:token}, responseType:'blob'}, )
+		axios.get(`http://localhost:8081/subjects/${subjectId}/references/down?id=${id}&referenceName=${referenceName}`, {headers:{Authorization:token}, responseType:'blob'}, )
 		.then(res => {
 			if(res.status === 200) {
 				const url = window.URL.createObjectURL(new Blob([res.data]));

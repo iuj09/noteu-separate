@@ -16,7 +16,8 @@ export default function useReferenceRoomForm() {
 	/**
 	 * Handle the form submission
 	 */
-	const handleValidSubmit = async (value, selectedFiles) => {
+	const handleValidSubmit = async (value, selectedFiles, subjectId) => {
+		
 		const token = localStorage.getItem("_NOTEU_AUTH").replace(/^"(.*)"$/, '$1');
 
 		const formData = new FormData();
@@ -49,7 +50,7 @@ export default function useReferenceRoomForm() {
 		}
 
 		try {
-			const response = await axios.post('http://localhost:8081/subjects/1/references', formData, {
+			const response = await axios.post(`http://localhost:8081/subjects/${subjectId}/references`, formData, {
 			headers: {
 			  'Authorization': `${token}`,  // 토큰을 사용하여 인증
 			  'Content-Type': 'multipart/form-data',
@@ -57,7 +58,7 @@ export default function useReferenceRoomForm() {
 		  	});
 		  	if(response.status === 201) {
 				alert("자료실 게시글 작성이 완료되었습니다.");
-		  		navigate('/apps/referenceRoom/list');
+		  		navigate(`/apps/subjects/${subjectId}/referenceRoom/list`);
 		  	} else {
 				console.log("error : " + response.status);
 			}
