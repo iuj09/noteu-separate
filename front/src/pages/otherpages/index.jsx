@@ -1,5 +1,6 @@
 import { lazy } from 'react';
 import { Outlet, Route, Routes } from 'react-router-dom';
+import ChangeProfile from "@/pages/otherpages/ChangeProfile/index.jsx";
 
 const Profile = lazy(() => import('./Profile'));
 const Profile2 = lazy(() => import('./Profile2'));
@@ -24,6 +25,7 @@ export default function OtherPages() {
 				<Route path="starter" element={<Starter />} />
 				<Route path="preloader" element={<Preloader />} />
 				<Route path="timeline" element={<Timeline />} />
+				<Route path="change-profile" element={<ChangeProfile />} />
 			</Route>
 		</Routes>
 	);

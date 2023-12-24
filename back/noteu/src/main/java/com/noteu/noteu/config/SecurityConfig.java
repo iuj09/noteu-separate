@@ -84,7 +84,7 @@ public class SecurityConfig {
                         "https://noteu.github.io"
                 )
         ); // * 은 문제 발생
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE", "UPDATE"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "UPDATE"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.addExposedHeader("Authorization");
         configuration.addExposedHeader("Refresh");

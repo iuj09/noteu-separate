@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Link, useLocation} from 'react-router-dom';
 import SimpleBar from 'simplebar-react';
 import AppMenu from './Menu';
@@ -10,18 +10,37 @@ import logoSm from '@/assets/images/logo-sm.png';
 import logoDarkSm from '@/assets/images/logo-dark-sm.png';
 import { getCustomMenuItems} from './utils/menu';
 import {extractClaims} from "@/pages/account/Login/extractClaims.js";
+import {fetchData} from "@/pages/otherpages/Profile2/fetchData.js";
 
 const UserBox = () => {
-	const profileImg = extractClaims().profile;
 	const memberName = extractClaims().memberName;
+	const [memberDto, setMemberDto] = useState({});
+
+	useEffect(() => {
+		const data = async () => {
+			const userId = extractClaims().userId;
+			const token = extractClaims().token;
+
+			const userData = await fetchData(userId, token);
+
+			if (userData) {
+				setMemberDto(userData.memberDto);
+			}
+		};
+		data();
+	}, []);
+
+	const imageUrl = 'http://localhost:8081' + memberDto.profile;
+
 
 	return (
 		<div className="leftbar-user">
 			<Link to="/pages/profile2">
 				<img
-					src={profileImg}
+					src={imageUrl}
 					alt="user-image"
 					height="42"
+					width="42"
 					className="rounded-circle shadow-sm"
 				/>
 				<span className="leftbar-user-name mt-2">{memberName}</span>

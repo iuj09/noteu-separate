@@ -2,9 +2,29 @@ import { Link } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
 import classNames from 'classnames';
 import { useToggle } from '@/hooks';
+import {fetchData} from "@/pages/otherpages/Profile2/fetchData.js";
+import {useEffect, useState} from "react";
+import {extractClaims} from "@/pages/account/Login/extractClaims.js";
 
-const ProfileDropdown = ({ userTitle, username, menuItems, userImage }) => {
+const ProfileDropdown = ({ userTitle, username, menuItems }) => {
 	const [isOpen, toggleDropdown] = useToggle();
+	const [memberDto, setMemberDto] = useState({});
+
+	useEffect(() => {
+		const data = async () => {
+			const userId = extractClaims().userId;
+			const token = extractClaims().token;
+
+			const userData = await fetchData(userId, token);
+
+			if (userData) {
+				setMemberDto(userData.memberDto);
+			}
+		};
+		data();
+	}, []);
+
+	const imageUrl = 'http://localhost:8081' + memberDto.profile;
 
 	return (
 		<Dropdown show={isOpen} onToggle={toggleDropdown}>
@@ -16,7 +36,7 @@ const ProfileDropdown = ({ userTitle, username, menuItems, userImage }) => {
 				className="nav-link dropdown-toggle arrow-none nav-user px-2"
 			>
 				<span className="account-user-avatar">
-					<img src={userImage} className="rounded-circle" width={32} alt="user" />
+					<img src={imageUrl} className="rounded-circle" height={32} width={32} alt="user" />
 				</span>
 				<span className="d-lg-flex flex-column gap-1 d-none">
 					<h5 className="my-0">{username}</h5>

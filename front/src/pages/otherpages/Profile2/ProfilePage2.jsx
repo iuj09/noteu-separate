@@ -31,14 +31,9 @@ const ProfilePage2 = () => {
 		data();
 	}, []);
 
-	console.log('과목들:' + JSON.stringify(subjects));
-	console.log(projects);
-	console.log('최근글:' + recentPosts);
-	console.log('내정보:' + JSON.stringify(member));
-
 	return (
 		<>
-			<PageBreadcrumb title="Profile 2" subName="Pages" />
+			<PageBreadcrumb title="Profile" subName="Pages" />
 			<Row>
 				<Col xl={4} lg={5}>
 					{/* User information */}
