@@ -1,6 +1,5 @@
 import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import classNames from 'classnames';
 
 
 const ProjectCard = ({ subject }) => {

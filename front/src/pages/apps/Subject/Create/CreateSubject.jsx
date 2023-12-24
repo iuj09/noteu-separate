@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Row, Col, Card, Button } from 'react-bootstrap';
 import { Form as RHForm } from '@/components';
 import {
@@ -6,8 +5,6 @@ import {
 	TextInput,
 } from '@/components';
 import { useSubjectForm } from '../hooks';
-import axios from 'axios';
-import { useNavigate } from "react-router-dom";
 
 const CreateSubject = () => {
 

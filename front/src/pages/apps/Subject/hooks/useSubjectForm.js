@@ -30,7 +30,7 @@ export default function useSubjectForm() {
 
 			if (response.status === 201) {
 				alert("과목 생성이 완료되었습니다.");
-				location.href = "/apps/subjects/list"
+				location.href = "/apps/subjects/list";
 			} else {
 				console.log("Error:", response.status);
 			}
