@@ -3,10 +3,7 @@ package com.noteu.noteu.task.entity;
 import com.noteu.noteu.audit.AuditingFields;
 import com.noteu.noteu.member.entity.Member;
 import com.noteu.noteu.subject.entity.Subject;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -19,10 +16,10 @@ import java.time.LocalDateTime;
 @Builder
 public class Task extends AuditingFields {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Subject subject;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Member member;
 
     @Column(nullable = false, length = 128)
