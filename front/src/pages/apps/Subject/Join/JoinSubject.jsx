@@ -4,15 +4,15 @@ import {
 	PageBreadcrumb,
 	TextInput,
 } from '@/components';
-import { useSubjectForm } from '../hooks';
+import { useSubjectCodeForm } from '../hooks';
 
-const CreateSubject = () => {
+const JoinSubject = () => {
 
-	const { schema, handleValidSubmit } = useSubjectForm();
+	const { schema, handleValidSubmit } = useSubjectCodeForm();
 
 	return (
 		<>
-			<PageBreadcrumb title="Create Subject" subName="Subject" />
+			<PageBreadcrumb title="Join Subject" subName="Subject" />
 
 			<Row>
 				<Col>
@@ -25,9 +25,9 @@ const CreateSubject = () => {
 											<Col xl={12}>
 												<TextInput
 													type="text"
-													name="subjectName"
-													label="Subject Name"
-													placeholder="Enter subject name"
+													name="subjectCode"
+													label="Subject Code"
+													placeholder="Enter subject code"
 													containerClass={'mb-3'}
 													key="name"
 												/>
@@ -38,7 +38,7 @@ const CreateSubject = () => {
 											<Col>
 												<div className="button-list d-flex flex-wrap gap-2">
 													<Button type='submit' variant="primary">
-														Create
+														Join
 													</Button>
 												</div>
 											</Col>
@@ -54,4 +54,4 @@ const CreateSubject = () => {
 	);
 };
 
-export { CreateSubject };
+export { JoinSubject };

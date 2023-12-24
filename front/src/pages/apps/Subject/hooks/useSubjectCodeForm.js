@@ -1,13 +1,13 @@
 import axios from 'axios';
 import * as yup from 'yup';
 
-export default function useSubjectForm() {
+export default function useSubjectCodeForm() {
 
 	/*
 	 * form validation schema
 	 */
 	const schema = yup.object().shape({
-		subjectName: yup.string().required('subject name is required'),
+		subjectCode: yup.string().required('subject code is required'),
 	});
 
 	/**
@@ -17,24 +17,28 @@ export default function useSubjectForm() {
 		const token = localStorage.getItem("_NOTEU_AUTH").replace(/^"(.*)"$/, '$1');
 
 		const data = {
-			subjectName: value.subjectName,
+			subjectCode: value.subjectCode,
 		};
 
+		console.log(data.subjectCode);
+
 		try {
-			const response = await axios.post('http://localhost:8081/subjects', data, {
+			const response = await axios.post('http://localhost:8081/subjects/input-code', data, {
 				headers: {
 					'Authorization': `${token}`,
 					'Content-Type': 'application/json', // JSON 형식으로 전송
 				},
 			});
 
-			if (response.status === 201) {
-				alert("과목 생성이 완료되었습니다.");
+			if (response.status === 200) {
+				alert("과목 가입이 완료되었습니다.");
 				location.href = "/apps/subjects/list";
-			} else {
+			} else if (response.status === 409) {
+				alert("해당 과목에 이미 가입이 되어있습니다.")
 				console.log("Error:", response.status);
 			}
 		} catch (error) {
+			alert("과목 가입 실패")
 			console.error("Error:", error);
 		}
 	};

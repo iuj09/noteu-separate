@@ -9,7 +9,8 @@ const Email = lazy(() => import('./email'));
 const Projects = lazy(() => import('./projects'));
 const ReferenceRoom = lazy(() => import('./referenceRoom'));
 const SocialFeed = lazy(() => import('./SocialFeed'));
-const Tasks = lazy(() => import('./tasks'));
+const Task = lazy(() => import('./Task'));
+const Notice = lazy(() => import('./Notice'));
 const FileManager = lazy(() => import('./FileManager'));
 const Subject = lazy(() => import('./Subject'));
 
@@ -25,7 +26,8 @@ export default function Apps() {
 				<Route path="subjects/:subjectId/projects/*" element={<Projects />} />
 				<Route path="subjects/:subjectId/referenceRoom/*" element={<ReferenceRoom />} />
 				<Route path="subjects/:subjectId/social" element={<SocialFeed />} />
-				<Route path="subjects/:subjectId/tasks/*" element={<Tasks />} />
+				<Route path="subjects/:subjectId/tasks/*" element={<Task />} />
+				<Route path="subjects/:subjectId/notices/*" element={<Notice />} />
 				<Route path="subjects/:subjectId/file" element={<FileManager />} />
 				<Route path="subjects/*" element={<Subject />} />
 			</Route>
