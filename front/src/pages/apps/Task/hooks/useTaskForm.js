@@ -62,7 +62,7 @@ export default function useTaskForm() {
 
 			if (response.status === 201) {
 				alert("과제 등록이 완료되었습니다.");
-				location.href = "/apps/task/list";
+				location.href = history.back();
 			} else {
 				alert("과제 등록 실패");
 				console.log("Error:", response.status);
