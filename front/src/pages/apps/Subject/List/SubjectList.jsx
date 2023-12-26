@@ -4,6 +4,7 @@ import { PageBreadcrumb } from '@/components';
 import ProjectCard from './ProjectCard';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { extractClaims } from '@/pages/account/Login/extractClaims';
 
 const SubjectList = () => {
 
@@ -21,18 +22,28 @@ const SubjectList = () => {
 			})
 	}, [])
 
+	const roleType = extractClaims().roleType;
+
 	return (
 		<>
 			<PageBreadcrumb title="Subject List" subName="Subject" />
 
 			<Row className="mb-2">
 				<Col sm={4}>
-					<Link to={`/apps/subjects/create`} className="rounded-pill mb-3 btn btn-danger">
-						<i className="mdi mdi-plus"></i> Create Subject
-					</Link>
-					<Link to={`/apps/subjects/input-code`} className="rounded-pill mb-3 btn btn-success">
-						<i className="mdi mdi-plus"></i> Join Subject
-					</Link>
+					{
+						roleType === "Teacher" && (
+							< Link to={`/apps/subjects/create`} className="rounded-pill mb-3 btn btn-danger">
+								<i className="mdi mdi-plus-circle me-2"></i> Create Subject
+							</Link>
+						)
+					}
+					{
+						roleType === "Student" && (
+							<Link to={`/apps/subjects/input-code`} className="rounded-pill mb-3 btn btn-success">
+								<i className="mdi mdi-plus-circle me-2"></i> Join Subject
+							</Link>
+						)
+					}
 				</Col>
 			</Row>
 

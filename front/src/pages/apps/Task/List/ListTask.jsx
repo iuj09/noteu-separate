@@ -4,6 +4,7 @@ import { PageBreadcrumb } from '@/components';
 import { Link, useLocation } from 'react-router-dom';
 import { TaskTable } from './Table';
 import axios from 'axios';
+import { extractClaims } from '@/pages/account/Login/extractClaims';
 
 const ListTask = () => {
 
@@ -38,6 +39,8 @@ const ListTask = () => {
 			})
 	}, []);
 
+	const roleType = extractClaims().roleType;
+
 	return (
 		<>
 			<PageBreadcrumb title="Task List" subName="Task" />
@@ -48,9 +51,13 @@ const ListTask = () => {
 						<Card.Body>
 							<Row className="mb-2">
 								<Col sm={5}>
-									<Link to={`/apps/subjects/${subjectId}/tasks/create`} className="btn btn-danger btn-rounded mb-2">
-										<i className="mdi mdi-plus-circle me-2"></i> Create
-									</Link>
+									{
+										roleType === "Teacher" && (
+											<Link to={`/apps/subjects/${subjectId}/tasks/create`} className="btn btn-danger btn-rounded mb-2">
+												<i className="mdi mdi-plus-circle me-2"></i> Create
+											</Link>
+										)
+									}
 								</Col>
 							</Row>
 							<TaskTable list={list} />
