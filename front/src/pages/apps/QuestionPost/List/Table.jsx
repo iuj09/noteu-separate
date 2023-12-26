@@ -1,7 +1,7 @@
 import { Card, Table } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
 
-const ReferenceRoomTable = (props) => {
+const QuestionPostTable = (props) => {
 
     const { list } = props;
 
@@ -19,13 +19,14 @@ const ReferenceRoomTable = (props) => {
 
 	// 숫자 추출
 	const subjectId = url.substring(numberStartIndex, numberEndIndex);
+	console.log("subjectId :" + subjectId);
 
 	return (
 		<Card>
 			<Card.Body>
-				<h4 className="header-title">자료실</h4>
+				<h4 className="header-title">질문게시판</h4>
 				<p className="text-muted font-14">
-                    수업에 필요한 자료 파일들을 다운로드 받을 수 있는 공간입니다.
+					공부 중 궁금한 점이 생기면 질문글을 작성 해 주세요.
 				</p>
 
 				<Table className="mb-0" hover>
@@ -33,8 +34,10 @@ const ReferenceRoomTable = (props) => {
 						<tr>
 							<th>#</th>
 							<th>Title</th>
+							<th>Writer</th>
 							<th>Date</th>
 							<th><i className="mdi mdi-eye" /></th>
+							<th><i className="mdi mdi-comment-text-multiple" /></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -46,17 +49,19 @@ const ReferenceRoomTable = (props) => {
                             const hours = createdAt.getHours();
                             const minutes = createdAt.getMinutes();
 							return (
-								<tr key={item.referenceRoomId}>
-									<th scope="row">{item.referenceRoomId}</th>
+								<tr key={item.questionPostId}>
+									<th scope="row">{item.questionPostId}</th>
 									<td>
-                                        <Link to={`/apps/subjects/${subjectId}/referenceRoom/detail/${item.referenceRoomId}`}>
+                                        <Link to={`/apps/subjects/${subjectId}/questionPost/detail/${item.questionPostId}`}>
                                             <div>
-                                                {item.referenceRoomTitle}
+                                                {item.questionPostTitle}
                                             </div>
                                         </Link>
                                     </td>
+									<td>{item.memberName}</td>
 									<td>{`${year}-${month}-${day} ${hours}시 ${minutes}분`}</td>
 									<td>{item.views}</td>
+									<td>{item.commentCnt}</td>
 								</tr>
 							);
 						})}
@@ -67,4 +72,4 @@ const ReferenceRoomTable = (props) => {
 	);
 };
 
-export { ReferenceRoomTable };
+export { QuestionPostTable };

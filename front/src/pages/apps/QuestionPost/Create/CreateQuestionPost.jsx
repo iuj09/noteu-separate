@@ -1,22 +1,25 @@
-import { Row, Col, Card, Form, Button} from 'react-bootstrap';
+import { Row, Col, Card, Button} from 'react-bootstrap';
+import { useState } from 'react';
 import { Form as RHForm } from '@/components';
 import {
 	PageBreadcrumb,
-	FileUploader,
-	TextInput,
-	TextAreaInput,
+	TextInput
 } from '@/components';
-import { useReferenceRoomForm } from '../hooks';
+import { useQuestionPostForm } from '../hooks';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Controller, useForm } from 'react-hook-form';
-import { useState } from 'react';
+import SimpleMDEReact from 'react-simplemde-editor';
 
-const CreateReferenceRoom = () => {
+// styles
+import 'easymde/dist/easymde.min.css';
 
-	const { schema, handleValidSubmit } = useReferenceRoomForm();
+const CreateQuestionPost = () => {
 
-	const { control } = useForm();
-	const [ selectedFiles, setSelectedFiles ] = useState([]);
+	const { schema, handleValidSubmit } = useQuestionPostForm();
+    const [markdownContent, setMarkdownContent] = useState('');
+
+    const handleMarkdownChange = (value) => {
+        setMarkdownContent(value);
+    };
 
     const navigate = useNavigate();
 
@@ -35,6 +38,11 @@ const CreateReferenceRoom = () => {
 	// 숫자 추출
 	const subjectId = url.substring(numberStartIndex, numberEndIndex);
 
+    const onSubmit = (data) => {
+        data.content = markdownContent;
+        handleValidSubmit(data, subjectId);
+    };
+
     const cancel = () => {
         if(confirm("작성중인 내용은 저장되지 않습니다. 정말 취소하시겠습니까?")) {
             navigate(`/apps/subjects/${subjectId}/referenceRoom/list`);
@@ -51,7 +59,7 @@ const CreateReferenceRoom = () => {
 						<Card.Body>
 							<Row>
 								<Col>
-									<RHForm onSubmit={(data) => handleValidSubmit(data, selectedFiles, subjectId)} schema={schema}>
+									<RHForm onSubmit={onSubmit} schema={schema}>
 										<Row>
 											<Col xl={12}>
 												<TextInput
@@ -61,34 +69,13 @@ const CreateReferenceRoom = () => {
 													label="Title"
 													placeholder="Enter reference title"
 													containerClass={'mb-3'}
-													key="referenceRoomTitle"
+													key="questionPostTitle"
 												/>
 
-												<TextAreaInput
-													name="content"
-													id="content"
-													label="Content"
-													placeholder="Enter some brief about reference.."
-													rows={5}
-													containerClass={'mb-3'}
-													key="referenceRoomContent"
-												/>
-                                                <Form.Group className="mb-3 mt-3 mt-xl-0">
-													<Form.Label>Files</Form.Label>
-													<p className="text-muted font-14">
-														Recommended thumbnail size 800x400 (px).
-													</p>
-													<Controller
-														name="selectedFiles"
-														control={control}
-														defaultValue={[]}
-														render={({ field }) => (
-														<FileUploader {...field} onFileUpload={(files) => {
-															setSelectedFiles(files);
-															field.onChange(files);
-														}} />
-													)}/>
-												</Form.Group>
+                                                <SimpleMDEReact
+                                                    value={markdownContent}
+                                                    onChange={handleMarkdownChange}
+                                                />
 											</Col>
 										</Row>
 
@@ -115,4 +102,4 @@ const CreateReferenceRoom = () => {
 	);
 };
 
-export { CreateReferenceRoom };
+export { CreateQuestionPost };

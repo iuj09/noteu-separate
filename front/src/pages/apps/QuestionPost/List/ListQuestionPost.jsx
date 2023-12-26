@@ -2,12 +2,12 @@ import axios from 'axios';
 import { Link, useLocation } from 'react-router-dom';
 import { Row, Col, Card } from 'react-bootstrap';
 import { PageBreadcrumb } from '@/components';
-import { ReferenceRoomTable } from './Table';
+import { QuestionPostTable } from './Table.jsx';
 import { useState, useEffect } from 'react';
 import Search from './Search';
 import { extractClaims } from "@/pages/account/Login/extractClaims.js";
 
-const ListReferenceRoom = () => {
+const ListQuestionPost = () => {
 
     const [list, setList] = useState([]);
     const token = localStorage.getItem("_NOTEU_AUTH").replace(/^"(.*)"$/, '$1');
@@ -27,13 +27,14 @@ const ListReferenceRoom = () => {
 	// 숫자 추출
 	const subjectId = url.substring(numberStartIndex, numberEndIndex);
 
-	const roleType = extractClaims().roleType;
+    const roleType = extractClaims().roleType;
 
     useEffect(() => {
-        axios.get(`http://localhost:8081/subjects/${subjectId}/references`, {headers:{Authorization:token}})
+        axios.get(`http://localhost:8081/subjects/${subjectId}/questions`, {headers:{Authorization:token}})
         .then(res => {
             if(res.status === 200) {
                 setList(res.data.content);
+                console.log(res.data.content);
             } else {
                 console.log("error : " + res.status);
             }
@@ -41,7 +42,7 @@ const ListReferenceRoom = () => {
     },[])
 	return (
 		<>
-			<PageBreadcrumb title="ReferenceRoom List" subName="ReferenceRoom" />
+			<PageBreadcrumb title="QuestionPost List" subName="QuestionPost" />
 
 			<Row>
 				<Col xs={12}>
@@ -49,17 +50,17 @@ const ListReferenceRoom = () => {
 						<Card.Body>
 							<Row className="mb-2">
 								<Col sm={5}>
-									{ roleType === "Teacher" && (
-										<Link to={`/apps/subjects/${subjectId}/referenceRoom/create`} className="rounded-pill btn btn-danger mb-2">
-											<i className="mdi mdi-plus-circle me-2"></i> Create
-										</Link>
-									)}
+                                    { roleType === "Teacher" && (
+                                        <Link to={`/apps/subjects/${subjectId}/questionPost/create`} className="rounded-pill btn btn-danger mb-2">
+                                            <i className="mdi mdi-plus-circle me-2"></i> Create
+                                        </Link>
+                                    )}
 								</Col>
 								<Col>
 									<Search />
 								</Col>
 							</Row>
-                            <ReferenceRoomTable list={list}/>
+                            <QuestionPostTable list={list}/>
 							
 						</Card.Body>
 					</Card>
@@ -69,4 +70,4 @@ const ListReferenceRoom = () => {
 	);
 };
 
-export { ListReferenceRoom };
+export { ListQuestionPost };

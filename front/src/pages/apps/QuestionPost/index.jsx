@@ -11,9 +11,9 @@ export default function Apps() {
 		<Routes>
 			<Route path="/" element={<Outlet />}>
 				<Route path="list" element={<List />} />
-				<Route path="detail/:referenceRoomId" element={<Detail />} />
+				<Route path="detail/:questionPostId" element={<Detail />} />
 				<Route path="create" element={<Create />} />
-				<Route path="update/:referenceRoomId" element={<Update />} />
+				<Route path="update/:questionPostId" element={<Update />} />
 			</Route>
 		</Routes>
 	);

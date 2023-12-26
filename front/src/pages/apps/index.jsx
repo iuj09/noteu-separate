@@ -7,12 +7,14 @@ const CRM = lazy(() => import('./crm'));
 const Ecommerce = lazy(() => import('./ecommerce'));
 const Email = lazy(() => import('./email'));
 const Projects = lazy(() => import('./projects'));
+const QuestionPost = lazy(() => import('./questionPost'));
 const ReferenceRoom = lazy(() => import('./referenceRoom'));
 const SocialFeed = lazy(() => import('./SocialFeed'));
 const Task = lazy(() => import('./Task'));
 const Notice = lazy(() => import('./Notice'));
 const FileManager = lazy(() => import('./FileManager'));
 const Subject = lazy(() => import('./Subject'));
+
 
 export default function Apps() {
 	return (
@@ -25,6 +27,7 @@ export default function Apps() {
 				<Route path="subjects/:subjectId/email/*" element={<Email />} />
 				<Route path="subjects/:subjectId/projects/*" element={<Projects />} />
 				<Route path="subjects/:subjectId/referenceRoom/*" element={<ReferenceRoom />} />
+				<Route path="subjects/:subjectId/questionPost/*" element={<QuestionPost />} />
 				<Route path="subjects/:subjectId/social" element={<SocialFeed />} />
 				<Route path="subjects/:subjectId/tasks/*" element={<Task />} />
 				<Route path="subjects/:subjectId/notices/*" element={<Notice />} />
